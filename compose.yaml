@@ -1,13 +1,13 @@
 services:
   frontend:
     build:
-      context: ./frontend-vite
+      context: ./frontend
     ports:
       - "3000:5173"
     volumes:
-      - ./frontend-vite/src:/app/src:Z
-      - ./frontend-vite/public:/app/public:Z
-      - ./frontend-vite/index.html:/app/index.html:Z
+      - ./frontend/src:/app/src:Z
+      - ./frontend/public:/app/public:Z
+      - ./frontend/index.html:/app/index.html:Z
 
   backend:
     build:

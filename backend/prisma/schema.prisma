@@ -1,0 +1,16 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model TestEntry {
+  id        Int      @id @default(autoincrement())
+  label     String
+  createdAt DateTime @default(now())
+}

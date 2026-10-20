@@ -66,7 +66,7 @@ export default function RegisterForm() {
           onChange={setPassword}
           placeholder="Create a password"
           autoComplete="new-password"
-          minLength={12}
+          minLength={6}
           required
         />
 

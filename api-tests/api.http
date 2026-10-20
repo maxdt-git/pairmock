@@ -1,0 +1,54 @@
+### note: this is a test file for api calls with the VScode RestClient extension
+
+@baseUrl = http://localhost:4000
+
+### Check backend health
+GET {{baseUrl}}/api/health
+
+### Get all test entries
+GET {{baseUrl}}/api/test-entries
+
+### Create a test entry
+POST {{baseUrl}}/api/test-entries
+Content-Type: application/json
+
+{
+  "label": "Hello from REST Client"
+}
+
+### Create a user entry
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "username": "Max"
+}
+###
+GET {{baseUrl}}/api/user
+
+### Better Auth health
+GET http://localhost:4000/api/auth/ok
+
+
+### Register a user using betterauth
+POST http://localhost:4000/api/auth/sign-up/email
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "name": "TestUser3",
+  "email": "testuser2@example.com",
+  "password": "MySecurePassword123!"
+}
+
+###
+GET http://localhost:4000/api/auth/list-accounts
+
+### delete user
+POST http://localhost:4000/api/auth/delete-user
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "password": "MySecurePassword123!"
+}

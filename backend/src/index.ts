@@ -1,8 +1,12 @@
 import express from "express";
 import { prisma } from "./lib/prisma.ts";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth.ts";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
+
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json());
 

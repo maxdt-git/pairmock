@@ -1,9 +1,9 @@
-function LoginPage() {
-  return (
-    <>
-      <p>Login</p>
-    </>
-  )
-}
+import LoginForm from "@/components/auth/LoginForm";
 
-export default LoginPage
+export default function LoginPage() {
+  return (
+    <main className="flex min-h-screen items-center justify-center">
+      <LoginForm />
+    </main>
+  );
+}

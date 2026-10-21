@@ -1,3 +1,13 @@
+# OAUTH — Quick Reference
+
+Visit https://console.cloud.google.com/auth/
+1. Connect with your google account
+2. Configure all required values (audience is External)
+3. Create a Web Application Client
+4. JS URL is http://localhost:3000
+5. Authorized URI is http://localhost:4000/api/auth/callback/google (given to us by BetterAuth)
+6. Copy the ClientId and the ClientSecret to your .env file
+
 # Prisma — Quick Reference
 
 Run these commands **from the `Transcendence-React` project root**, with the `backend` and `db` containers running (`make up`).

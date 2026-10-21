@@ -4,18 +4,50 @@
 import { useState, type SubmitEvent } from "react";
 import { Link } from "react-router";
 import Input from "@/components/ui/Input"
+import { authClient } from "@/lib/auth-client";
+import { useNavigate } from "react-router";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
+    const navigate = useNavigate();
 
-    // TODO: Send credentials to the Express backend.
-    setMessage("Authentication API not connected yet.");
-  }
+    async function handleGoogleLogin() {
+        const { error } = await authClient.signIn.social({
+          provider: "google",
+          callbackURL: "http://localhost:3000/dashboard",
+        });
+    
+        if (error) {
+          console.error("Google login failed:", error);
+        }
+    }
+
+    async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        try {
+            const { data, error } = await authClient.signIn.email({
+                email,
+                password,
+            });
+
+            if (error) {
+              setMessage(error.message ?? "Login failed.");
+              return;
+            }
+
+            console.log("Logged in user:", data?.user);
+            setMessage("Login successful!");
+
+            navigate("/dashboard");
+        } catch (error) {
+          console.error("Login error:", error);
+          setMessage("Unable to connect to the server.");
+        }
+    }
 
   return (
     <form
@@ -51,6 +83,14 @@ export default function LoginForm() {
         className="rounded-lg bg-pink-600 p-3 font-semibold hover:bg-pink-700"
       >
         Login
+      </button>
+
+      <button
+        type="button"
+        className="rounded-lg bg-pink-600 p-3 font-semibold hover:bg-pink-700"
+        onClick={handleGoogleLogin}
+      >
+        Continue with Google
       </button>
 
       {message && (

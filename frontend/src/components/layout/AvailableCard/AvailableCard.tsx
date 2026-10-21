@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { Calendar, CalendarDays, Clock } from "lucide-react";
 
-interface AvailableCardProps {
+export interface AvailableCardProps {
     imageSrc: string,
     username: string,
     description: string,

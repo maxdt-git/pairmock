@@ -4,6 +4,7 @@
 import { useState, type SubmitEvent } from "react";
 import { Link } from "react-router";
 import Input from "@/components/ui/Input"
+import { authClient } from "@/lib/auth-client";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -12,7 +13,7 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log(username)
     if (password !== confirmPassword) {
@@ -20,8 +21,27 @@ export default function RegisterForm() {
       return;
     }
 
-    // TODO: Send registration data to Express backend.
-    setMessage("Registration API not connected yet.");
+    try {
+        const { data, error } = await authClient.signUp.email({
+            name: username,
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            setMessage(error.message ?? "Registration Failed");
+            return;
+        }
+
+        console.log("Registered user:", data?.user);
+        setMessage("Account created successfully!");
+
+        const session = await authClient.getSession();
+        console.log("Current session:", session.data)
+    } catch (error) {
+        console.error("Registration request failed", error);
+        setMessage("Unable to connect to the backend")
+    }
   }
 
   return (
@@ -66,7 +86,7 @@ export default function RegisterForm() {
           onChange={setPassword}
           placeholder="Create a password"
           autoComplete="new-password"
-          minLength={6}
+          minLength={8}
           required
         />
 

@@ -5,6 +5,7 @@ import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 
 export default function DashboardPage() {
@@ -18,6 +19,19 @@ export default function DashboardPage() {
 
     const query = useQuery({ queryKey: ['available_cards'], queryFn: getAvailableCards })
 
+    const { data: session } = authClient.useSession();
+
+    if (!session) {
+        return (
+            <p>Not Logged In</p>
+        )
+    }
+
+    if (session) {
+        console.log(session.user)
+        console.log(session.session)
+    }
+
     return (
         <div className="bg-muted/30">
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
@@ -28,7 +42,7 @@ export default function DashboardPage() {
                             <Plus className="w-4 h-4" />
                             Create Slot
                         </Button>
-                        <UserNavigation username={"User"} imageSrc="https://github.com/shadcn.png" />
+                        <UserNavigation username={session?.user.name} imageSrc="https://github.com/shadcn.png" />
                     </div>
                 </header>
                 <section className="mb-5">

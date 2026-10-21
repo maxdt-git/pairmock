@@ -42,7 +42,7 @@ export default function DashboardPage() {
                             <Plus className="w-4 h-4" />
                             Create Slot
                         </Button>
-                        <UserNavigation username={session?.user.name} imageSrc="https://github.com/shadcn.png" />
+                        <UserNavigation username={session?.user.name} imageSrc={session.user.image ? session.user.image : ""} />
                     </div>
                 </header>
                 <section className="mb-5">

@@ -25,11 +25,11 @@ export default function DashboardPage() {
 
     const { data: session } = authClient.useSession();
 
-    // if (!session) { #TEMP DISABLED
-    //     return (
-    //         <p>Not Logged In</p>
-    //     )
-    // }
+    if (!session) {
+        return (
+            <p>Not Logged In</p>
+        )
+    }
 
     if (session) {
         console.log(session.user)
@@ -46,7 +46,7 @@ export default function DashboardPage() {
                             <Plus className="w-4 h-4" />
                             Create Slot
                         </Button>
-                        <UserNavigation username={session?.user.name} imageSrc={session.user.image ? session.user.image : ""} />
+                        <UserNavigation username={session?.user.name ?? "User"} imageSrc={session?.user.image ? session.user.image : ""} />
                     </div>
                 </header>
                 <section className="mb-5">

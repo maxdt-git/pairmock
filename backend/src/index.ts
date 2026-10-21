@@ -58,6 +58,24 @@ app.get("/api/test-entries", async (_req, res) => {
   }
 });
 
+// Retrieve all user // dev only
+app.get("/api/users", async (_req, res) => {
+    try {
+        const entries = await prisma.user.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        res.status(200).json(entries)
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to retrieve users",
+        })
+    }
+})
+
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

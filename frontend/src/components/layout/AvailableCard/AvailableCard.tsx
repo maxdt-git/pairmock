@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
+import { formatDateTime } from "@/lib/dateFormat";
 import { Calendar, CalendarDays, Clock } from "lucide-react";
 
 export interface AvailableCardProps {
@@ -9,8 +10,8 @@ export interface AvailableCardProps {
     username: string,
     description: string,
     date: string,
-    time: string,
     difficulty: string
+    duration: number
 }
 
 const difficultyStyles = {
@@ -20,7 +21,8 @@ const difficultyStyles = {
 };
 
 export default function AvailableCard(props: AvailableCardProps) {
-    const { imageSrc, username, description, date, time, difficulty } = props
+    const { imageSrc, username, description, date, difficulty, duration } = props
+    const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     return (
         <Card className="w-full sm:w-auto flex-1 min-w-60 max-w-2xl flex flex-col justify-between">
             <CardHeader>
@@ -39,12 +41,16 @@ export default function AvailableCard(props: AvailableCardProps) {
                 </div>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-2 items-center">
-                <Calendar width={16} height={16} />
-                <p>{date}</p>
-                <Clock width={16} height={16} />
-                <p>{time}</p>
-                <p>(60 min)</p>
+            <CardContent className="flex gap-5 items-center">
+                <div className="flex gap-0.5 items-center">
+                    <Calendar width={16} height={16} />
+                    <p>{formattedDate}</p>
+                </div>
+                <div className="flex gap-0.5 items-center">
+                    <Clock width={16} height={16} />
+                    <p>{formattedTime}</p>
+                </div>
+                <p>{duration}(min)</p>
             </CardContent>
             <CardFooter>
                 <Button className="w-full" size="lg">

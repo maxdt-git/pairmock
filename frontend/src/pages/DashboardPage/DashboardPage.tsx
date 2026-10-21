@@ -1,4 +1,4 @@
-import AvailableCard, { type AvailableCardProps } from "@/components/layout/AvailableCard/AvailableCard";
+import AvailableCard from "@/components/layout/AvailableCard/AvailableCard";
 import BookedCard from "@/components/layout/BookedCard/BookedCard";
 import Footer from "@/components/layout/Footer/Footer";
 import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
@@ -6,26 +6,30 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import type { Slot } from "@/types/slot";
 
 
 export default function DashboardPage() {
-    async function getAvailableCards() {
-        const res = await fetch('http://localhost:3000/api/available-cards');
+    async function getSlots() {
+        const res = await fetch('http://localhost:3000/api/slots');
         if (!res.ok) {
             throw new Error('Failed to load posts');
         }
         return res.json();
     }
 
-    const query = useQuery({ queryKey: ['available_cards'], queryFn: getAvailableCards })
+    const query = useQuery({ queryKey: ['slots'], queryFn: getSlots })
+
+    const bookedSlots = query?.data?.filter((slot: Slot) => slot.status === "BOOKED") ?? []
+    const availableSlots = query?.data?.filter((slot: Slot) => slot.status === "AVAILABLE") ?? []
 
     const { data: session } = authClient.useSession();
 
-    if (!session) {
-        return (
-            <p>Not Logged In</p>
-        )
-    }
+    // if (!session) { #TEMP DISABLED
+    //     return (
+    //         <p>Not Logged In</p>
+    //     )
+    // }
 
     if (session) {
         console.log(session.user)
@@ -48,17 +52,31 @@ export default function DashboardPage() {
                 <section className="mb-5">
                     <h2 className="text-xl font-bold mb-2.5">Booked slots:</h2>
                     <ul className="flex gap-5 flex-wrap max-h-72 p-2 md:max-h-none overflow-y-auto">
-                        <BookedCard imageSrc={"https://media.licdn.com/dms/image/v2/D4E0BAQFYUF6QoPOH8A/company-logo_200_200/B4EZbFTRxvHwAI-/0/1747066887630/42born2code_logo?e=2147483647&v=beta&t=rP3yqIK5dT9kyJ7IgSQ9gRjsU6YCZ_ZbDnoPfmvxWVo"} username={"42"} description={"I want to practice easy leetcode problems"} date={"Thu, 24 oct."} time={"18:30"} difficulty={"Easy"} />
-                        <BookedCard imageSrc={"https://media.licdn.com/dms/image/v2/D4E0BAQFYUF6QoPOH8A/company-logo_200_200/B4EZbFTRxvHwAI-/0/1747066887630/42born2code_logo?e=2147483647&v=beta&t=rP3yqIK5dT9kyJ7IgSQ9gRjsU6YCZ_ZbDnoPfmvxWVo"} username={"42"} description={"I want to practice easy leetcode problems"} date={"Thu, 24 oct."} time={"18:30"} difficulty={"Medium"} />
-                        <BookedCard imageSrc={"https://media.licdn.com/dms/image/v2/D4E0BAQFYUF6QoPOH8A/company-logo_200_200/B4EZbFTRxvHwAI-/0/1747066887630/42born2code_logo?e=2147483647&v=beta&t=rP3yqIK5dT9kyJ7IgSQ9gRjsU6YCZ_ZbDnoPfmvxWVo"} username={"42"} description={"I want to practice easy leetcode problems"} date={"Thu, 24 oct."} time={"18:30"} difficulty={"Hard"} />
+                        {bookedSlots?.map((card: Slot) => (
+                            <BookedCard
+                                imageSrc={card.imageSrc}
+                                username={card.hostUsername}
+                                description={card.description}
+                                date={card.scheduledAt}
+                                difficulty={card.difficulty}
+                                duration={card.durationMinutes}
+                            />
+                        ))}
                     </ul>
                 </section>
                 <section>
                     <h2 className="text-xl font-bold mb-2.5">Available slots:</h2>
                     <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5 mb-5 p-2">
-                        {query.data?.map((card: AvailableCardProps) => (
-                            <li>
-                                <AvailableCard imageSrc={card.imageSrc} username={card.username} description={card.description} date={card.date} time={card.time} difficulty={card.difficulty} />
+                        {availableSlots?.map((card: Slot) => (
+                            <li key={card.id}>
+                                <AvailableCard
+                                    imageSrc={card.imageSrc}
+                                    username={card.hostUsername}
+                                    description={card.description}
+                                    date={card.scheduledAt}
+                                    difficulty={card.difficulty}
+                                    duration={card.durationMinutes}
+                                />
                             </li>
                         ))}
                     </ul>

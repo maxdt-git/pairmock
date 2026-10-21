@@ -5,7 +5,8 @@ interface AvailableCardProps { # Card to book
     username: string,
     description: string,
     date: string,
-    time: string
+    time: string,
+    difficulty: string
 }
 
 interface BookedCardProps { # booked card by user
@@ -13,7 +14,8 @@ interface BookedCardProps { # booked card by user
     username: string,
     description: string,
     date: string,
-    time: string
+    time: string,
+    difficulty: string
 }
 
 interface UserNavigationProps { # nickname and photo of the user

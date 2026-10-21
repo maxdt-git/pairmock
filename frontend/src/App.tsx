@@ -15,7 +15,7 @@ function App() {
           mode="single"
           selected={date}
           onSelect={setDate}
-          className="rounded-lg border w-[400px]"
+          className="rounded-lg border w-100"
         />
       </div>
     </>

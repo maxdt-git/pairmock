@@ -82,44 +82,65 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
  
-// POST available cards
-app.post("/api/available-cards", async (req, res) => {
+// POST slots
+app.post("/api/slots", async (req, res) => {
   const {
     imageSrc,
-    username,
+    hostUsername,
+    bookerUsername,
     description,
-    date,
-    time,
     difficulty,
+    scheduledAt,
+    durationMinutes,
+    status,
+    createdAt,
+    updatedAt,
   } = req.body ?? {};
 
   const fields = [
     imageSrc,
-    username,
+    hostUsername,
+    bookerUsername,
     description,
-    date,
-    time,
     difficulty,
+    scheduledAt,
+    durationMinutes,
+    status,
+    createdAt,
+    updatedAt,
   ];
 
-  if (fields.some(
-    (value) => typeof value !== "string" || !value.trim()
-  )) {
-    res.status(400).json({
-      error: "All fields must be non-empty strings",
+  if (
+    typeof imageSrc !== "string" || !imageSrc.trim() ||
+    typeof hostUsername !== "string" || !hostUsername.trim() ||
+    typeof description !== "string" || !description.trim() ||
+    typeof scheduledAt !== "string" || !scheduledAt.trim()
+  ) {
+    return res.status(400).json({
+      error: "imageSrc, hostUsername, description, and scheduledAt are required strings",
     });
-    return;
+  }
+
+  const parsedDuration = Number(durationMinutes);
+  if (!Number.isInteger(parsedDuration) || parsedDuration <= 0) {
+    return res.status(400).json({
+      error: "durationMinutes must be a positive integer",
+    });
   }
 
   try {
-    const card = await prisma.availableCard.create({
+    const card = await prisma.slot.create({
       data: {
         imageSrc: imageSrc.trim(),
-        username: username.trim(),
+        hostUsername: hostUsername.trim(),
+        bookerUsername: typeof bookerUsername === "string" && bookerUsername.trim()
+          ? bookerUsername.trim()
+          : null,
         description: description.trim(),
-        date: date.trim(),
-        time: time.trim(),
         difficulty: difficulty.trim(),
+        scheduledAt: scheduledAt.trim(),
+        durationMinutes: durationMinutes,
+        status: status.trim()
       },
     });
 
@@ -132,12 +153,12 @@ app.post("/api/available-cards", async (req, res) => {
   }
 });
 
-// GET available cards
-app.get("/api/available-cards", async (req, res) => {
+// GET slots
+app.get("/api/slots", async (req, res) => {
     try {
-        const entries = await prisma.availableCard.findMany({
+        const entries = await prisma.slot.findMany({
             orderBy: {
-                date: "desc",
+                scheduledAt: "desc",
             },
         });
         res.status(200).json(entries)

@@ -398,7 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   TestEntry: 'TestEntry',
-  AvailableCard: 'AvailableCard',
+  Slot: 'Slot',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -418,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "testEntry" | "availableCard" | "user" | "session" | "account" | "verification"
+    modelProps: "testEntry" | "slot" | "user" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -496,77 +496,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    AvailableCard: {
-      payload: Prisma.$AvailableCardPayload<ExtArgs>
-      fields: Prisma.AvailableCardFieldRefs
+    Slot: {
+      payload: Prisma.$SlotPayload<ExtArgs>
+      fields: Prisma.SlotFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.AvailableCardFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload> | null
+          args: Prisma.SlotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.AvailableCardFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         findFirst: {
-          args: Prisma.AvailableCardFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload> | null
+          args: Prisma.SlotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.AvailableCardFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         findMany: {
-          args: Prisma.AvailableCardFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+          args: Prisma.SlotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>[]
         }
         create: {
-          args: Prisma.AvailableCardCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         createMany: {
-          args: Prisma.AvailableCardCreateManyArgs<ExtArgs>
+          args: Prisma.SlotCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.AvailableCardCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+          args: Prisma.SlotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>[]
         }
         delete: {
-          args: Prisma.AvailableCardDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         update: {
-          args: Prisma.AvailableCardUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         deleteMany: {
-          args: Prisma.AvailableCardDeleteManyArgs<ExtArgs>
+          args: Prisma.SlotDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.AvailableCardUpdateManyArgs<ExtArgs>
+          args: Prisma.SlotUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.AvailableCardUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+          args: Prisma.SlotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>[]
         }
         upsert: {
-          args: Prisma.AvailableCardUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+          args: Prisma.SlotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlotPayload>
         }
         aggregate: {
-          args: Prisma.AvailableCardAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAvailableCard>
+          args: Prisma.SlotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSlot>
         }
         groupBy: {
-          args: Prisma.AvailableCardGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AvailableCardGroupByOutputType>[]
+          args: Prisma.SlotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SlotGroupByOutputType>[]
         }
         count: {
-          args: Prisma.AvailableCardCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AvailableCardCountAggregateOutputType> | number
+          args: Prisma.SlotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SlotCountAggregateOutputType> | number
         }
       }
     }
@@ -914,17 +914,21 @@ export const TestEntryScalarFieldEnum = {
 export type TestEntryScalarFieldEnum = (typeof TestEntryScalarFieldEnum)[keyof typeof TestEntryScalarFieldEnum]
 
 
-export const AvailableCardScalarFieldEnum = {
+export const SlotScalarFieldEnum = {
   id: 'id',
   imageSrc: 'imageSrc',
-  username: 'username',
+  hostUsername: 'hostUsername',
+  bookerUsername: 'bookerUsername',
   description: 'description',
-  date: 'date',
-  time: 'time',
-  difficulty: 'difficulty'
+  difficulty: 'difficulty',
+  scheduledAt: 'scheduledAt',
+  durationMinutes: 'durationMinutes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type AvailableCardScalarFieldEnum = (typeof AvailableCardScalarFieldEnum)[keyof typeof AvailableCardScalarFieldEnum]
+export type SlotScalarFieldEnum = (typeof SlotScalarFieldEnum)[keyof typeof SlotScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -1054,6 +1058,34 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Difficulty'
+ */
+export type EnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty'>
+    
+
+
+/**
+ * Reference to a field of type 'Difficulty[]'
+ */
+export type ListEnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SlotStatus'
+ */
+export type EnumSlotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SlotStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SlotStatus[]'
+ */
+export type ListEnumSlotStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SlotStatus[]'>
     
 
 
@@ -1229,7 +1261,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   testEntry?: Prisma.TestEntryOmit
-  availableCard?: Prisma.AvailableCardOmit
+  slot?: Prisma.SlotOmit
   user?: Prisma.UserOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit

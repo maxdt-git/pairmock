@@ -23,10 +23,10 @@ export * from './enums.ts';
  */
 export type TestEntry = Prisma.TestEntryModel
 /**
- * Model AvailableCard
+ * Model Slot
  * 
  */
-export type AvailableCard = Prisma.AvailableCardModel
+export type Slot = Prisma.SlotModel
 /**
  * Model User
  * 

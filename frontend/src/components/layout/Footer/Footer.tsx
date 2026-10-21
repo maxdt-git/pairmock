@@ -11,7 +11,7 @@ export default function Footer() {
         <footer className="mt-auto border-t border-border pt-2 pb-2">
             <ul className="flex">
                 {links.map((link) => (
-                    <li>
+                    <li key={link.href}>
                         <Link to={link.href}>
                             <Button variant="link">{link.label}</Button>
                         </Link>

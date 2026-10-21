@@ -15,14 +15,33 @@ model TestEntry {
   createdAt DateTime @default(now())
 }
 
-model AvailableCard {
-    id        Int      @id @default(autoincrement())
-    imageSrc String
-    username String
-    description String
-    date String
-    time String
-    difficulty String
+enum SlotStatus {
+  AVAILABLE
+  BOOKED
+  CANCELLED
+  COMPLETED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model Slot {
+  id              Int        @id @default(autoincrement())
+  imageSrc        String
+  hostUsername    String
+  bookerUsername  String?
+  description     String
+  difficulty      Difficulty @default(EASY)
+  scheduledAt     DateTime
+  durationMinutes Int        @default(60)
+  status          SlotStatus @default(AVAILABLE)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now()) @updatedAt
+
+  @@index([status, scheduledAt])
 }
 
 model User {

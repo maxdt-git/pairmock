@@ -1,7 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
+import { formatDateTime } from "@/lib/dateFormat";
 import { Calendar, Clock, Video } from "lucide-react";
 
 interface BookedCardProps {
@@ -9,8 +10,8 @@ interface BookedCardProps {
     username: string,
     description: string,
     date: string,
-    time: string,
-    difficulty: string
+    difficulty: string,
+    duration: number
 }
 
 const difficultyStyles = {
@@ -20,7 +21,8 @@ const difficultyStyles = {
 };
 
 export default function BookedCard(props: BookedCardProps) {
-    const { imageSrc, username, description, date, time, difficulty } = props
+    const { imageSrc, username, description, date, difficulty, duration } = props
+    const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     return (
         <Card className="w-full sm:w-auto flex-1 min-w-72 max-w-md flex flex-col justify-between">
             <CardHeader>
@@ -39,12 +41,16 @@ export default function BookedCard(props: BookedCardProps) {
                 </div>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-2 items-center">
-                <Calendar width={16} height={16} />
-                <p>{date}</p>
-                <Clock width={16} height={16} />
-                <p>{time}</p>
-                <p>(60 min)</p>
+            <CardContent className="flex gap-5 items-center">
+                <div className="flex gap-0.5 items-center">
+                    <Calendar width={16} height={16} />
+                    <p>{formattedDate}</p>
+                </div>
+                <div className="flex gap-0.5 items-center">
+                    <Clock width={16} height={16} />
+                    <p>{formattedTime}</p>
+                </div>
+                <p>{duration}(min)</p>
             </CardContent>
             <CardFooter className="flex gap-1">
                 <Button className="bg-green-700 hover:bg-green-800" size="lg">

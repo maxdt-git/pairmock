@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/TestEntry.ts'
+export type * from './models/AvailableCard.ts'
 export type * from './models/User.ts'
 export type * from './models/Session.ts'
 export type * from './models/Account.ts'

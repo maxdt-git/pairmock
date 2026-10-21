@@ -15,6 +15,16 @@ model TestEntry {
   createdAt DateTime @default(now())
 }
 
+model AvailableCard {
+    id        Int      @id @default(autoincrement())
+    imageSrc String
+    username String
+    description String
+    date String
+    time String
+    difficulty String
+}
+
 model User {
   id            String    @id
   name          String

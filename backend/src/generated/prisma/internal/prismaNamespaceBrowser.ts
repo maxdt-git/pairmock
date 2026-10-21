@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   TestEntry: 'TestEntry',
+  AvailableCard: 'AvailableCard',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -81,6 +82,19 @@ export const TestEntryScalarFieldEnum = {
 } as const
 
 export type TestEntryScalarFieldEnum = (typeof TestEntryScalarFieldEnum)[keyof typeof TestEntryScalarFieldEnum]
+
+
+export const AvailableCardScalarFieldEnum = {
+  id: 'id',
+  imageSrc: 'imageSrc',
+  username: 'username',
+  description: 'description',
+  date: 'date',
+  time: 'time',
+  difficulty: 'difficulty'
+} as const
+
+export type AvailableCardScalarFieldEnum = (typeof AvailableCardScalarFieldEnum)[keyof typeof AvailableCardScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

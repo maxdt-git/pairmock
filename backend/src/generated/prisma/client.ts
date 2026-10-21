@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type TestEntry = Prisma.TestEntryModel
 /**
+ * Model AvailableCard
+ * 
+ */
+export type AvailableCard = Prisma.AvailableCardModel
+/**
  * Model User
  * 
  */

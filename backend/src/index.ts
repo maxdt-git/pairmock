@@ -80,3 +80,72 @@ app.get("/api/users", async (_req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);
 });
+
+ 
+// POST available cards
+app.post("/api/available-cards", async (req, res) => {
+  const {
+    imageSrc,
+    username,
+    description,
+    date,
+    time,
+    difficulty,
+  } = req.body ?? {};
+
+  const fields = [
+    imageSrc,
+    username,
+    description,
+    date,
+    time,
+    difficulty,
+  ];
+
+  if (fields.some(
+    (value) => typeof value !== "string" || !value.trim()
+  )) {
+    res.status(400).json({
+      error: "All fields must be non-empty strings",
+    });
+    return;
+  }
+
+  try {
+    const card = await prisma.availableCard.create({
+      data: {
+        imageSrc: imageSrc.trim(),
+        username: username.trim(),
+        description: description.trim(),
+        date: date.trim(),
+        time: time.trim(),
+        difficulty: difficulty.trim(),
+      },
+    });
+
+    res.status(201).json(card);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to create available card",
+    });
+  }
+});
+
+// GET available cards
+app.get("/api/available-cards", async (req, res) => {
+    try {
+        const entries = await prisma.availableCard.findMany({
+            orderBy: {
+                date: "desc",
+            },
+        });
+        res.status(200).json(entries)
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to retrieve users",
+        })
+    }
+})

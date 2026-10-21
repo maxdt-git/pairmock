@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   TestEntry: 'TestEntry',
+  AvailableCard: 'AvailableCard',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "testEntry" | "user" | "session" | "account" | "verification"
+    modelProps: "testEntry" | "availableCard" | "user" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -492,6 +493,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TestEntryCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TestEntryCountAggregateOutputType> | number
+        }
+      }
+    }
+    AvailableCard: {
+      payload: Prisma.$AvailableCardPayload<ExtArgs>
+      fields: Prisma.AvailableCardFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AvailableCardFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AvailableCardFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        findFirst: {
+          args: Prisma.AvailableCardFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AvailableCardFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        findMany: {
+          args: Prisma.AvailableCardFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+        }
+        create: {
+          args: Prisma.AvailableCardCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        createMany: {
+          args: Prisma.AvailableCardCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AvailableCardCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+        }
+        delete: {
+          args: Prisma.AvailableCardDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        update: {
+          args: Prisma.AvailableCardUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        deleteMany: {
+          args: Prisma.AvailableCardDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AvailableCardUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AvailableCardUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>[]
+        }
+        upsert: {
+          args: Prisma.AvailableCardUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvailableCardPayload>
+        }
+        aggregate: {
+          args: Prisma.AvailableCardAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAvailableCard>
+        }
+        groupBy: {
+          args: Prisma.AvailableCardGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AvailableCardGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AvailableCardCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AvailableCardCountAggregateOutputType> | number
         }
       }
     }
@@ -839,6 +914,19 @@ export const TestEntryScalarFieldEnum = {
 export type TestEntryScalarFieldEnum = (typeof TestEntryScalarFieldEnum)[keyof typeof TestEntryScalarFieldEnum]
 
 
+export const AvailableCardScalarFieldEnum = {
+  id: 'id',
+  imageSrc: 'imageSrc',
+  username: 'username',
+  description: 'description',
+  date: 'date',
+  time: 'time',
+  difficulty: 'difficulty'
+} as const
+
+export type AvailableCardScalarFieldEnum = (typeof AvailableCardScalarFieldEnum)[keyof typeof AvailableCardScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1141,6 +1229,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   testEntry?: Prisma.TestEntryOmit
+  availableCard?: Prisma.AvailableCardOmit
   user?: Prisma.UserOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit

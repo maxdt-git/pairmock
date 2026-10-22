@@ -60,20 +60,20 @@ app.get("/api/test-entries", async (_req, res) => {
 
 // Retrieve all user // dev only
 app.get("/api/users", async (_req, res) => {
-    try {
-        const entries = await prisma.user.findMany({
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
-        res.status(200).json(entries)
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Unable to retrieve users",
-        })
-    }
+  try {
+    const entries = await prisma.user.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json(entries)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to retrieve users",
+    })
+  }
 })
 
 
@@ -81,7 +81,7 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);
 });
 
- 
+
 // POST slots
 app.post("/api/slots", async (req, res) => {
   const {
@@ -96,19 +96,6 @@ app.post("/api/slots", async (req, res) => {
     createdAt,
     updatedAt,
   } = req.body ?? {};
-
-  const fields = [
-    imageSrc,
-    hostUsername,
-    bookerUsername,
-    description,
-    difficulty,
-    scheduledAt,
-    durationMinutes,
-    status,
-    createdAt,
-    updatedAt,
-  ];
 
   if (
     typeof imageSrc !== "string" || !imageSrc.trim() ||
@@ -153,20 +140,64 @@ app.post("/api/slots", async (req, res) => {
   }
 });
 
-// GET slots
-app.get("/api/slots", async (req, res) => {
-    try {
-        const entries = await prisma.slot.findMany({
-            orderBy: {
-                scheduledAt: "desc",
-            },
-        });
-        res.status(200).json(entries)
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Unable to retrieve users",
-        })
-    }
+// GET available slots
+app.get("/api/slots/available", async (req, res) => {
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1)
+    const difficultyQuery = req.query.difficulty?.toString().toUpperCase() || "ALL"
+    const difficulty = (difficultyQuery && difficultyQuery !== "ALL") ? difficultyQuery : undefined
+    const sortTime = req.query.time === 'asc' ? 'asc' : 'desc';
+    const limit = 8
+    const skip = (page - 1) * limit
+    const [entries, totalCount] = await prisma.$transaction([
+      prisma.slot.findMany({
+        skip: skip,
+        take: limit, // Use the variable instead of hardcoded 8
+        orderBy: {
+          scheduledAt: sortTime,
+        },
+        where: {
+          status: "AVAILABLE",
+          difficulty: difficulty
+        }
+      }),
+      prisma.slot.count({
+        where: {
+          status: "AVAILABLE",
+          difficulty: difficulty
+        }
+      }),
+    ]);
+    res.status(200).json({
+      data: entries,
+      totalPages: Math.ceil(totalCount / limit) || 1
+    })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to retrieve users",
+    })
+  }
+})
+
+// GET booked slots
+app.get("/api/slots/booked", async (req, res) => {
+  try {
+    const entries = await prisma.slot.findMany({
+      orderBy: {
+        scheduledAt: "desc",
+      },
+      where: {
+        status: "BOOKED"
+      }
+    });
+    res.status(200).json(entries)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to retrieve users",
+    })
+  }
 })

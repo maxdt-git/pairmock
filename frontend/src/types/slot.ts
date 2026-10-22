@@ -2,7 +2,7 @@ export type SlotStatus = 'AVAILABLE' | 'BOOKED' | 'CANCELLED' | 'COMPLETED';
 
 export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
-export interface Slot {
+export interface SlotType {
   id: number;
   imageSrc: string;
   hostUsername: string;

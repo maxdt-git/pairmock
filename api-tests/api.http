@@ -57,7 +57,7 @@ Origin: http://localhost:3000
 GET http://localhost:3000/api/users
 
 ### Post slot
-POST http://localhost:4000/api/available-cards
+POST http://localhost:4000/api/slots
 Content-Type: application/json
 Origin: http://localhost:3000
 
@@ -67,10 +67,10 @@ Origin: http://localhost:3000
   "bookerUsername": "Guy",
   "description": "Coding mastery",
   "difficulty": "EASY",
-  "scheduledAt": "2026-09-05T15:22:30.153Z",
+  "scheduledAt": "2026-10-05T15:22:30.153Z",
   "durationMinutes": 60,
-  "status": "BOOKED"
+  "status": "AVAILABLE"
 }
 
 ### Get all AvailableCards
-GET http://localhost:4000/api/available-cards
+GET http://localhost:4000/api/slots

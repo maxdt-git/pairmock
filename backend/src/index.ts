@@ -77,80 +77,77 @@ app.get("/api/users", async (_req, res) => {
 })
 
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Backend running on port ${PORT}`);
-});
 
- 
+
 // POST slots
 app.post("/api/slots", async (req, res) => {
-  const {
-    imageSrc,
-    hostUsername,
-    bookerUsername,
-    description,
-    difficulty,
-    scheduledAt,
-    durationMinutes,
-    status,
-    createdAt,
-    updatedAt,
-  } = req.body ?? {};
-
-  const fields = [
-    imageSrc,
-    hostUsername,
-    bookerUsername,
-    description,
-    difficulty,
-    scheduledAt,
-    durationMinutes,
-    status,
-    createdAt,
-    updatedAt,
-  ];
-
-  if (
-    typeof imageSrc !== "string" || !imageSrc.trim() ||
-    typeof hostUsername !== "string" || !hostUsername.trim() ||
-    typeof description !== "string" || !description.trim() ||
-    typeof scheduledAt !== "string" || !scheduledAt.trim()
-  ) {
-    return res.status(400).json({
-      error: "imageSrc, hostUsername, description, and scheduledAt are required strings",
-    });
-  }
-
-  const parsedDuration = Number(durationMinutes);
-  if (!Number.isInteger(parsedDuration) || parsedDuration <= 0) {
-    return res.status(400).json({
-      error: "durationMinutes must be a positive integer",
-    });
-  }
-
-  try {
-    const card = await prisma.slot.create({
-      data: {
-        imageSrc: imageSrc.trim(),
-        hostUsername: hostUsername.trim(),
-        bookerUsername: typeof bookerUsername === "string" && bookerUsername.trim()
-          ? bookerUsername.trim()
-          : null,
-        description: description.trim(),
-        difficulty: difficulty.trim(),
-        scheduledAt: scheduledAt.trim(),
-        durationMinutes: durationMinutes,
-        status: status.trim()
-      },
-    });
-
-    res.status(201).json(card);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "Unable to create available card",
-    });
-  }
+    const {
+        imageSrc,
+        hostUsername,
+        bookerUsername,
+        description,
+        difficulty,
+        scheduledAt,
+        durationMinutes,
+        status,
+        createdAt,
+        updatedAt,
+    } = req.body ?? {};
+    
+    const fields = [
+        imageSrc,
+        hostUsername,
+        bookerUsername,
+        description,
+        difficulty,
+        scheduledAt,
+        durationMinutes,
+        status,
+        createdAt,
+        updatedAt,
+    ];
+    
+    if (
+        typeof imageSrc !== "string" || !imageSrc.trim() ||
+        typeof hostUsername !== "string" || !hostUsername.trim() ||
+        typeof description !== "string" || !description.trim() ||
+        typeof scheduledAt !== "string" || !scheduledAt.trim()
+    ) {
+        return res.status(400).json({
+            error: "imageSrc, hostUsername, description, and scheduledAt are required strings",
+        });
+    }
+    
+    const parsedDuration = Number(durationMinutes);
+    if (!Number.isInteger(parsedDuration) || parsedDuration <= 0) {
+        return res.status(400).json({
+            error: "durationMinutes must be a positive integer",
+        });
+    }
+    
+    try {
+        const card = await prisma.slot.create({
+            data: {
+                imageSrc: imageSrc.trim(),
+                hostUsername: hostUsername.trim(),
+                bookerUsername: typeof bookerUsername === "string" && bookerUsername.trim()
+                ? bookerUsername.trim()
+                : null,
+                description: description.trim(),
+                difficulty: difficulty.trim(),
+                scheduledAt: scheduledAt.trim(),
+                durationMinutes: durationMinutes,
+                status: status.trim()
+            },
+        });
+        
+        res.status(201).json(card);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to create available card",
+        });
+    }
 });
 
 // GET slots
@@ -170,3 +167,7 @@ app.get("/api/slots", async (req, res) => {
         })
     }
 })
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend running on port ${PORT}`);
+});

@@ -12,6 +12,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { Toaster } from "@/components/ui/toast";
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/service" element={<ServicePage />} />
           <Route path="/policy" element={<PolicyPage />} />
         </Routes>
+        <Toaster/>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,

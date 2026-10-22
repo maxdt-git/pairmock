@@ -3,7 +3,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import { Link } from "react-router";
-import Input from "@/components/ui/Input"
+import Input from "@/components/ui/AuthInput"
 import { authClient } from "@/lib/auth-client";
 import { useNavigate } from "react-router";
 

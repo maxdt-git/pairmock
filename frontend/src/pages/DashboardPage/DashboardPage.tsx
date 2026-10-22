@@ -2,11 +2,10 @@ import AvailableCard from "@/components/layout/AvailableCard/AvailableCard";
 import BookedCard from "@/components/layout/BookedCard/BookedCard";
 import Footer from "@/components/layout/Footer/Footer";
 import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import type { Slot } from "@/types/slot";
+import SlotCreation from "@/components/layout/SlotCreation/SlotCreation";
 
 
 export default function DashboardPage() {
@@ -42,10 +41,7 @@ export default function DashboardPage() {
                 <header className="flex justify-between pt-2 pb-2 items-center border-b border-border mb-2.5 max-[450px]:justify-center ">
                     <h1 className="text-2xl font-bold max-[450px]:hidden">PairMock</h1>
                     <div className="flex items-center gap-4 ">
-                        <Button size="lg">
-                            <Plus className="w-4 h-4" />
-                            Create Slot
-                        </Button>
+                        <SlotCreation/>
                         <UserNavigation username={session?.user.name ?? "User"} imageSrc={session?.user.image ? session.user.image : ""} />
                     </div>
                 </header>

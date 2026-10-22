@@ -67,7 +67,7 @@ Origin: http://localhost:3000
   "bookerUsername": "Guy",
   "description": "Coding mastery",
   "difficulty": "EASY",
-  "scheduledAt": "2026-09-05T15:22:30.153Z",
+  "scheduledAt": "2026-10-05T15:22:30.153Z",
   "durationMinutes": 60,
   "status": "AVAILABLE"
 }

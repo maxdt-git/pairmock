@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Bell } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -36,6 +37,7 @@ export default function UserNavigation(props: UserNavigationProps) {
             <Button variant="outline" size="icon">
                 <Bell />
             </Button>
+            <ModeToggle />
             <DropdownMenu>
                 <DropdownMenuTrigger render={<Button variant="outline" className="py-6">
                     <p>{username}</p>

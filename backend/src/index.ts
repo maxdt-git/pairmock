@@ -77,10 +77,6 @@ app.get("/api/users", async (_req, res) => {
 })
 
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Backend running on port ${PORT}`);
-});
-
 
 // POST slots
 app.post("/api/slots", async (req, res) => {
@@ -201,3 +197,7 @@ app.get("/api/slots/booked", async (req, res) => {
     })
   }
 })
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend running on port ${PORT}`);
+});

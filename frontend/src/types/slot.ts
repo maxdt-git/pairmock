@@ -15,3 +15,13 @@ export interface SlotType {
   createdAt: string;
   updatedAt: string;
 }
+
+export type CreateSlotPayload = {
+    imageSrc: string;
+    hostUsername: string;
+    description: string;
+    difficulty: string;
+    scheduledAt: string;
+    durationMinutes: number;
+    status: "AVAILABLE";
+};

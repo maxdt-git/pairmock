@@ -31,7 +31,10 @@ Run these commands **from the `Transcendence-React` project root**, with the `ba
    ```bash
    podman-compose exec backend npm run typecheck
    ```
-
+6. Update already existing migration to database:
+    ```bash
+    podman-compose exec backend ./node_modules/.bin/prisma migrate deploy
+    ```
 ## Other useful commands
 
 | Command | Purpose |

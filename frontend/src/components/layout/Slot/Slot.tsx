@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/dateFormat";
-import { Calendar, CalendarDays, Clock, Hourglass, Video } from "lucide-react";
+import { Calendar, CalendarDays, Clock, Hourglass, Video, Trash2 } from "lucide-react";
+
 
 export interface SlotProps {
     imageSrc: string,
@@ -12,7 +13,8 @@ export interface SlotProps {
     date: string,
     difficulty: string,
     duration: number,
-    status: string
+    status: string,
+    onDelete?: () => void
 }
 
 const difficultyStyles = {
@@ -22,7 +24,7 @@ const difficultyStyles = {
 };
 
 export default function AvailableCard(props: SlotProps) {
-    const { imageSrc, username, description, date, difficulty, duration, status } = props
+    const { imageSrc, username, description, date, difficulty, duration, status, onDelete } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     return (
         <Card className="w-full sm:w-auto flex-1 min-w-80 max-w-2xl flex flex-col justify-between">
@@ -35,9 +37,23 @@ export default function AvailableCard(props: SlotProps) {
                         </Avatar>
                         <p>{username}</p>
                     </div>
-                    <Badge className={difficultyStyles[difficulty as keyof typeof difficultyStyles] ?? difficultyStyles.EASY}>
-                        {difficulty}
-                    </Badge>
+                    <div className="flex shrink-0 items-center gap-2">
+                        <Badge className={difficultyStyles[difficulty as keyof typeof difficultyStyles] ?? difficultyStyles.EASY}>
+                            {difficulty}
+                        </Badge>
+                        {onDelete && (
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon-sm"
+                                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                aria-label="Delete slot"
+                                onClick={onDelete}
+                            >
+                                <Trash2 className="size-4" />
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>

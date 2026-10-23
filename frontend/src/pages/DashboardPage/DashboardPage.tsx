@@ -115,6 +115,10 @@ export default function DashboardPage() {
                                     difficulty={card.difficulty}
                                     duration={card.durationMinutes}
                                     status={card.status}
+                                    onDelete={
+                                        card.hostUsername === session.user.name ?
+                                        () => console.log("DELETE SLOT", card.id) : undefined
+                                    }
                                 />
                             </li>
                         ))}
@@ -159,7 +163,7 @@ export default function DashboardPage() {
                     <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5 mb-5 p-2">
                         {queryAvailable?.data?.data.length > 0 ?
                             queryAvailable.data?.data.map((card: SlotType) => (
-                                <li key={card.id}>
+                                <li key={card.id} className="relative">
                                     <Slot
                                         imageSrc={card.imageSrc}
                                         username={card.hostUsername}
@@ -168,6 +172,10 @@ export default function DashboardPage() {
                                         difficulty={card.difficulty}
                                         duration={card.durationMinutes}
                                         status={card.status}
+                                        onDelete={
+                                            card.hostUsername === session.user.name ?
+                                            () => console.log("DELETE SLOT", card.id) : undefined
+                                        }
                                     />
                                 </li>
                             ))

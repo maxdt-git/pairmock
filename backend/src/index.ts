@@ -2,6 +2,7 @@ import express from "express";
 import { prisma } from "./lib/prisma.ts";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
+import { fromNodeHeaders } from "better-auth/node";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -230,6 +231,171 @@ app.get("/api/slots/completed", async (req, res) => {
     })
   }
 })
+
+// DELETE slot by id
+app.delete("/api/slots/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+
+    try {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+        // every verification here is just for security,
+        // with our implementation it should be impossible
+        // to call this endpoint if no user corresponds or
+        // if the slot doesn't exist
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+
+        if (slot.hostUsername !== session.user.name) {
+            res.status(403).json({
+                error: "You cannot delete this slot",
+            });
+            return;
+        }
+
+        await prisma.slot.delete({
+            where: { id },
+        });
+
+        res.sendStatus(204);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to delete slot",
+        });
+    }
+});
+
+// UPDATE booking slot
+app.patch("/api/slots/:id/book", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+    try {
+        // check if session exists
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const userName = session.user.name 
+        // check if slot exists
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+        // check if booker is host
+        if (slot.hostUsername === session.user.name) {
+            res.status(403).json({ error: "Can't book hosted slot" });
+            return;
+        }
+        // check if slot is available
+        if (slot.status !== "AVAILABLE") {
+            res.status(409).json({ error: "Can only book available slots" });
+            return;
+        }
+        // updateMany to only allow one user to make the update
+        const result = await prisma.slot.updateMany({
+            where: { id, status: "AVAILABLE" },
+            data: { status: "BOOKED", bookerUsername: userName }
+        });
+        // 
+        if (result.count === 0) {
+            res.status(409).json({
+                error: "Slot is no longer available",
+            });
+            return;
+        }
+        res.sendStatus(200);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Unable to update slot",
+        });
+    }
+})
+// UPDATE cancel booked slot
+app.patch("/api/slots/:id/cancel-book", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+    try {
+        // check if session exists
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const userName = session.user.name 
+        // check if slot exists
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+        // check if slot is booked
+        if (slot.status !== "BOOKED") {
+            res.status(409).json({ error: "Can only cancel booked slots" });
+            return;
+        }
+        // updateMany to only allow one user to make the update
+        const result = await prisma.slot.updateMany({
+            where: { id, status: "BOOKED", bookerUsername: userName },
+            data: { status: "AVAILABLE", bookerUsername: null }
+        });
+        // 
+        if (result.count === 0) {
+            res.status(409).json({
+                error: "Slot is no longer booked",
+            });
+            return;
+        }
+        res.sendStatus(200);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Unable to cancel slot",
+        });
+    }
+})
+
+
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

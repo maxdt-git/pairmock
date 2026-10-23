@@ -2,6 +2,7 @@ import express from "express";
 import { prisma } from "./lib/prisma.ts";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
+import { fromNodeHeaders } from "better-auth/node";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -197,6 +198,58 @@ app.get("/api/slots/booked", async (req, res) => {
     })
   }
 })
+
+// DELETE slot by id
+app.delete("/api/slots/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+
+    try {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+        // every verification here is just for security,
+        // with our implementation it should be impossible
+        // to call this endpoint if no user corresponds or
+        // if the slot doesn't exist
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+
+        if (slot.hostUsername !== session.user.name) {
+            res.status(403).json({
+                error: "You cannot delete this slot",
+            });
+            return;
+        }
+
+        await prisma.slot.delete({
+            where: { id },
+        });
+
+        res.sendStatus(204);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to delete slot",
+        });
+    }
+});
+
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

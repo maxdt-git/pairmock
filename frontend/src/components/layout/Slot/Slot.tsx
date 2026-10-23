@@ -17,6 +17,7 @@ export interface SlotProps {
     status: string,
     onDelete?: () => Promise<void>,
     onBooking?: () => void
+    onCancel?: () => void
 }
 
 const difficultyStyles = {
@@ -26,7 +27,7 @@ const difficultyStyles = {
 };
 
 export default function AvailableCard(props: SlotProps) {
-    const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking } = props
+    const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     const [ slotDeleteOpen, setSlotDeleteOpen ] = useState(false)
 
@@ -91,7 +92,7 @@ export default function AvailableCard(props: SlotProps) {
                         <Video />
                         Enter interview
                     </Button>
-                    <Button size="lg" variant="destructive">
+                    <Button size="lg" variant="destructive" onClick={onCancel}>
                         Cancel
                     </Button>
                 </CardFooter>

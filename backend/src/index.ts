@@ -308,6 +308,60 @@ app.patch("/api/slots/:id/book", async (req, res) => {
         });
     }
 })
+// UPDATE cancel booked slot
+app.patch("/api/slots/:id/cancel-book", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+    try {
+        // check if session exists
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const userName = session.user.name 
+        // check if slot exists
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+        // check if slot is booked
+        if (slot.status !== "BOOKED") {
+            res.status(409).json({ error: "Can only cancel booked slots" });
+            return;
+        }
+        // updateMany to only allow one user to make the update
+        const result = await prisma.slot.updateMany({
+            where: { id, status: "BOOKED", bookerUsername: userName },
+            data: { status: "AVAILABLE", bookerUsername: null }
+        });
+        // 
+        if (result.count === 0) {
+            res.status(409).json({
+                error: "Slot is no longer booked",
+            });
+            return;
+        }
+        res.sendStatus(200);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            error: "Unable to cancel slot",
+        });
+    }
+})
+
 
 
 app.listen(PORT, "0.0.0.0", () => {

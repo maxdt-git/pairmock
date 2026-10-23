@@ -56,6 +56,43 @@ export default function DashboardPage() {
         },
     })
 
+    const cancelSlotMutation = useMutation({
+        mutationFn: async (slotId: SlotType["id"]) => {
+            const response = await fetch(`/api/slots/${slotId}/cancel-book`, {
+                method: "PATCH",
+            });   
+            if (!response.ok) {
+                throw new Error(`Failed to cancel slot: ${response.status}`);
+            }
+        },
+
+        onSuccess: async () => {
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-available"],
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-booked"],
+                }),
+            ]);   
+            toast.add({
+                title: "Slot Canceled!",
+                description: "This slot has been canceled successfully.",
+                type: "success",
+            });
+        },
+
+        onError: (error) => {
+            console.error(error);
+            
+            toast.add({
+                title: "Cancelation failed",
+                description: "Unable to cancel this slot. Retry later",
+                type: "error",
+            });
+        },
+    })
+
     const deleteSlotMutation = useMutation({
         mutationFn: async (slotId: SlotType["id"]) => {
             const response = await fetch(`/api/slots/${slotId}`, {
@@ -196,6 +233,7 @@ export default function DashboardPage() {
                                         async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                     }
                                     onBooking={undefined}
+                                    onCancel={() => cancelSlotMutation.mutate(card.id)}
                                 />
                             </li>
                         ))}

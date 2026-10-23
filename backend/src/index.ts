@@ -1,6 +1,6 @@
 import express from "express";
 import { prisma } from "./lib/prisma.ts";
-import { toNodeHandler } from "better-auth/node";
+import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
 
 const app = express();
@@ -75,7 +75,6 @@ app.get("/api/users", async (_req, res) => {
     })
   }
 })
-
 
 
 // POST slots
@@ -186,6 +185,40 @@ app.get("/api/slots/booked", async (req, res) => {
       },
       where: {
         status: "BOOKED"
+      }
+    });
+    res.status(200).json(entries)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to retrieve users",
+    })
+  }
+})
+
+
+// GET completed slots
+app.get("/api/slots/completed", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    if (!session) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const currentUsername = session.user.name
+
+    const entries = await prisma.slot.findMany({
+      orderBy: {
+        scheduledAt: "desc",
+      },
+      where: {
+        status: "COMPLETED",
+        OR: [
+          { bookerUsername: currentUsername },
+          { hostUsername: currentUsername },
+        ],
       }
     });
     res.status(200).json(entries)

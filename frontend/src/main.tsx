@@ -14,6 +14,7 @@ import {
 } from '@tanstack/react-query'
 import { ThemeProvider } from './components/ui/theme-provider.tsx'
 import { Toaster } from "@/components/ui/toast";
+import ProfilePage from './pages/ProfilePage/ProfilePage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -29,8 +30,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/service" element={<ServicePage />} />
             <Route path="/policy" element={<PolicyPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
-          <Toaster/>
+          <Toaster />
         </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>

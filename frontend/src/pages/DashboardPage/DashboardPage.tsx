@@ -157,7 +157,7 @@ export default function DashboardPage() {
     }
 
     async function getBookedSlots() {
-        const res = await fetch('http://localhost:3000/api/slots/booked');
+        const res = await fetch('/api/slots/booked');
         if (!res.ok) {
             throw new Error('Failed to load posts');
         }
@@ -170,7 +170,7 @@ export default function DashboardPage() {
             difficulty: difficulty,
             time: time,
         })
-        const res = await fetch(`http://localhost:3000/api/slots/available?${params.toString()}`);
+        const res = await fetch(`/api/slots/available?${params.toString()}`);
         if (!res.ok) {
             throw new Error('Failed to load posts');
         }

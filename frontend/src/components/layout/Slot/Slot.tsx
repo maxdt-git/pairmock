@@ -3,9 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/dateFormat";
-import { Calendar, CalendarDays, Clock, Hourglass, Video, Trash2 } from "lucide-react";
+import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2 } from "lucide-react";
 import SlotDeleteDialog from "./SlotDeleteDialog";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export interface SlotProps {
     imageSrc: string,
@@ -25,6 +26,7 @@ const difficultyStyles = {
     MEDIUM: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     HARD: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
 };
+
 
 export default function AvailableCard(props: SlotProps) {
     const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
@@ -79,14 +81,15 @@ export default function AvailableCard(props: SlotProps) {
                     <p>{duration}(min)</p>
                 </div>
             </CardContent>
-            {status === "AVAILABLE" ?
+            {status === "AVAILABLE" &&
                 <CardFooter>
                     <Button className="w-full" size="lg" onClick={onBooking}>
                         <CalendarDays />
                         Book slot
                     </Button>
                 </CardFooter>
-                :
+            }
+            {status === "BOOKED" &&
                 <CardFooter className="flex gap-1">
                     <Button className="bg-green-700 hover:bg-green-800" size="lg">
                         <Video />
@@ -95,6 +98,16 @@ export default function AvailableCard(props: SlotProps) {
                     <Button size="lg" variant="destructive" onClick={onCancel}>
                         Cancel
                     </Button>
+                </CardFooter>
+            }
+            {status === "COMPLETED" &&
+                <CardFooter className="flex gap-1">
+                    <Link to="/review" className="w-full">
+                        <Button className="bg-gray-600 hover:bg-gray-700 w-full" size="lg">
+                            <RotateCcwClock />
+                            View history
+                        </Button>
+                    </Link>
                 </CardFooter>
             }
         </Card>

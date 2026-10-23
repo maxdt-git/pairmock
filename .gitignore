@@ -1,1 +1,6 @@
 .env
+
+########################
+Makefile_windows.txt
+compose_windows.txt
+vite_config_windows.txt

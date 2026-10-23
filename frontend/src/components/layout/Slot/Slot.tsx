@@ -15,7 +15,8 @@ export interface SlotProps {
     difficulty: string,
     duration: number,
     status: string,
-    onDelete?: () => Promise<void>
+    onDelete?: () => Promise<void>,
+    onBooking?: () => void
 }
 
 const difficultyStyles = {
@@ -25,7 +26,7 @@ const difficultyStyles = {
 };
 
 export default function AvailableCard(props: SlotProps) {
-    const { imageSrc, username, description, date, difficulty, duration, status, onDelete } = props
+    const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     const [ slotDeleteOpen, setSlotDeleteOpen ] = useState(false)
 
@@ -79,7 +80,7 @@ export default function AvailableCard(props: SlotProps) {
             </CardContent>
             {status === "AVAILABLE" ?
                 <CardFooter>
-                    <Button className="w-full" size="lg">
+                    <Button className="w-full" size="lg" onClick={onBooking}>
                         <CalendarDays />
                         Book slot
                     </Button>

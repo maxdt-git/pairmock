@@ -62,7 +62,7 @@ Content-Type: application/json
 Origin: http://localhost:3000
 
 {
-  "imageSrc": "https://www.iconarchive.com/download/i106639/diversity-avatars/avatars/batman.1024.png",
+  "imageSrc": "",
   "hostUsername": "Sonic",
   "bookerUsername": "Guy",
   "description": "Coding mastery",
@@ -73,4 +73,10 @@ Origin: http://localhost:3000
 }
 
 ### Get all AvailableCards
-GET http://localhost:4000/api/slots
+GET http://localhost:4000/api/slots/available
+
+### Get all BookedCards
+GET http://localhost:4000/api/slots/booked
+
+### Book slot
+PATCH http://localhost:4000/api/slots/8/book

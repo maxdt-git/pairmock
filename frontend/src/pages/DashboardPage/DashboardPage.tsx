@@ -1,6 +1,6 @@
 import Footer from "@/components/layout/Footer/Footer";
 import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Slot from "@/components/layout/Slot/Slot";
@@ -8,7 +8,7 @@ import type { SlotType } from "@/types/slot";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { useSearchParams } from "react-router";
 import SlotCreation from "@/components/layout/SlotCreation/SlotCreation";
-
+import { toast } from "@/components/ui/toast";
 
 export default function DashboardPage() {
     const { data: session } = authClient.useSession();
@@ -16,6 +16,45 @@ export default function DashboardPage() {
     const currentPage = Number(searchParams.get('page')) || 1;
     const difficultyFilter = searchParams.get("difficulty") ?? "all"
     const timeFilter = searchParams.get("time") ?? "asc"
+
+    const queryClient = useQueryClient();
+
+    const deleteSlotMutation = useMutation({
+        mutationFn: async (slotId: SlotType["id"]) => {
+            const response = await fetch(`/api/slots/${slotId}`, {
+                method: "DELETE",
+            });   
+            if (!response.ok) {
+                throw new Error(`Failed to delete slot: ${response.status}`);
+            }
+        },
+
+        onSuccess: async () => {
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-available"],
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-booked"],
+                }),
+            ]);   
+            toast.add({
+                title: "Slot deleted!",
+                description: "Your slot has been deleted successfully.",
+                type: "success",
+            });
+        },
+
+        onError: (error) => {
+            console.error(error);
+            
+            toast.add({
+                title: "Deletion failed",
+                description: "Unable to delete this slot.",
+                type: "error",
+            });
+        },
+    });
 
     const handlePageChange = (newPage: number) => {
         setSearchParams((prevParams) => {
@@ -115,6 +154,10 @@ export default function DashboardPage() {
                                     difficulty={card.difficulty}
                                     duration={card.durationMinutes}
                                     status={card.status}
+                                    onDelete={
+                                        card.hostUsername === session.user.name ?
+                                        async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
+                                    }
                                 />
                             </li>
                         ))}
@@ -159,7 +202,7 @@ export default function DashboardPage() {
                     <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5 mb-5 p-2">
                         {queryAvailable?.data?.data.length > 0 ?
                             queryAvailable.data?.data.map((card: SlotType) => (
-                                <li key={card.id}>
+                                <li key={card.id} className="relative">
                                     <Slot
                                         imageSrc={card.imageSrc}
                                         username={card.hostUsername}
@@ -168,6 +211,10 @@ export default function DashboardPage() {
                                         difficulty={card.difficulty}
                                         duration={card.durationMinutes}
                                         status={card.status}
+                                        onDelete={
+                                            card.hostUsername === session.user.name ?
+                                            async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
+                                        }
                                     />
                                 </li>
                             ))

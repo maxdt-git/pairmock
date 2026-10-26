@@ -3,12 +3,12 @@ import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Slot from "@/components/layout/Slot/Slot";
 import type { SlotType } from "@/types/slot";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { useSearchParams } from "react-router";
 import SlotCreation from "@/components/layout/SlotCreation/SlotCreation";
 import { toast } from "@/components/ui/toast";
+import Slot from "@/components/layout/Slot/Slot";
 
 export default function DashboardPage() {
     const { data: session } = authClient.useSession();

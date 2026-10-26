@@ -77,3 +77,36 @@ GET http://localhost:4000/api/slots/booked
 
 ### Book slot
 PATCH http://localhost:4000/api/slots/8/book
+
+### 1. Sign In (Capture response into variable 'authSession')
+# @name authSession
+POST http://localhost:4000/api/auth/sign-in/email
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "email": "testuser2@example.com",
+  "password": "MySecurePassword123"
+}
+
+### 2. Verify Session (Checks if connection/session is valid)
+GET http://localhost:4000/api/auth/get-session
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
+### 3. Create a Slot (Authenticated)
+POST http://localhost:4000/api/slots
+Content-Type: application/json
+Origin: http://localhost:3000
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
+{
+  "description": "Coding mastery",
+  "difficulty": "EASY",
+  "scheduledAt": "2026-10-05T15:22:30.153Z",
+  "durationMinutes": 60,
+  "status": "COMPLETED"
+}
+
+### 4. Book Slot (Authenticated)
+PATCH http://localhost:4000/api/slots/2/book
+Cookie: {{authSession.response.headers.Set-Cookie}}

@@ -158,8 +158,8 @@ export default function ProfilePage() {
             {queryCompleted?.data?.map((card: SlotType) => (
               <li key={card.id}>
                 <Slot
-                  imageSrc={card.imageSrc}
-                  username={card.hostUsername}
+                  imageSrc={card.host.image ?? ""}
+                  username={card.host.name}
                   description={card.description}
                   date={card.scheduledAt}
                   difficulty={card.difficulty}

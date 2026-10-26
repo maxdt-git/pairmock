@@ -28,7 +28,7 @@ const difficultyStyles = {
 };
 
 
-export default function AvailableCard(props: SlotProps) {
+export default function Slot(props: SlotProps) {
     const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     const [ slotDeleteOpen, setSlotDeleteOpen ] = useState(false)

@@ -176,10 +176,15 @@ export default function DashboardPage() {
         }
         return res.json();
     }
-    const queryBooked = useQuery({ queryKey: ['slot-booked'], queryFn: getBookedSlots })
+    const queryBooked = useQuery({ 
+        queryKey: ['slot-booked'],
+        queryFn: getBookedSlots,
+        refetchInterval: 5 * 1000 
+    })
     const queryAvailable = useQuery({
         queryKey: ['slot-available', { currentPage, difficultyFilter, timeFilter }],
         queryFn: () => getAvailableSlots(currentPage, difficultyFilter, timeFilter),
+        refetchInterval: 5 * 1000
     })
 
     const itemsDifficulty = [

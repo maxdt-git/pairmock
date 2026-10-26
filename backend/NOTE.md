@@ -5,8 +5,9 @@ Visit https://console.cloud.google.com/auth/
 2. Configure all required values (audience is External)
 3. Create a Web Application Client
 4. JS URL is http://localhost:3000
-5. Authorized URI is http://localhost:4000/api/auth/callback/google (given to us by BetterAuth)
+5. Authorized URI is http://localhost:4000/api/auth/callback/google (given to us by BetterAuth) and http://localhost:4000 (for the calendarAPI front)
 6. Copy the ClientId and the ClientSecret to your .env file
+7. Add test user mail https://console.cloud.google.com/auth/audience (for the calendarAPI front)
 
 # Prisma — Quick Reference
 

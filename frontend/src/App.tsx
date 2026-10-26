@@ -102,17 +102,16 @@ function App() {
     }
 
     const event = {
-      summary: 'TEST',
-      description: 'TEST MOCK INTERVIEW',
+      summary: 'Mock interview TITLE',
+      description: 'Mock interview description',
       start: {
-        dateTime: '2027-05-28T09:00:00-07:00',
-        timeZone: 'America/Los_Angeles',
+        dateTime: '2026-10-27T17:00:00+01:00',
+        timeZone: 'Europe/Paris',
       },
       end: {
-        dateTime: '2027-05-28T10:00:00-07:00',
-        timeZone: 'America/Los_Angeles',
+        dateTime: '2026-10-27T18:00:00+01:00',
+        timeZone: 'Europe/Paris',
       },
-      recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
       attendees: [
         { email: 'testtestMOCK@gmail.com' },
       ],

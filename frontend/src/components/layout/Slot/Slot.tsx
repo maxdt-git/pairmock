@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/dateFormat";
-import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2 } from "lucide-react";
+import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2, Ghost } from "lucide-react";
 import SlotDeleteDialog from "./SlotDeleteDialog";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -83,9 +83,9 @@ export default function AvailableCard(props: SlotProps) {
             </CardContent>
             {status === "AVAILABLE" &&
                 <CardFooter>
-                    <Button className="w-full" size="lg" onClick={onBooking}>
+                    <Button className="w-full" size="lg" onClick={onBooking} disabled={!onBooking}>
                         <CalendarDays />
-                        Book slot
+                        {onBooking ? <p>Book Slot</p> : <p>Hosted Slot</p>}
                     </Button>
                 </CardFooter>
             }

@@ -188,12 +188,22 @@ app.get("/api/slots/available", async (req, res) => {
 // GET booked slots
 app.get("/api/slots/booked", async (req, res) => {
   try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    if (!session) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
     const entries = await prisma.slot.findMany({
       orderBy: {
         scheduledAt: "desc",
       },
       where: {
-        status: "BOOKED"
+        status: "BOOKED",
+        OR: [
+          { bookerId: session.user.id },
+          { hostId: session.user.id },
+        ],
       },
       include: {
         host: {

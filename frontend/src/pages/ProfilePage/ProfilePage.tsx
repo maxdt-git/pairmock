@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/toast";
 import { authClient } from "@/lib/auth-client";
 import type { SlotType } from "@/types/slot";
 import { useQuery } from "@tanstack/react-query";
@@ -29,10 +30,29 @@ export default function ProfilePage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    await authClient.updateUser({
-      image: imageSrc,
-      name: username,
-    })
+    if (username === session?.user.name && imageSrc === session.user.image) {
+      toast.add({
+        type: "error",
+        title: "No changes have actually been made"
+      });
+      return
+    }
+    try {
+      await authClient.updateUser({
+        image: imageSrc,
+        name: username,
+      })
+      toast.add({
+        type: "success",
+        title: "Profile information has been saved"
+      });
+    }
+    catch (err) {
+      toast.add({
+        type: "error",
+        title: "An unexpected error occurred"
+      });
+    }
   }
 
   async function getCompletedSlots() {
@@ -49,6 +69,10 @@ export default function ProfilePage() {
     enabled: !!session?.user,
   })
 
+  if (!session) {
+    return <p>Not logged in</p>
+  }
+
   return (
     <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh">
       <div className="mb-4">
@@ -63,7 +87,7 @@ export default function ProfilePage() {
           <form onSubmit={handleSubmit}>
             <CardHeader>
               <Avatar size="profile" className="mx-auto">
-                <AvatarImage src={imageSrc} />
+                <AvatarImage src={session?.user.image || ""} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <CardTitle className="text-center mb-2.5">{session?.user.name}</CardTitle>

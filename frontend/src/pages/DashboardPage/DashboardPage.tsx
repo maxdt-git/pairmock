@@ -37,7 +37,7 @@ export default function DashboardPage() {
                 queryClient.invalidateQueries({
                     queryKey: ["slot-booked"],
                 }),
-            ]);   
+            ]);
             toast.add({
                 title: "Slot booked!",
                 description: "This slot has been booked successfully.",
@@ -221,15 +221,15 @@ export default function DashboardPage() {
                         {queryBooked.data?.map((card: SlotType) => (
                             <li key={card.id}>
                                 <Slot
-                                    imageSrc={card.imageSrc}
-                                    username={card.hostUsername}
+                                    imageSrc={card.host.image ?? ""}
+                                    username={card.host.name}
                                     description={card.description}
                                     date={card.scheduledAt}
                                     difficulty={card.difficulty}
                                     duration={card.durationMinutes}
                                     status={card.status}
                                     onDelete={
-                                        card.hostUsername === session.user.name ?
+                                        card.hostId === session.user.id ?
                                         async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                     }
                                     onBooking={undefined}
@@ -280,15 +280,15 @@ export default function DashboardPage() {
                             queryAvailable.data?.data.map((card: SlotType) => (
                                 <li key={card.id} className="relative">
                                     <Slot
-                                        imageSrc={card.imageSrc}
-                                        username={card.hostUsername}
+                                        imageSrc={card.host.image ?? ""}
+                                        username={card.host.name}
                                         description={card.description}
                                         date={card.scheduledAt}
                                         difficulty={card.difficulty}
                                         duration={card.durationMinutes}
                                         status={card.status}
                                         onDelete={
-                                            card.hostUsername === session.user.name ?
+                                            card.hostId === session.user.id ?
                                             async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                         }
                                         onBooking={() => bookSlotMutation.mutateAsync(card.id)}

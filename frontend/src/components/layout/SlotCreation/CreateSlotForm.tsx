@@ -17,14 +17,10 @@ import type { CreateSlotPayload } from "@/types/slot";
 import { toast } from "@/components/ui/toast";
 
 interface CreateSlotFormProps {
-  hostUsername: string;
-  hostImage: string;
   onCreated: () => void;
 }
 
 export default function CreateSlotForm({
-    hostUsername,
-    hostImage,
     onCreated
 }: CreateSlotFormProps) {
     const queryClient = useQueryClient();
@@ -50,9 +46,14 @@ export default function CreateSlotForm({
         
         onSuccess: async (data) => {
             console.log("Slot created:", data);
-            await queryClient.invalidateQueries({
-                queryKey: ["slots"],
-            });
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-available"],
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ["slot-booked"],
+                }),
+            ]);
             toast.add({
                 title: "Slot created!",
                 description: "Your interview slot is now available.",
@@ -76,8 +77,6 @@ export default function CreateSlotForm({
         const formData = new FormData(event.currentTarget);
 
         const slot: CreateSlotPayload = {
-            imageSrc: hostImage || "https://github.com/shadcn.png",
-            hostUsername,
             description: String(formData.get("description")),
             difficulty: String(formData.get("difficulty")),
             scheduledAt: new Date(

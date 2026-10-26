@@ -917,8 +917,8 @@ export type TestEntryScalarFieldEnum = (typeof TestEntryScalarFieldEnum)[keyof t
 export const SlotScalarFieldEnum = {
   id: 'id',
   imageSrc: 'imageSrc',
-  hostUsername: 'hostUsername',
-  bookerUsername: 'bookerUsername',
+  hostId: 'hostId',
+  bookerId: 'bookerId',
   description: 'description',
   difficulty: 'difficulty',
   scheduledAt: 'scheduledAt',

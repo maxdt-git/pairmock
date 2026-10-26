@@ -2,7 +2,6 @@ import express from "express";
 import { prisma } from "./lib/prisma.ts";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
-import { fromNodeHeaders } from "better-auth/node";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -81,9 +80,6 @@ app.get("/api/users", async (_req, res) => {
 // POST slots
 app.post("/api/slots", async (req, res) => {
   const {
-    imageSrc,
-    hostUsername,
-    bookerUsername,
     description,
     difficulty,
     scheduledAt,
@@ -94,13 +90,11 @@ app.post("/api/slots", async (req, res) => {
   } = req.body ?? {};
 
   if (
-    typeof imageSrc !== "string" || !imageSrc.trim() ||
-    typeof hostUsername !== "string" || !hostUsername.trim() ||
     typeof description !== "string" || !description.trim() ||
     typeof scheduledAt !== "string" || !scheduledAt.trim()
   ) {
     return res.status(400).json({
-      error: "imageSrc, hostUsername, description, and scheduledAt are required strings",
+      error: "description, and scheduledAt are required strings",
     });
   }
 
@@ -112,13 +106,19 @@ app.post("/api/slots", async (req, res) => {
   }
 
   try {
+    const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+        res.status(401).json({ error: "Not authenticated" });
+        return;
+    }
+
     const card = await prisma.slot.create({
       data: {
-        imageSrc: imageSrc.trim(),
-        hostUsername: hostUsername.trim(),
-        bookerUsername: typeof bookerUsername === "string" && bookerUsername.trim()
-          ? bookerUsername.trim()
-          : null,
+        imageSrc: session.user.image? session.user.image: "",
+        hostId: session?.user.id,
         description: description.trim(),
         difficulty: difficulty.trim(),
         scheduledAt: scheduledAt.trim(),
@@ -155,6 +155,14 @@ app.get("/api/slots/available", async (req, res) => {
         where: {
           status: "AVAILABLE",
           difficulty: difficulty
+        },
+        include: {
+            host: {
+                select: {
+                    name: true,
+                    image: true
+                }
+            }
         }
       }),
       prisma.slot.count({
@@ -186,6 +194,19 @@ app.get("/api/slots/booked", async (req, res) => {
       },
       where: {
         status: "BOOKED"
+      },
+      include: {
+        host: {
+            select: {
+                name: true,
+                image: true
+            }
+        },
+        booker: {
+            select: {
+                name: true
+            }
+        }
       }
     });
     res.status(200).json(entries)
@@ -208,7 +229,7 @@ app.get("/api/slots/completed", async (req, res) => {
     if (!session) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const currentUsername = session.user.name
+    const currentId = session.user.id
 
     const entries = await prisma.slot.findMany({
       orderBy: {
@@ -217,8 +238,8 @@ app.get("/api/slots/completed", async (req, res) => {
       where: {
         status: "COMPLETED",
         OR: [
-          { bookerUsername: currentUsername },
-          { hostUsername: currentUsername },
+          { bookerId: currentId },
+          { hostId: currentId },
         ],
       }
     });
@@ -263,7 +284,7 @@ app.delete("/api/slots/:id", async (req, res) => {
             return;
         }
 
-        if (slot.hostUsername !== session.user.name) {
+        if (slot.hostId !== session.user.id) {
             res.status(403).json({
                 error: "You cannot delete this slot",
             });
@@ -301,7 +322,7 @@ app.patch("/api/slots/:id/book", async (req, res) => {
             return;
         }
 
-        const userName = session.user.name 
+        const userId = session.user.id 
         // check if slot exists
         const slot = await prisma.slot.findUnique({
             where: { id },
@@ -312,7 +333,7 @@ app.patch("/api/slots/:id/book", async (req, res) => {
             return;
         }
         // check if booker is host
-        if (slot.hostUsername === session.user.name) {
+        if (slot.hostId === session.user.id) {
             res.status(403).json({ error: "Can't book hosted slot" });
             return;
         }
@@ -324,7 +345,7 @@ app.patch("/api/slots/:id/book", async (req, res) => {
         // updateMany to only allow one user to make the update
         const result = await prisma.slot.updateMany({
             where: { id, status: "AVAILABLE" },
-            data: { status: "BOOKED", bookerUsername: userName }
+            data: { status: "BOOKED", bookerId: userId }
         });
         // 
         if (result.count === 0) {
@@ -359,7 +380,7 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
             return;
         }
 
-        const userName = session.user.name 
+        const userId = session.user.id 
         // check if slot exists
         const slot = await prisma.slot.findUnique({
             where: { id },
@@ -376,8 +397,8 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
         }
         // updateMany to only allow one user to make the update
         const result = await prisma.slot.updateMany({
-            where: { id, status: "BOOKED", bookerUsername: userName },
-            data: { status: "AVAILABLE", bookerUsername: null }
+            where: { id, status: "BOOKED", bookerId: userId },
+            data: { status: "AVAILABLE", bookerId: null }
         });
         // 
         if (result.count === 0) {

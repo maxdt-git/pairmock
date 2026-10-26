@@ -4,9 +4,15 @@ export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
 export interface SlotType {
   id: number;
-  imageSrc: string;
-  hostUsername: string;
-  bookerUsername: string | null;
+  hostId: string;
+  bookerId: string | null;     
+  host: {
+      name: string;
+      image: string | null;
+  };
+  booker: {
+    name: string
+  }
   description: string;
   difficulty: Difficulty;
   scheduledAt: string;
@@ -17,8 +23,6 @@ export interface SlotType {
 }
 
 export type CreateSlotPayload = {
-    imageSrc: string;
-    hostUsername: string;
     description: string;
     difficulty: string;
     scheduledAt: string;

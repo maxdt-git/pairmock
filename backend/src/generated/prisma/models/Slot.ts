@@ -39,8 +39,8 @@ export type SlotSumAggregateOutputType = {
 export type SlotMinAggregateOutputType = {
   id: number | null
   imageSrc: string | null
-  hostUsername: string | null
-  bookerUsername: string | null
+  hostId: string | null
+  bookerId: string | null
   description: string | null
   difficulty: $Enums.Difficulty | null
   scheduledAt: Date | null
@@ -53,8 +53,8 @@ export type SlotMinAggregateOutputType = {
 export type SlotMaxAggregateOutputType = {
   id: number | null
   imageSrc: string | null
-  hostUsername: string | null
-  bookerUsername: string | null
+  hostId: string | null
+  bookerId: string | null
   description: string | null
   difficulty: $Enums.Difficulty | null
   scheduledAt: Date | null
@@ -67,8 +67,8 @@ export type SlotMaxAggregateOutputType = {
 export type SlotCountAggregateOutputType = {
   id: number
   imageSrc: number
-  hostUsername: number
-  bookerUsername: number
+  hostId: number
+  bookerId: number
   description: number
   difficulty: number
   scheduledAt: number
@@ -93,8 +93,8 @@ export type SlotSumAggregateInputType = {
 export type SlotMinAggregateInputType = {
   id?: true
   imageSrc?: true
-  hostUsername?: true
-  bookerUsername?: true
+  hostId?: true
+  bookerId?: true
   description?: true
   difficulty?: true
   scheduledAt?: true
@@ -107,8 +107,8 @@ export type SlotMinAggregateInputType = {
 export type SlotMaxAggregateInputType = {
   id?: true
   imageSrc?: true
-  hostUsername?: true
-  bookerUsername?: true
+  hostId?: true
+  bookerId?: true
   description?: true
   difficulty?: true
   scheduledAt?: true
@@ -121,8 +121,8 @@ export type SlotMaxAggregateInputType = {
 export type SlotCountAggregateInputType = {
   id?: true
   imageSrc?: true
-  hostUsername?: true
-  bookerUsername?: true
+  hostId?: true
+  bookerId?: true
   description?: true
   difficulty?: true
   scheduledAt?: true
@@ -222,8 +222,8 @@ export type SlotGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type SlotGroupByOutputType = {
   id: number
   imageSrc: string
-  hostUsername: string
-  bookerUsername: string | null
+  hostId: string
+  bookerId: string | null
   description: string
   difficulty: $Enums.Difficulty
   scheduledAt: Date
@@ -259,8 +259,8 @@ export type SlotWhereInput = {
   NOT?: Prisma.SlotWhereInput | Prisma.SlotWhereInput[]
   id?: Prisma.IntFilter<"Slot"> | number
   imageSrc?: Prisma.StringFilter<"Slot"> | string
-  hostUsername?: Prisma.StringFilter<"Slot"> | string
-  bookerUsername?: Prisma.StringNullableFilter<"Slot"> | string | null
+  hostId?: Prisma.StringFilter<"Slot"> | string
+  bookerId?: Prisma.StringNullableFilter<"Slot"> | string | null
   description?: Prisma.StringFilter<"Slot"> | string
   difficulty?: Prisma.EnumDifficultyFilter<"Slot"> | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
@@ -268,13 +268,15 @@ export type SlotWhereInput = {
   status?: Prisma.EnumSlotStatusFilter<"Slot"> | $Enums.SlotStatus
   createdAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
+  host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  booker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type SlotOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
-  hostUsername?: Prisma.SortOrder
-  bookerUsername?: Prisma.SortOrderInput | Prisma.SortOrder
+  hostId?: Prisma.SortOrder
+  bookerId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
@@ -282,6 +284,8 @@ export type SlotOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  host?: Prisma.UserOrderByWithRelationInput
+  booker?: Prisma.UserOrderByWithRelationInput
 }
 
 export type SlotWhereUniqueInput = Prisma.AtLeast<{
@@ -290,8 +294,8 @@ export type SlotWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SlotWhereInput[]
   NOT?: Prisma.SlotWhereInput | Prisma.SlotWhereInput[]
   imageSrc?: Prisma.StringFilter<"Slot"> | string
-  hostUsername?: Prisma.StringFilter<"Slot"> | string
-  bookerUsername?: Prisma.StringNullableFilter<"Slot"> | string | null
+  hostId?: Prisma.StringFilter<"Slot"> | string
+  bookerId?: Prisma.StringNullableFilter<"Slot"> | string | null
   description?: Prisma.StringFilter<"Slot"> | string
   difficulty?: Prisma.EnumDifficultyFilter<"Slot"> | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
@@ -299,13 +303,15 @@ export type SlotWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumSlotStatusFilter<"Slot"> | $Enums.SlotStatus
   createdAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
+  host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  booker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type SlotOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
-  hostUsername?: Prisma.SortOrder
-  bookerUsername?: Prisma.SortOrderInput | Prisma.SortOrder
+  hostId?: Prisma.SortOrder
+  bookerId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
@@ -326,8 +332,8 @@ export type SlotScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SlotScalarWhereWithAggregatesInput | Prisma.SlotScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Slot"> | number
   imageSrc?: Prisma.StringWithAggregatesFilter<"Slot"> | string
-  hostUsername?: Prisma.StringWithAggregatesFilter<"Slot"> | string
-  bookerUsername?: Prisma.StringNullableWithAggregatesFilter<"Slot"> | string | null
+  hostId?: Prisma.StringWithAggregatesFilter<"Slot"> | string
+  bookerId?: Prisma.StringNullableWithAggregatesFilter<"Slot"> | string | null
   description?: Prisma.StringWithAggregatesFilter<"Slot"> | string
   difficulty?: Prisma.EnumDifficultyWithAggregatesFilter<"Slot"> | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeWithAggregatesFilter<"Slot"> | Date | string
@@ -339,8 +345,6 @@ export type SlotScalarWhereWithAggregatesInput = {
 
 export type SlotCreateInput = {
   imageSrc: string
-  hostUsername: string
-  bookerUsername?: string | null
   description: string
   difficulty?: $Enums.Difficulty
   scheduledAt: Date | string
@@ -348,13 +352,15 @@ export type SlotCreateInput = {
   status?: $Enums.SlotStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  host: Prisma.UserCreateNestedOneWithoutHostedSlotsInput
+  booker?: Prisma.UserCreateNestedOneWithoutBookedSlotsInput
 }
 
 export type SlotUncheckedCreateInput = {
   id?: number
   imageSrc: string
-  hostUsername: string
-  bookerUsername?: string | null
+  hostId: string
+  bookerId?: string | null
   description: string
   difficulty?: $Enums.Difficulty
   scheduledAt: Date | string
@@ -366,8 +372,6 @@ export type SlotUncheckedCreateInput = {
 
 export type SlotUpdateInput = {
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
-  hostUsername?: Prisma.StringFieldUpdateOperationsInput | string
-  bookerUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -375,13 +379,15 @@ export type SlotUpdateInput = {
   status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  host?: Prisma.UserUpdateOneRequiredWithoutHostedSlotsNestedInput
+  booker?: Prisma.UserUpdateOneWithoutBookedSlotsNestedInput
 }
 
 export type SlotUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
-  hostUsername?: Prisma.StringFieldUpdateOperationsInput | string
-  bookerUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -394,8 +400,8 @@ export type SlotUncheckedUpdateInput = {
 export type SlotCreateManyInput = {
   id?: number
   imageSrc: string
-  hostUsername: string
-  bookerUsername?: string | null
+  hostId: string
+  bookerId?: string | null
   description: string
   difficulty?: $Enums.Difficulty
   scheduledAt: Date | string
@@ -407,8 +413,6 @@ export type SlotCreateManyInput = {
 
 export type SlotUpdateManyMutationInput = {
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
-  hostUsername?: Prisma.StringFieldUpdateOperationsInput | string
-  bookerUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,8 +425,8 @@ export type SlotUpdateManyMutationInput = {
 export type SlotUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
-  hostUsername?: Prisma.StringFieldUpdateOperationsInput | string
-  bookerUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -435,8 +439,8 @@ export type SlotUncheckedUpdateManyInput = {
 export type SlotCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
-  hostUsername?: Prisma.SortOrder
-  bookerUsername?: Prisma.SortOrder
+  hostId?: Prisma.SortOrder
+  bookerId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
@@ -454,8 +458,8 @@ export type SlotAvgOrderByAggregateInput = {
 export type SlotMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
-  hostUsername?: Prisma.SortOrder
-  bookerUsername?: Prisma.SortOrder
+  hostId?: Prisma.SortOrder
+  bookerId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
@@ -468,8 +472,8 @@ export type SlotMaxOrderByAggregateInput = {
 export type SlotMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   imageSrc?: Prisma.SortOrder
-  hostUsername?: Prisma.SortOrder
-  bookerUsername?: Prisma.SortOrder
+  hostId?: Prisma.SortOrder
+  bookerId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
@@ -484,8 +488,14 @@ export type SlotSumOrderByAggregateInput = {
   durationMinutes?: Prisma.SortOrder
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type SlotListRelationFilter = {
+  every?: Prisma.SlotWhereInput
+  some?: Prisma.SlotWhereInput
+  none?: Prisma.SlotWhereInput
+}
+
+export type SlotOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type EnumDifficultyFieldUpdateOperationsInput = {
@@ -496,13 +506,322 @@ export type EnumSlotStatusFieldUpdateOperationsInput = {
   set?: $Enums.SlotStatus
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type SlotCreateNestedManyWithoutHostInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput> | Prisma.SlotCreateWithoutHostInput[] | Prisma.SlotUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutHostInput | Prisma.SlotCreateOrConnectWithoutHostInput[]
+  createMany?: Prisma.SlotCreateManyHostInputEnvelope
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+}
+
+export type SlotCreateNestedManyWithoutBookerInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput> | Prisma.SlotCreateWithoutBookerInput[] | Prisma.SlotUncheckedCreateWithoutBookerInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutBookerInput | Prisma.SlotCreateOrConnectWithoutBookerInput[]
+  createMany?: Prisma.SlotCreateManyBookerInputEnvelope
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+}
+
+export type SlotUncheckedCreateNestedManyWithoutHostInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput> | Prisma.SlotCreateWithoutHostInput[] | Prisma.SlotUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutHostInput | Prisma.SlotCreateOrConnectWithoutHostInput[]
+  createMany?: Prisma.SlotCreateManyHostInputEnvelope
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+}
+
+export type SlotUncheckedCreateNestedManyWithoutBookerInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput> | Prisma.SlotCreateWithoutBookerInput[] | Prisma.SlotUncheckedCreateWithoutBookerInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutBookerInput | Prisma.SlotCreateOrConnectWithoutBookerInput[]
+  createMany?: Prisma.SlotCreateManyBookerInputEnvelope
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+}
+
+export type SlotUpdateManyWithoutHostNestedInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput> | Prisma.SlotCreateWithoutHostInput[] | Prisma.SlotUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutHostInput | Prisma.SlotCreateOrConnectWithoutHostInput[]
+  upsert?: Prisma.SlotUpsertWithWhereUniqueWithoutHostInput | Prisma.SlotUpsertWithWhereUniqueWithoutHostInput[]
+  createMany?: Prisma.SlotCreateManyHostInputEnvelope
+  set?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  disconnect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  delete?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  update?: Prisma.SlotUpdateWithWhereUniqueWithoutHostInput | Prisma.SlotUpdateWithWhereUniqueWithoutHostInput[]
+  updateMany?: Prisma.SlotUpdateManyWithWhereWithoutHostInput | Prisma.SlotUpdateManyWithWhereWithoutHostInput[]
+  deleteMany?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+}
+
+export type SlotUpdateManyWithoutBookerNestedInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput> | Prisma.SlotCreateWithoutBookerInput[] | Prisma.SlotUncheckedCreateWithoutBookerInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutBookerInput | Prisma.SlotCreateOrConnectWithoutBookerInput[]
+  upsert?: Prisma.SlotUpsertWithWhereUniqueWithoutBookerInput | Prisma.SlotUpsertWithWhereUniqueWithoutBookerInput[]
+  createMany?: Prisma.SlotCreateManyBookerInputEnvelope
+  set?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  disconnect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  delete?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  update?: Prisma.SlotUpdateWithWhereUniqueWithoutBookerInput | Prisma.SlotUpdateWithWhereUniqueWithoutBookerInput[]
+  updateMany?: Prisma.SlotUpdateManyWithWhereWithoutBookerInput | Prisma.SlotUpdateManyWithWhereWithoutBookerInput[]
+  deleteMany?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+}
+
+export type SlotUncheckedUpdateManyWithoutHostNestedInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput> | Prisma.SlotCreateWithoutHostInput[] | Prisma.SlotUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutHostInput | Prisma.SlotCreateOrConnectWithoutHostInput[]
+  upsert?: Prisma.SlotUpsertWithWhereUniqueWithoutHostInput | Prisma.SlotUpsertWithWhereUniqueWithoutHostInput[]
+  createMany?: Prisma.SlotCreateManyHostInputEnvelope
+  set?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  disconnect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  delete?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  update?: Prisma.SlotUpdateWithWhereUniqueWithoutHostInput | Prisma.SlotUpdateWithWhereUniqueWithoutHostInput[]
+  updateMany?: Prisma.SlotUpdateManyWithWhereWithoutHostInput | Prisma.SlotUpdateManyWithWhereWithoutHostInput[]
+  deleteMany?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+}
+
+export type SlotUncheckedUpdateManyWithoutBookerNestedInput = {
+  create?: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput> | Prisma.SlotCreateWithoutBookerInput[] | Prisma.SlotUncheckedCreateWithoutBookerInput[]
+  connectOrCreate?: Prisma.SlotCreateOrConnectWithoutBookerInput | Prisma.SlotCreateOrConnectWithoutBookerInput[]
+  upsert?: Prisma.SlotUpsertWithWhereUniqueWithoutBookerInput | Prisma.SlotUpsertWithWhereUniqueWithoutBookerInput[]
+  createMany?: Prisma.SlotCreateManyBookerInputEnvelope
+  set?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  disconnect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  delete?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  connect?: Prisma.SlotWhereUniqueInput | Prisma.SlotWhereUniqueInput[]
+  update?: Prisma.SlotUpdateWithWhereUniqueWithoutBookerInput | Prisma.SlotUpdateWithWhereUniqueWithoutBookerInput[]
+  updateMany?: Prisma.SlotUpdateManyWithWhereWithoutBookerInput | Prisma.SlotUpdateManyWithWhereWithoutBookerInput[]
+  deleteMany?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+}
+
+export type SlotCreateWithoutHostInput = {
+  imageSrc: string
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  booker?: Prisma.UserCreateNestedOneWithoutBookedSlotsInput
+}
+
+export type SlotUncheckedCreateWithoutHostInput = {
+  id?: number
+  imageSrc: string
+  bookerId?: string | null
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SlotCreateOrConnectWithoutHostInput = {
+  where: Prisma.SlotWhereUniqueInput
+  create: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput>
+}
+
+export type SlotCreateManyHostInputEnvelope = {
+  data: Prisma.SlotCreateManyHostInput | Prisma.SlotCreateManyHostInput[]
+  skipDuplicates?: boolean
+}
+
+export type SlotCreateWithoutBookerInput = {
+  imageSrc: string
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  host: Prisma.UserCreateNestedOneWithoutHostedSlotsInput
+}
+
+export type SlotUncheckedCreateWithoutBookerInput = {
+  id?: number
+  imageSrc: string
+  hostId: string
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SlotCreateOrConnectWithoutBookerInput = {
+  where: Prisma.SlotWhereUniqueInput
+  create: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput>
+}
+
+export type SlotCreateManyBookerInputEnvelope = {
+  data: Prisma.SlotCreateManyBookerInput | Prisma.SlotCreateManyBookerInput[]
+  skipDuplicates?: boolean
+}
+
+export type SlotUpsertWithWhereUniqueWithoutHostInput = {
+  where: Prisma.SlotWhereUniqueInput
+  update: Prisma.XOR<Prisma.SlotUpdateWithoutHostInput, Prisma.SlotUncheckedUpdateWithoutHostInput>
+  create: Prisma.XOR<Prisma.SlotCreateWithoutHostInput, Prisma.SlotUncheckedCreateWithoutHostInput>
+}
+
+export type SlotUpdateWithWhereUniqueWithoutHostInput = {
+  where: Prisma.SlotWhereUniqueInput
+  data: Prisma.XOR<Prisma.SlotUpdateWithoutHostInput, Prisma.SlotUncheckedUpdateWithoutHostInput>
+}
+
+export type SlotUpdateManyWithWhereWithoutHostInput = {
+  where: Prisma.SlotScalarWhereInput
+  data: Prisma.XOR<Prisma.SlotUpdateManyMutationInput, Prisma.SlotUncheckedUpdateManyWithoutHostInput>
+}
+
+export type SlotScalarWhereInput = {
+  AND?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+  OR?: Prisma.SlotScalarWhereInput[]
+  NOT?: Prisma.SlotScalarWhereInput | Prisma.SlotScalarWhereInput[]
+  id?: Prisma.IntFilter<"Slot"> | number
+  imageSrc?: Prisma.StringFilter<"Slot"> | string
+  hostId?: Prisma.StringFilter<"Slot"> | string
+  bookerId?: Prisma.StringNullableFilter<"Slot"> | string | null
+  description?: Prisma.StringFilter<"Slot"> | string
+  difficulty?: Prisma.EnumDifficultyFilter<"Slot"> | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
+  durationMinutes?: Prisma.IntFilter<"Slot"> | number
+  status?: Prisma.EnumSlotStatusFilter<"Slot"> | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Slot"> | Date | string
+}
+
+export type SlotUpsertWithWhereUniqueWithoutBookerInput = {
+  where: Prisma.SlotWhereUniqueInput
+  update: Prisma.XOR<Prisma.SlotUpdateWithoutBookerInput, Prisma.SlotUncheckedUpdateWithoutBookerInput>
+  create: Prisma.XOR<Prisma.SlotCreateWithoutBookerInput, Prisma.SlotUncheckedCreateWithoutBookerInput>
+}
+
+export type SlotUpdateWithWhereUniqueWithoutBookerInput = {
+  where: Prisma.SlotWhereUniqueInput
+  data: Prisma.XOR<Prisma.SlotUpdateWithoutBookerInput, Prisma.SlotUncheckedUpdateWithoutBookerInput>
+}
+
+export type SlotUpdateManyWithWhereWithoutBookerInput = {
+  where: Prisma.SlotScalarWhereInput
+  data: Prisma.XOR<Prisma.SlotUpdateManyMutationInput, Prisma.SlotUncheckedUpdateManyWithoutBookerInput>
+}
+
+export type SlotCreateManyHostInput = {
+  id?: number
+  imageSrc: string
+  bookerId?: string | null
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SlotCreateManyBookerInput = {
+  id?: number
+  imageSrc: string
+  hostId: string
+  description: string
+  difficulty?: $Enums.Difficulty
+  scheduledAt: Date | string
+  durationMinutes?: number
+  status?: $Enums.SlotStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SlotUpdateWithoutHostInput = {
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  booker?: Prisma.UserUpdateOneWithoutBookedSlotsNestedInput
+}
+
+export type SlotUncheckedUpdateWithoutHostInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  bookerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SlotUncheckedUpdateManyWithoutHostInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  bookerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SlotUpdateWithoutBookerInput = {
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  host?: Prisma.UserUpdateOneRequiredWithoutHostedSlotsNestedInput
+}
+
+export type SlotUncheckedUpdateWithoutBookerInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SlotUncheckedUpdateManyWithoutBookerInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumSlotStatusFieldUpdateOperationsInput | $Enums.SlotStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type SlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   imageSrc?: boolean
-  hostUsername?: boolean
-  bookerUsername?: boolean
+  hostId?: boolean
+  bookerId?: boolean
   description?: boolean
   difficulty?: boolean
   scheduledAt?: boolean
@@ -510,13 +829,15 @@ export type SlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
 
 export type SlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   imageSrc?: boolean
-  hostUsername?: boolean
-  bookerUsername?: boolean
+  hostId?: boolean
+  bookerId?: boolean
   description?: boolean
   difficulty?: boolean
   scheduledAt?: boolean
@@ -524,13 +845,15 @@ export type SlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
 
 export type SlotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   imageSrc?: boolean
-  hostUsername?: boolean
-  bookerUsername?: boolean
+  hostId?: boolean
+  bookerId?: boolean
   description?: boolean
   difficulty?: boolean
   scheduledAt?: boolean
@@ -538,13 +861,15 @@ export type SlotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
 
 export type SlotSelectScalar = {
   id?: boolean
   imageSrc?: boolean
-  hostUsername?: boolean
-  bookerUsername?: boolean
+  hostId?: boolean
+  bookerId?: boolean
   description?: boolean
   difficulty?: boolean
   scheduledAt?: boolean
@@ -554,16 +879,31 @@ export type SlotSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imageSrc" | "hostUsername" | "bookerUsername" | "description" | "difficulty" | "scheduledAt" | "durationMinutes" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["slot"]>
+export type SlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imageSrc" | "hostId" | "bookerId" | "description" | "difficulty" | "scheduledAt" | "durationMinutes" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["slot"]>
+export type SlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
+}
+export type SlotIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
+}
+export type SlotIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
+}
 
 export type $SlotPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Slot"
-  objects: {}
+  objects: {
+    host: Prisma.$UserPayload<ExtArgs>
+    booker: Prisma.$UserPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     imageSrc: string
-    hostUsername: string
-    bookerUsername: string | null
+    hostId: string
+    bookerId: string | null
     description: string
     difficulty: $Enums.Difficulty
     scheduledAt: Date
@@ -965,6 +1305,8 @@ readonly fields: SlotFieldRefs;
  */
 export interface Prisma__SlotClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  host<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  booker<T extends Prisma.Slot$bookerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Slot$bookerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -996,8 +1338,8 @@ export interface Prisma__SlotClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface SlotFieldRefs {
   readonly id: Prisma.FieldRef<"Slot", 'Int'>
   readonly imageSrc: Prisma.FieldRef<"Slot", 'String'>
-  readonly hostUsername: Prisma.FieldRef<"Slot", 'String'>
-  readonly bookerUsername: Prisma.FieldRef<"Slot", 'String'>
+  readonly hostId: Prisma.FieldRef<"Slot", 'String'>
+  readonly bookerId: Prisma.FieldRef<"Slot", 'String'>
   readonly description: Prisma.FieldRef<"Slot", 'String'>
   readonly difficulty: Prisma.FieldRef<"Slot", 'Difficulty'>
   readonly scheduledAt: Prisma.FieldRef<"Slot", 'DateTime'>
@@ -1022,6 +1364,10 @@ export type SlotFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
+  /**
    * Filter, which Slot to fetch.
    */
   where: Prisma.SlotWhereUniqueInput
@@ -1040,6 +1386,10 @@ export type SlotFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
+  /**
    * Filter, which Slot to fetch.
    */
   where: Prisma.SlotWhereUniqueInput
@@ -1057,6 +1407,10 @@ export type SlotFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Slot
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
   /**
    * Filter, which Slot to fetch.
    */
@@ -1106,6 +1460,10 @@ export type SlotFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
+  /**
    * Filter, which Slot to fetch.
    */
   where?: Prisma.SlotWhereInput
@@ -1153,6 +1511,10 @@ export type SlotFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Slot
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
   /**
    * Filter, which Slots to fetch.
    */
@@ -1202,6 +1564,10 @@ export type SlotCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
+  /**
    * The data needed to create a Slot.
    */
   data: Prisma.XOR<Prisma.SlotCreateInput, Prisma.SlotUncheckedCreateInput>
@@ -1235,6 +1601,10 @@ export type SlotCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.SlotCreateManyInput | Prisma.SlotCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1249,6 +1619,10 @@ export type SlotUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Slot
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
   /**
    * The data needed to update a Slot.
    */
@@ -1301,6 +1675,10 @@ export type SlotUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Slots to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1315,6 +1693,10 @@ export type SlotUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Slot
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
   /**
    * The filter to search for the Slot to update in case it exists.
    */
@@ -1342,6 +1724,10 @@ export type SlotDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
+  /**
    * Filter which Slot to delete.
    */
   where: Prisma.SlotWhereUniqueInput
@@ -1362,6 +1748,25 @@ export type SlotDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Slot.booker
+ */
+export type Slot$bookerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Slot without action
  */
 export type SlotDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1373,4 +1778,8 @@ export type SlotDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Slot
    */
   omit?: Prisma.SlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotInclude<ExtArgs> | null
 }

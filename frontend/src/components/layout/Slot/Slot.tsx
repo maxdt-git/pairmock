@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 export interface SlotProps {
-    imageSrc: string,
+    imageSrc: string | undefined,
     username: string,
     description: string,
     date: string,

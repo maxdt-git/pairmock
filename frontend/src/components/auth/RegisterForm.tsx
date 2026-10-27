@@ -5,20 +5,16 @@ import { useState, type SubmitEvent } from "react";
 import { Link } from "react-router";
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client";
-import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { toast } from "../ui/toast";
-import { Field, FieldGroup, FieldLabel } from "../ui/field";
 
 export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
-    const navigate = useNavigate()
 
     async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -32,7 +28,7 @@ export default function RegisterForm() {
             return;
         }
         try {
-            const { data, error } = await authClient.signUp.email({
+            const { error } = await authClient.signUp.email({
                 name: username,
                 email: email,
                 password: password,
@@ -45,7 +41,6 @@ export default function RegisterForm() {
                 });
                 return;
             }
-            navigate("/dashboard")
         } catch (error) {
             console.error("Registration request failed", error);
             toast.add({
@@ -75,7 +70,7 @@ export default function RegisterForm() {
                 <CardContent>
                     <div className="flex flex-col gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Username</Label>
+                            <Label htmlFor="username">Username</Label>
                             <Input
                                 id="username"
                                 type="text"
@@ -113,7 +108,7 @@ export default function RegisterForm() {
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Confirm Password</Label>
+                            <Label htmlFor="confirmPassword">Confirm Password</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"

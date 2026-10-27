@@ -4,18 +4,15 @@
 import { useState, type SubmitEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
-import type { BaseUIEvent } from "@base-ui/react";
 import { toast } from "../ui/toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   async function handleGoogleLogin() {
     const { error } = await authClient.signIn.social({
@@ -31,7 +28,7 @@ export default function LoginForm() {
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     try {
-      const { data, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email,
         password,
       });
@@ -44,7 +41,6 @@ export default function LoginForm() {
         });
         return;
       }
-      navigate("/dashboard");
     } catch (error) {
       toast.add({
         type: "error",
@@ -63,10 +59,8 @@ export default function LoginForm() {
           Enter your email below to login to your account
         </CardDescription>
         <CardAction>
-          <Button variant="link">
-            <Link to={"/register"}>
-              Sign Up
-            </Link>
+          <Button variant="link" render={<Link to={"/register"} />}>
+            Sign Up
           </Button>
         </CardAction>
       </CardHeader>
@@ -105,7 +99,7 @@ export default function LoginForm() {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <Button variant="outline" className="w-full" onClick={handleGoogleLogin}>
+          <Button type="submit" variant="outline" className="w-full" onClick={handleGoogleLogin}>
             Login with Google
           </Button>
         </CardFooter>

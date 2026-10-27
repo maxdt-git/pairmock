@@ -15,6 +15,7 @@ import { ThemeProvider } from './components/ui/theme-provider.tsx'
 import { Toaster } from "@/components/ui/toast";
 import ProfilePage from './pages/ProfilePage/ProfilePage.tsx'
 import RerouteAll from './components/auth/RerouteAll.tsx'
+import GuestRoute from './components/auth/GuestRoute.tsx'
 
 const queryClient = new QueryClient()
 
@@ -24,8 +25,10 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <ThemeProvider>
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route element={<GuestRoute />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+            </Route>
             <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
             <Route element={<RerouteAll />}>
               <Route path="/dashboard" element={<DashboardPage />} />

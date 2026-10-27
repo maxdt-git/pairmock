@@ -40,6 +40,8 @@ model Slot {
   status          SlotStatus @default(AVAILABLE)
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @default(now()) @updatedAt
+  googleEventId   String?
+  meetLink        String?
   
 
   host            User       @relation("HostedSlots", fields: [hostId], references: [id])

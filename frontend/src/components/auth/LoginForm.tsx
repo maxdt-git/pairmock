@@ -99,7 +99,7 @@ export default function LoginForm() {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <Button type="submit" variant="outline" className="w-full" onClick={handleGoogleLogin}>
+          <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin}>
             Login with Google
           </Button>
         </CardFooter>

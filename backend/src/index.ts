@@ -3,6 +3,7 @@ import { prisma } from "./lib/prisma.ts";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
 import { createMeetAndCalendarEvent, deleteCalendarEvent } from "./lib/googleCalendar.ts";
+import cron from "node-cron";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -155,7 +156,10 @@ app.get("/api/slots/available", async (req, res) => {
         },
         where: {
           status: "AVAILABLE",
-          difficulty: difficulty
+          difficulty: difficulty,
+          scheduledAt: {
+            gt: new Date()
+          }
         },
         include: {
           host: {
@@ -476,6 +480,28 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
   }
 })
 
+// DELETE expired slots
+async function cleanExpiredSlots() {
+    const result = await prisma.slot.deleteMany({
+        where: {
+            status: "AVAILABLE",
+            scheduledAt: {
+                lt: new Date(),
+            },
+        },
+    });
+    if (result.count > 0) {
+        console.log(`${result.count} expired slots deleted`);
+    }
+}
+// Program deletion exec
+cron.schedule("* * * * *", async () => {
+    try {
+        await cleanExpiredSlots();
+    } catch (error) {
+        console.error("Slot cleanup failed:", error);
+    }
+});
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

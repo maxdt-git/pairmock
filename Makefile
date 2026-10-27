@@ -13,6 +13,9 @@ up:
 down:
 	$(COMPOSE) down
 
+migrate:
+	$(COMPOSE) exec backend ./node_modules/.bin/prisma migrate deploy
+
 build:
 	$(COMPOSE) build
 

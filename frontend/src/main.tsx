@@ -28,7 +28,6 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route element={<RerouteAll/>}>
-                <Route path="/" element={<App />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/service" element={<ServicePage />} />
                 <Route path="/policy" element={<PolicyPage />} />

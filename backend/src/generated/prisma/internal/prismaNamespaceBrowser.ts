@@ -95,7 +95,9 @@ export const SlotScalarFieldEnum = {
   durationMinutes: 'durationMinutes',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  googleEventId: 'googleEventId',
+  meetLink: 'meetLink'
 } as const
 
 export type SlotScalarFieldEnum = (typeof SlotScalarFieldEnum)[keyof typeof SlotScalarFieldEnum]

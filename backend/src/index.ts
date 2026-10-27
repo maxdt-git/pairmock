@@ -2,6 +2,7 @@ import express from "express";
 import { prisma } from "./lib/prisma.ts";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
+import { createMeetAndCalendarEvent, deleteCalendarEvent } from "./lib/googleCalendar.ts";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -365,6 +366,27 @@ app.patch("/api/slots/:id/book", async (req, res) => {
       where: { id, status: "AVAILABLE" },
       data: { status: "BOOKED", bookerId: userId }
     });
+    const updatedSlot = await prisma.slot.findUnique({
+      where: { id },
+      include: {
+        host: true,
+        booker: true
+      }
+    })
+    try {
+      const event = await createMeetAndCalendarEvent(updatedSlot, updatedSlot?.host, updatedSlot?.booker)
+      if (event?.googleEventId){
+        await prisma.slot.update({
+          where: {id},
+          data: {
+            googleEventId: event.googleEventId
+          }
+        })
+      }
+    }
+    catch (e) {
+      console.log(e)
+    }
     // 
     if (result.count === 0) {
       res.status(409).json({
@@ -416,14 +438,18 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
     // updateMany to only allow one user to make the update
     const result = await prisma.slot.updateMany({
       where: { id, status: "BOOKED", bookerId: userId },
-      data: { status: "AVAILABLE", bookerId: null }
+      data: { status: "AVAILABLE", bookerId: null, googleEventId: null }
     });
-    // 
     if (result.count === 0) {
-      res.status(409).json({
-        error: "Slot is no longer booked",
-      });
+      res.status(409).json({ error: "Slot is no longer booked" });
       return;
+    }
+    if (slot.googleEventId && slot.bookerId) {
+      try {
+        await deleteCalendarEvent(slot.bookerId, slot.hostId, slot.googleEventId);
+      } catch (calendarError) {
+        console.error("Failed to delete Google Calendar event:", calendarError);
+      }
     }
     res.sendStatus(200);
   } catch (error) {
@@ -433,7 +459,6 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
     });
   }
 })
-
 
 
 app.listen(PORT, "0.0.0.0", () => {

@@ -17,7 +17,7 @@ build:
 	$(COMPOSE) build
 
 logs:
-	$(COMPOSE) logs -f frontend
+	$(COMPOSE) logs -f
 
 ps:
 	$(COMPOSE) ps

@@ -1,8 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import LoginPage from './pages/LoginPage/LoginPage.tsx'
 import RegisterPage from './pages/RegisterPage/RegisterPage.tsx'
 import DashboardPage from './pages/DashboardPage/DashboardPage.tsx'
@@ -27,11 +26,12 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route element={<RerouteAll/>}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/service" element={<ServicePage />} />
-                <Route path="/policy" element={<PolicyPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
+            <Route element={<RerouteAll />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/service" element={<ServicePage />} />
+              <Route path="/policy" element={<PolicyPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Routes>
           <Toaster />

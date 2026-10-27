@@ -85,8 +85,8 @@ export async function createMeetAndCalendarEvent(slot, host, booker) {
 
 export async function deleteCalendarEvent(bookerId: string, hostId: string, googleEventId: string) {
     const tokens = [
-        await getGoogleAccessToken(bookerId),
         await getGoogleAccessToken(hostId),
+        await getGoogleAccessToken(bookerId),
     ].filter(Boolean);
     for (const token of tokens) {
         const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${googleEventId}`,

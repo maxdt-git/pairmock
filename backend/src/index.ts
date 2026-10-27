@@ -281,6 +281,7 @@ app.delete("/api/slots/:id", async (req, res) => {
     return;
   }
 
+
   try {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
@@ -308,6 +309,16 @@ app.delete("/api/slots/:id", async (req, res) => {
         error: "You cannot delete this slot",
       });
       return;
+    }
+
+    if (slot.status === "BOOKED") {
+      if (slot.googleEventId && slot.bookerId) {
+        try {
+          await deleteCalendarEvent(slot.bookerId, slot.hostId, slot.googleEventId);
+        } catch (calendarError) {
+          console.error("Failed to delete Google Calendar event:", calendarError);
+        }
+      }
     }
 
     await prisma.slot.delete({
@@ -366,6 +377,12 @@ app.patch("/api/slots/:id/book", async (req, res) => {
       where: { id, status: "AVAILABLE" },
       data: { status: "BOOKED", bookerId: userId }
     });
+    if (result.count === 0) {
+      res.status(409).json({
+        error: "Slot is no longer available",
+      });
+      return;
+    }
     const updatedSlot = await prisma.slot.findUnique({
       where: { id },
       include: {
@@ -375,24 +392,18 @@ app.patch("/api/slots/:id/book", async (req, res) => {
     })
     try {
       const event = await createMeetAndCalendarEvent(updatedSlot, updatedSlot?.host, updatedSlot?.booker)
-      if (event?.googleEventId){
+      if (event?.googleEventId) {
         await prisma.slot.update({
-          where: {id},
+          where: { id },
           data: {
-            googleEventId: event.googleEventId
+            googleEventId: event.googleEventId,
+            meetLink: event.meetLink
           }
         })
       }
     }
     catch (e) {
       console.log(e)
-    }
-    // 
-    if (result.count === 0) {
-      res.status(409).json({
-        error: "Slot is no longer available",
-      });
-      return;
     }
     res.sendStatus(200);
   } catch (error) {
@@ -438,7 +449,12 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
     // updateMany to only allow one user to make the update
     const result = await prisma.slot.updateMany({
       where: { id, status: "BOOKED", bookerId: userId },
-      data: { status: "AVAILABLE", bookerId: null, googleEventId: null }
+      data: {
+        status: "AVAILABLE",
+        bookerId: null,
+        googleEventId: null,
+        meetLink: null
+      }
     });
     if (result.count === 0) {
       res.status(409).json({ error: "Slot is no longer booked" });

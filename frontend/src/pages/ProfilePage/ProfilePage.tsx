@@ -82,8 +82,8 @@ export default function ProfilePage() {
           </Link>
         </Button>
       </div>
-      <div className="flex gap-4 mb-4">
-        <Card className="w-full max-w-sm flex flex-col max-h-105">
+      <div className="flex gap-4 mb-4 flex-wrap lg:flex-nowrap">
+        <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
           <form onSubmit={handleSubmit}>
             <CardHeader>
               <Avatar size="profile" className="mx-auto">
@@ -127,7 +127,7 @@ export default function ProfilePage() {
           </form>
         </Card>
         <Card className="w-full pl-3 pr-3">
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap xl:flex-nowrap">
             <Item variant="outline" size="sm" className="min-w-55">
               <ItemMedia>
                 <MessagesSquare />

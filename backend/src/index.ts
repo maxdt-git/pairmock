@@ -486,7 +486,7 @@ async function cleanExpiredSlots() {
         where: {
             status: "AVAILABLE",
             scheduledAt: {
-                lt: new Date(),
+                lte: new Date(Date.now() + 60 * 60 * 1000),
             },
         },
     });

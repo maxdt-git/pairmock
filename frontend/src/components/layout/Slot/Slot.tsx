@@ -95,7 +95,7 @@ export default function Slot(props: SlotProps) {
                         nativeButton={false}
                         className="bg-green-700 hover:bg-green-800"
                         size="lg"
-                        render={<Link to={"/interview"} target="_blank" rel="noopener noreferrer" />}
+                        render={<Link to={"/interview"} />}
                     >
                         <Video />
                         Enter interview

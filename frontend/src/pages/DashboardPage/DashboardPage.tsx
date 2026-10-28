@@ -205,11 +205,6 @@ export default function DashboardPage() {
         )
     }
 
-    if (session) {
-        console.log(session.user)
-        console.log(session.session)
-    }
-
     return (
         <div className="bg-muted/30">
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
@@ -323,6 +318,7 @@ export default function DashboardPage() {
                             const page = index + 1
                             return (
                                 <PaginationItem
+                                    key={index}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         handlePageChange(page)

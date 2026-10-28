@@ -31,7 +31,7 @@ const difficultyStyles = {
 export default function Slot(props: SlotProps) {
     const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
-    const [ slotDeleteOpen, setSlotDeleteOpen ] = useState(false)
+    const [slotDeleteOpen, setSlotDeleteOpen] = useState(false)
 
     return (
         <Card className="w-full sm:w-auto flex-1 min-w-80 max-w-2xl flex flex-col justify-between">
@@ -60,7 +60,7 @@ export default function Slot(props: SlotProps) {
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>
-                                <SlotDeleteDialog open={slotDeleteOpen} onOpenChange={setSlotDeleteOpen} onConfirm={onDelete}/>
+                                <SlotDeleteDialog open={slotDeleteOpen} onOpenChange={setSlotDeleteOpen} onConfirm={onDelete} />
                             </>
                         )}
                     </div>
@@ -91,7 +91,12 @@ export default function Slot(props: SlotProps) {
             }
             {status === "BOOKED" &&
                 <CardFooter className="flex gap-1">
-                    <Button className="bg-green-700 hover:bg-green-800" size="lg">
+                    <Button
+                        nativeButton={false}
+                        className="bg-green-700 hover:bg-green-800"
+                        size="lg"
+                        render={<Link to={"/interview"} target="_blank" rel="noopener noreferrer" />}
+                    >
                         <Video />
                         Enter interview
                     </Button>
@@ -102,12 +107,15 @@ export default function Slot(props: SlotProps) {
             }
             {status === "COMPLETED" &&
                 <CardFooter className="flex gap-1">
-                    <Link to="/review" className="w-full">
-                        <Button className="bg-gray-600 hover:bg-gray-700 w-full" size="lg">
-                            <RotateCcwClock />
-                            View history
-                        </Button>
-                    </Link>
+                    <Button
+                        className="bg-gray-600 hover:bg-gray-700 w-full"
+                        size="lg"
+                        render={<Link to={"/review"} />}
+                        nativeButton={false}
+                    >
+                        <RotateCcwClock />
+                        View history
+                    </Button>
                 </CardFooter>
             }
         </Card>

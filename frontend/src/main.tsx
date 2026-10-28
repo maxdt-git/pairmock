@@ -16,6 +16,7 @@ import { Toaster } from "@/components/ui/toast";
 import ProfilePage from './pages/ProfilePage/ProfilePage.tsx'
 import RerouteAll from './components/auth/RerouteAll.tsx'
 import GuestRoute from './components/auth/GuestRoute.tsx'
+import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/service" element={<ServicePage />} />
               <Route path="/policy" element={<PolicyPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/interview" element={<InterviewPage />} />
             </Route>
           </Routes>
           <Toaster />

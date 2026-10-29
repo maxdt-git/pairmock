@@ -38,12 +38,12 @@ app.post("/api/notifications", async (req, res) => {
 
   try {
     const session = await auth.api.getSession({
-        headers: fromNodeHeaders(req.headers),
+      headers: fromNodeHeaders(req.headers),
     });
 
     if (!session) {
-        res.status(401).json({ error: "Not authenticated" });
-        return;
+      res.status(401).json({ error: "Not authenticated" });
+      return;
     }
 
     const card = await prisma.notification.create({
@@ -409,7 +409,7 @@ app.delete("/api/slots/:id", async (req, res) => {
           userId: slot.bookerId,
           description: `Your slot has been deleted by the host: ${session.user.name}`,
           status: "NEW",
-          },
+        },
       })
     };
 
@@ -496,10 +496,10 @@ app.patch("/api/slots/:id/book", async (req, res) => {
     // create notif for the slot host when slot is booked
     await prisma.notification.create({
       data: {
-          userId: slot.hostId,
-          description: `Your slot has been booked by ${session.user.name}`,
-          status: "NEW",
-        },
+        userId: slot.hostId,
+        description: `Your slot has been booked by ${session.user.name}`,
+        status: "NEW",
+      },
     });
     res.sendStatus(200);
   } catch (error) {
@@ -566,10 +566,10 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
     // create a notif when book has been cancelled
     await prisma.notification.create({
       data: {
-          userId: slot.hostId,
-          description: `Your slot with ${session.user.name} has been cancelled`,
-          status: "NEW",
-        },
+        userId: slot.hostId,
+        description: `Your slot with ${session.user.name} has been cancelled`,
+        status: "NEW",
+      },
     });
     res.sendStatus(200);
   } catch (error) {
@@ -656,9 +656,9 @@ async function notifThirty() {
       where: {
         status: 'BOOKED',
         AND: [
-          { scheduledAt: { gte: now, lte: schedule} },
+          { scheduledAt: { gte: now, lte: schedule } },
           { infoThirty: false },
-          ],
+        ],
       },
       include: {
         host: {
@@ -676,19 +676,19 @@ async function notifThirty() {
     for (const slot of slots) {
       if (slot.booker) {
         await prisma.notification.create({
-              data: {
-                userId: slot.hostId,
-                description: `Your meeting with ${slot.booker.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
-                status: "NEW",
-                },
-          });
+          data: {
+            userId: slot.hostId,
+            description: `Your meeting with ${slot.booker.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
+            status: "NEW",
+          },
+        });
         if (slot.bookerId) {
           await prisma.notification.create({
-                data: {
-                  userId: slot.bookerId,
-                  description: `Your meeting with ${slot.host.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
-                  status: "NEW",
-                  },
+            data: {
+              userId: slot.bookerId,
+              description: `Your meeting with ${slot.host.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
+              status: "NEW",
+            },
           })
         }
       }
@@ -700,7 +700,7 @@ async function notifThirty() {
         data: {
           infoThirty: true,
         },
-        });
+      });
     }
   }
   catch (error) {

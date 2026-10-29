@@ -10,7 +10,7 @@ import { MonacoBinding } from "y-monaco";
 import * as Y from "yjs";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router';
 
 export const INTERVIEW_LANGUAGES = [
@@ -33,6 +33,7 @@ export default function InterviewPage() {
     const [editor, setEditor] = useState<
         MonacoEditor.IStandaloneCodeEditor | null
     >(null);
+    const settingsRef = useRef<Y.Map<string> | null>(null);
     // will use later for connection status display
     // const [status, setStatus] = useState("connecting");
 
@@ -57,6 +58,16 @@ export default function InterviewPage() {
 
         const doc = new Y.Doc();
         const text = doc.getText("code");
+        const settings = doc.getMap<string>("settings");
+        settingsRef.current = settings;
+
+        const syncLanguage = () => {
+            const sharedLanguage = settings.get("language") ?? "javascript";
+            setLanguage(sharedLanguage);
+        };
+
+        settings.observe(syncLanguage);
+        syncLanguage();
 
         const provider = new HocuspocusProvider({
             url: "ws://localhost:4001",
@@ -79,6 +90,8 @@ export default function InterviewPage() {
 
         return () => {
             // provider.off("status", handleStatus);
+            settings.unobserve(syncLanguage);
+            settingsRef.current = null;
             binding.destroy();
             provider.destroy();
             doc.destroy();
@@ -94,7 +107,10 @@ export default function InterviewPage() {
                             <ArrowLeft /> Dashboard
                         </Link>
                     </Button>
-                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => setLanguage(value ?? "javascript")}>
+                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => {
+                        if (!value) return;
+                        settingsRef.current?.set("language", value);
+                    }}>
                         <SelectTrigger className="w-45">
                             <SelectValue placeholder="Language" />
                         </SelectTrigger>

@@ -482,26 +482,38 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
 
 // DELETE expired slots
 async function cleanExpiredSlots() {
-    const result = await prisma.slot.deleteMany({
-        where: {
-            status: "AVAILABLE",
-            scheduledAt: {
-                lte: new Date(Date.now() + 60 * 60 * 1000),
-            },
-        },
-    });
-    if (result.count > 0) {
-        console.log(`${result.count} expired slots deleted`);
-    }
+  const result = await prisma.slot.deleteMany({
+    where: {
+      status: "AVAILABLE",
+      scheduledAt: {
+        lte: new Date(Date.now() + 60 * 60 * 1000),
+      },
+    },
+  });
+  if (result.count > 0) {
+    console.log(`${result.count} expired slots deleted`);
+  }
 }
 // Program deletion exec
 cron.schedule("* * * * *", async () => {
-    try {
-        await cleanExpiredSlots();
-    } catch (error) {
-        console.error("Slot cleanup failed:", error);
-    }
+  try {
+    await cleanExpiredSlots();
+  } catch (error) {
+    console.error("Slot cleanup failed:", error);
+  }
 });
+
+app.get("/api/interview/:id", async (req, res) => {
+  const id = Number(req.params.id)
+  const result = await prisma.slot.findMany({
+    where: { id },
+    include: {
+      host: true,
+      booker: true
+    }
+  })
+  res.status(201).json(result)
+})
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

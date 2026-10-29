@@ -621,6 +621,13 @@ app.get("/api/interview/:id", async (req, res) => {
             name: true,
             image: true
           }
+        },
+        booker: {
+          select: {
+            id: true,
+            name: true,
+            image: true
+          }
         }
       }
     })

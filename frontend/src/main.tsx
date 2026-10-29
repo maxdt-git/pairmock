@@ -1,8 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import LoginPage from './pages/LoginPage/LoginPage.tsx'
 import RegisterPage from './pages/RegisterPage/RegisterPage.tsx'
 import DashboardPage from './pages/DashboardPage/DashboardPage.tsx'
@@ -15,6 +14,9 @@ import {
 import { ThemeProvider } from './components/ui/theme-provider.tsx'
 import { Toaster } from "@/components/ui/toast";
 import ProfilePage from './pages/ProfilePage/ProfilePage.tsx'
+import RerouteAll from './components/auth/RerouteAll.tsx'
+import GuestRoute from './components/auth/GuestRoute.tsx'
+import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -24,13 +26,18 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <ThemeProvider>
           <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/service" element={<ServicePage />} />
-            <Route path="/policy" element={<PolicyPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route element={<GuestRoute />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+            </Route>
+            <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
+            <Route element={<RerouteAll />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/service" element={<ServicePage />} />
+              <Route path="/policy" element={<PolicyPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/interview/:id" element={<InterviewPage />} />
+            </Route>
           </Routes>
           <Toaster />
         </ThemeProvider>

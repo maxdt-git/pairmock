@@ -41,6 +41,9 @@ model Slot {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @default(now()) @updatedAt
   infoThirty      Boolean    @default(false)
+  googleEventId   String?
+  meetLink        String?
+
 
   host            User       @relation("HostedSlots", fields: [hostId], references: [id])
   booker          User?      @relation("BookedSlots", fields: [bookerId], references: [id])

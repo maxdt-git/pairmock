@@ -16,8 +16,11 @@ export const auth = betterAuth({
 
   socialProviders: {
     google: {
-        clientId: process.env.GOOGLE_CLIENT_ID!,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      scope: ["https://www.googleapis.com/auth/calendar.events"],
+      accessType: "offline",
+      prompt: "select_account consent",
     }
   },
 
@@ -27,8 +30,14 @@ export const auth = betterAuth({
 
   user: {
     deleteUser: {
-        enabled: true,
+      enabled: true,
     }
-  }
+  },
+  
+  account: {
+    accountLinking: {
+      allowDifferentEmails: true
+    }
+  },
 });
 

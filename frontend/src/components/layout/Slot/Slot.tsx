@@ -3,12 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/dateFormat";
-import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2 } from "lucide-react";
+import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2, Ghost } from "lucide-react";
 import SlotDeleteDialog from "./SlotDeleteDialog";
 import { useState } from "react";
 import { Link } from "react-router";
 
 export interface SlotProps {
+    id: number
     imageSrc: string | undefined,
     username: string,
     description: string,
@@ -28,10 +29,10 @@ const difficultyStyles = {
 };
 
 
-export default function AvailableCard(props: SlotProps) {
-    const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
+export default function Slot(props: SlotProps) {
+    const { id, imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
-    const [ slotDeleteOpen, setSlotDeleteOpen ] = useState(false)
+    const [slotDeleteOpen, setSlotDeleteOpen] = useState(false)
 
     return (
         <Card className="w-full sm:w-auto flex-1 min-w-80 max-w-2xl flex flex-col justify-between">
@@ -60,7 +61,7 @@ export default function AvailableCard(props: SlotProps) {
                                 >
                                     <Trash2 className="size-4" />
                                 </Button>
-                                <SlotDeleteDialog open={slotDeleteOpen} onOpenChange={setSlotDeleteOpen} onConfirm={onDelete}/>
+                                <SlotDeleteDialog open={slotDeleteOpen} onOpenChange={setSlotDeleteOpen} onConfirm={onDelete} />
                             </>
                         )}
                     </div>
@@ -83,15 +84,20 @@ export default function AvailableCard(props: SlotProps) {
             </CardContent>
             {status === "AVAILABLE" &&
                 <CardFooter>
-                    <Button className="w-full" size="lg" onClick={onBooking}>
+                    <Button className="w-full" size="lg" onClick={onBooking} disabled={!onBooking}>
                         <CalendarDays />
-                        Book slot
+                        {onBooking ? <p>Book Slot</p> : <p>Hosted Slot</p>}
                     </Button>
                 </CardFooter>
             }
             {status === "BOOKED" &&
                 <CardFooter className="flex gap-1">
-                    <Button className="bg-green-700 hover:bg-green-800" size="lg">
+                    <Button
+                        nativeButton={false}
+                        className="bg-green-700 hover:bg-green-800"
+                        size="lg"
+                        render={<Link to={`/interview/${id}`} />}
+                    >
                         <Video />
                         Enter interview
                     </Button>
@@ -102,12 +108,15 @@ export default function AvailableCard(props: SlotProps) {
             }
             {status === "COMPLETED" &&
                 <CardFooter className="flex gap-1">
-                    <Link to="/review" className="w-full">
-                        <Button className="bg-gray-600 hover:bg-gray-700 w-full" size="lg">
-                            <RotateCcwClock />
-                            View history
-                        </Button>
-                    </Link>
+                    <Button
+                        className="bg-gray-600 hover:bg-gray-700 w-full"
+                        size="lg"
+                        render={<Link to={"/review"} />}
+                        nativeButton={false}
+                    >
+                        <RotateCcwClock />
+                        View history
+                    </Button>
                 </CardFooter>
             }
         </Card>

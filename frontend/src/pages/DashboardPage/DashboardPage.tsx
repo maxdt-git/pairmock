@@ -3,12 +3,12 @@ import UserNavigation from "@/components/layout/UserNavigation/UserNavigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Slot from "@/components/layout/Slot/Slot";
 import type { SlotType } from "@/types/slot";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { useSearchParams } from "react-router";
 import SlotCreation from "@/components/layout/SlotCreation/SlotCreation";
 import { toast } from "@/components/ui/toast";
+import Slot from "@/components/layout/Slot/Slot";
 
 export default function DashboardPage() {
     const { data: session } = authClient.useSession();
@@ -159,7 +159,7 @@ export default function DashboardPage() {
     async function getBookedSlots() {
         const res = await fetch('/api/slots/booked');
         if (!res.ok) {
-            throw new Error('Failed to load posts');
+            throw new Error('Failed to load slots');
         }
         return res.json();
     }
@@ -172,7 +172,7 @@ export default function DashboardPage() {
         })
         const res = await fetch(`/api/slots/available?${params.toString()}`);
         if (!res.ok) {
-            throw new Error('Failed to load posts');
+            throw new Error('Failed to load slots');
         }
         return res.json();
     }
@@ -181,7 +181,6 @@ export default function DashboardPage() {
         queryFn: getBookedSlots,
         refetchInterval: 5 * 1000
     })
-
     const queryAvailable = useQuery({
         queryKey: ['slot-available', { currentPage, difficultyFilter, timeFilter }],
         queryFn: () => getAvailableSlots(currentPage, difficultyFilter, timeFilter),
@@ -206,11 +205,6 @@ export default function DashboardPage() {
         )
     }
 
-    if (session) {
-        console.log(session.user)
-        console.log(session.session)
-    }
-
     return (
         <div className="bg-muted/30">
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
@@ -227,6 +221,7 @@ export default function DashboardPage() {
                         {queryBooked.data?.map((card: SlotType) => (
                             <li key={card.id}>
                                 <Slot
+                                    id={card.id}
                                     imageSrc={card.host.image ?? ""}
                                     username={card.host.name}
                                     description={card.description}
@@ -286,6 +281,7 @@ export default function DashboardPage() {
                             queryAvailable.data?.data.map((card: SlotType) => (
                                 <li key={card.id} className="relative">
                                     <Slot
+                                        id={card.id}
                                         imageSrc={card.host.image ?? ""}
                                         username={card.host.name}
                                         description={card.description}
@@ -297,7 +293,10 @@ export default function DashboardPage() {
                                             card.hostId === session.user.id ?
                                             async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                         }
-                                        onBooking={() => bookSlotMutation.mutateAsync(card.id)}
+                                        onBooking={
+                                            card.hostId !== session.user.id ?
+                                            () => bookSlotMutation.mutateAsync(card.id) : undefined
+                                        }
                                     />
                                 </li>
                             ))
@@ -321,6 +320,7 @@ export default function DashboardPage() {
                             const page = index + 1
                             return (
                                 <PaginationItem
+                                    key={index}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         handlePageChange(page)

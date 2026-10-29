@@ -17,6 +17,79 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+// Post notifications
+app.post("/api/notifications", async (req, res) => {
+  const {
+    description,
+    status,
+  } = req.body ?? {};
+
+  if (
+    typeof description !== "string" || !description.trim() ||
+    typeof status !== "string" || !status.trim()
+  ) {
+    return res.status(400).json({
+      error: "description, are required strings",
+    });
+  }
+
+  try {
+    const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+        res.status(401).json({ error: "Not authenticated" });
+        return;
+    }
+
+    const card = await prisma.notification.create({
+      data: {
+        userId: session.user.id,
+        description: description.trim(),
+        status: status.trim(),
+      },
+    });
+
+    res.status(201).json(card);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to create notification",
+    });
+  }
+});
+
+// Get notifs
+app.get("/api/notifications", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    if (!session) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const currentId = session.user.id
+
+    const entries = await prisma.notification.findMany({
+      take: 6,
+      orderBy: {
+        createdAt: "desc",
+      },
+      where: {
+        userId: currentId,
+      }
+    });
+    res.status(200).json(entries)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to retrieve notifs",
+    })
+  }
+})
+
 // Create a test entry
 app.post("/api/test-entries", async (req, res) => {
   const label = req.body?.label;
@@ -294,7 +367,17 @@ app.delete("/api/slots/:id", async (req, res) => {
         await prisma.slot.delete({
             where: { id },
         });
-
+        // create notif when slot is deleted by the host
+        // if not booked
+        if (slot.bookerId) {
+          await prisma.notification.create({
+            data: {
+              userId: slot.bookerId,
+              description: `Your slot has been deleted by the host: ${session.user.name}`,
+              status: "NEW",
+              },
+            })
+      };
         res.sendStatus(204);
     } catch (error) {
         console.error(error);
@@ -322,7 +405,7 @@ app.patch("/api/slots/:id/book", async (req, res) => {
             return;
         }
 
-        const userId = session.user.id 
+        const userId = session.user.id
         // check if slot exists
         const slot = await prisma.slot.findUnique({
             where: { id },
@@ -347,14 +430,22 @@ app.patch("/api/slots/:id/book", async (req, res) => {
             where: { id, status: "AVAILABLE" },
             data: { status: "BOOKED", bookerId: userId }
         });
-        // 
+        //
         if (result.count === 0) {
             res.status(409).json({
                 error: "Slot is no longer available",
             });
             return;
         }
-        res.sendStatus(200);
+        // create notif for the slot host when slot is booked
+        await prisma.notification.create({
+          data: {
+            userId: slot.hostId,
+            description: `Your slot has been booked by ${session.user.name}`,
+            status: "NEW",
+            },
+      });
+    res.sendStatus(200);
     } catch (error) {
         console.error(error)
         res.status(500).json({
@@ -380,7 +471,7 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
             return;
         }
 
-        const userId = session.user.id 
+        const userId = session.user.id
         // check if slot exists
         const slot = await prisma.slot.findUnique({
             where: { id },
@@ -400,13 +491,21 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
             where: { id, status: "BOOKED", bookerId: userId },
             data: { status: "AVAILABLE", bookerId: null }
         });
-        // 
+        //
         if (result.count === 0) {
             res.status(409).json({
                 error: "Slot is no longer booked",
             });
             return;
         }
+        // create a notif when book has been cancelled
+        await prisma.notification.create({
+          data: {
+            userId: slot.hostId,
+            description: `Your slot with ${session.user.name} has been cancelled`,
+            status: "NEW",
+            },
+      });
         res.sendStatus(200);
     } catch (error) {
         console.error(error)
@@ -417,6 +516,72 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
 })
 
 
+async function notifThirty() {
+  const now = new Date()
+  const schedule = new Date(now.getTime() + 1800000)
+
+  // create notif for the host
+  try {
+    const slots = await prisma.slot.findMany({
+      orderBy: {
+        scheduledAt: "desc",
+      },
+      where: {
+        status: 'BOOKED',
+        AND: [
+          { scheduledAt: { gte: now, lte: schedule} },
+          { infoThirty: false },
+          ],
+      },
+      include: {
+        host: {
+          select: {
+            name: true
+          }
+        },
+        booker: {
+          select: {
+            name: true
+          }
+        }
+      }
+    });
+    for (const slot of slots) {
+      if (slot.booker) {
+        await prisma.notification.create({
+              data: {
+                userId: slot.hostId,
+                description: `Your meeting with ${slot.booker.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
+                status: "NEW",
+                },
+          });
+        if (slot.bookerId) {
+          await prisma.notification.create({
+                data: {
+                  userId: slot.bookerId,
+                  description: `Your meeting with ${slot.host.name} will begin in ${Math.round((slot.scheduledAt.getTime() - now.getTime()) / 1000 / 60)} min`,
+                  status: "NEW",
+                  },
+          })
+        }
+      }
+
+      await prisma.slot.update({
+        where: {
+          id: slot.id,
+        },
+        data: {
+          infoThirty: true,
+        },
+        });
+    }
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
+
+setInterval(notifThirty, 60000)
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);

@@ -71,7 +71,7 @@ export default function InterviewPage() {
 
         const provider = new HocuspocusProvider({
             url: "ws://localhost:4001",
-            name: "monaco-test",
+            name: `inteview-${id}`,
             document: doc
         });
 

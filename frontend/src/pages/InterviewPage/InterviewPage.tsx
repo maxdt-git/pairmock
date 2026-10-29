@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Editor from '@monaco-editor/react';
+import type { editor as MonacoEditor } from "monaco-editor";
+import { HocuspocusProvider } from "@hocuspocus/provider";
+import { MonacoBinding } from "y-monaco";
+import * as Y from "yjs";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 
 export const INTERVIEW_LANGUAGES = [
@@ -26,6 +30,12 @@ export const INTERVIEW_LANGUAGES = [
 
 export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript")
+    const [editor, setEditor] = useState<
+        MonacoEditor.IStandaloneCodeEditor | null
+    >(null);
+    // will use later for connection status display
+    // const [status, setStatus] = useState("connecting");
+
     const { id } = useParams();
     // const queryClient = useQueryClient()
     async function getInterviewData() {
@@ -37,6 +47,44 @@ export default function InterviewPage() {
     }
     const queryInterviewData = useQuery({ queryKey: ["interview"], queryFn: getInterviewData })
     const interviewData = queryInterviewData?.data?.[0]
+
+
+    useEffect(() => {
+        if (!editor) return;
+
+        const model = editor.getModel();
+        if (!model) return;
+
+        const doc = new Y.Doc();
+        const text = doc.getText("code");
+
+        const provider = new HocuspocusProvider({
+            url: "ws://localhost:4001",
+            name: "monaco-test",
+            document: doc
+        });
+
+        const binding = new MonacoBinding(
+            text,
+            model,
+            new Set([editor]),
+            provider.awareness ?? undefined
+        );
+
+        // const handleStatus = (event: { status: string }) => {
+        //     setStatus(event.status);
+        // };
+        // will use later for connection status display
+        // provider.on("status", handleStatus);
+
+        return () => {
+            // provider.off("status", handleStatus);
+            binding.destroy();
+            provider.destroy();
+            doc.destroy();
+        };
+    }, [editor]);
+
     return (
         <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
             <div className='flex items-center justify-between'>
@@ -91,6 +139,7 @@ export default function InterviewPage() {
                         <Editor
                             language={language}
                             theme='vs-dark'
+                            onMount={(instance) => setEditor(instance)}
                         />
                     </div>
                 </ResizablePanel>

@@ -151,6 +151,7 @@ export default function CreateSlotForm({
                         name="durationMinutes"
                         type="number"
                         min={15}
+                        max={120}
                         step={15}
                         defaultValue={30}
                         required

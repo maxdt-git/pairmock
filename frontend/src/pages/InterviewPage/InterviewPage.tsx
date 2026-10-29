@@ -11,7 +11,7 @@ import * as Y from "yjs";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, Navigate, useParams } from 'react-router';
 
 export const INTERVIEW_LANGUAGES = [
     { value: 'python', label: 'Python' },
@@ -38,7 +38,6 @@ export default function InterviewPage() {
     // const [status, setStatus] = useState("connecting");
 
     const { id } = useParams();
-    // const queryClient = useQueryClient()
     async function getInterviewData() {
         const res = await fetch(`/api/interview/${id}`)
         if (!res.ok) {
@@ -46,12 +45,12 @@ export default function InterviewPage() {
         }
         return res.json()
     }
-    const queryInterviewData = useQuery({ queryKey: ["interview"], queryFn: getInterviewData })
-    const interviewData = queryInterviewData?.data?.[0]
+    const queryInterviewData = useQuery({ queryKey: ["interview", "id"], queryFn: getInterviewData })
+    const interviewData = queryInterviewData?.data
 
 
     useEffect(() => {
-        if (!editor) return;
+        if (!editor || !interviewData) return;
 
         const model = editor.getModel();
         if (!model) return;
@@ -97,6 +96,10 @@ export default function InterviewPage() {
             doc.destroy();
         };
     }, [editor]);
+
+    if (!interviewData) {
+        return <Navigate to={"/dashboard"} />
+    }
 
     return (
         <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">

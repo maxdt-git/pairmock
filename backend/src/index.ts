@@ -505,15 +505,43 @@ cron.schedule("* * * * *", async () => {
 });
 
 app.get("/api/interview/:id", async (req, res) => {
-  const id = Number(req.params.id)
-  const result = await prisma.slot.findMany({
-    where: { id },
-    include: {
-      host: true,
-      booker: true
+  try {
+    const id = Number(req.params.id)
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    if (!session?.user?.id) {
+      return res.status(401).json({ error: "Unauthorized: Please log in" });
     }
-  })
-  res.status(201).json(result)
+    const slot = await prisma.slot.findUnique({
+      where: { id },
+      include: {
+        host: {
+          select: {
+            id: true,
+            name: true,
+            image: true
+          }
+        },
+        booker: {
+          select: {
+            id: true,
+            name: true,
+            image: true
+          }
+        }
+      }
+    })
+    if (!slot) {
+      return res.status(404).json({ error: "Interview not found" });
+    }
+    if (session.user.id !== slot.host?.id && session.user.id !== slot.booker?.id) {
+      return res.status(403).json({ error: "Forbidden: Access denied" });
+    }
+    res.status(200).json(slot)
+  } catch (e) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 })
 
 app.listen(PORT, "0.0.0.0", () => {
@@ -521,5 +549,5 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 collaborationServer.listen().catch((error) => {
-    console.error("Failed to start Hocuspocus:", error);
+  console.error("Failed to start Hocuspocus:", error);
 });

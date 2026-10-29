@@ -15,6 +15,9 @@ import {
 import LogOutDialog from "./LogOutDialog";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import type { Notif } from "@/types/notifications";
+
 
 interface UserNavigationProps {
     imageSrc: string
@@ -31,11 +34,34 @@ export default function UserNavigation(props: UserNavigationProps) {
         navigate("/profile")
     }
 
+    async function getNotifications() {
+      const res = await fetch('/api/notifications');
+      if (!res.ok) {
+        throw new Error('Failed to load notifs');
+      }
+      return res.json();
+    }
+
+    const notifFound = useQuery({
+      queryKey: ['notifications'],
+      queryFn: getNotifications,
+      refetchInterval: 5 * 1000
+    })
+
     return (
         <div className="flex items-center gap-3">
-            <Button variant="outline" size="icon">
-                <Bell />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Bell></Bell>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {notifFound?.data?.map((Notif: Notif) => (
+                  <DropdownMenuItem key={Notif.id}>
+                      {Notif.description}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <ModeToggle />
             <DropdownMenu>
                 <DropdownMenuTrigger render={<Button variant="outline" className="py-6">

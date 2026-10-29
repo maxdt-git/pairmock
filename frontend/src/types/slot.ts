@@ -5,7 +5,7 @@ export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 export interface SlotType {
   id: number;
   hostId: string;
-  bookerId: string | null;     
+  bookerId: string | null;
   host: {
       name: string;
       image: string | null;

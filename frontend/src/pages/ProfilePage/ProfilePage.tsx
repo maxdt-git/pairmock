@@ -153,7 +153,7 @@ export default function ProfilePage() {
               </ItemContent>
             </Item>
           </div>
-          <h2 className="text-xl font-bold ml-1">Passed interviws:</h2>
+          <h2 className="text-xl font-bold ml-1">Passed interviews:</h2>
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5">
             {queryCompleted?.data?.map((card: SlotType) => (
               <li key={card.id}>

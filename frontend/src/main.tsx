@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage.tsx'
 import RerouteAll from './components/auth/RerouteAll.tsx'
 import GuestRoute from './components/auth/GuestRoute.tsx'
 import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
+import TestingYPage from './pages/TestingYPage/TestingYPage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -32,6 +33,7 @@ createRoot(document.getElementById('root')!).render(
             </Route>
             <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
             <Route element={<RerouteAll />}>
+              <Route path="/test" element={<TestingYPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/service" element={<ServicePage />} />
               <Route path="/policy" element={<PolicyPage />} />

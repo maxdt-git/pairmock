@@ -4,6 +4,7 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.ts";
 import { createMeetAndCalendarEvent, deleteCalendarEvent } from "./lib/googleCalendar.ts";
 import cron from "node-cron";
+import { collaborationServer } from "./collaboration.ts";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -505,4 +506,8 @@ cron.schedule("* * * * *", async () => {
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);
+});
+
+collaborationServer.listen().catch((error) => {
+    console.error("Failed to start Hocuspocus:", error);
 });

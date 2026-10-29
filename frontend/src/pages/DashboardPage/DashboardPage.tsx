@@ -159,7 +159,7 @@ export default function DashboardPage() {
     async function getBookedSlots() {
         const res = await fetch('/api/slots/booked');
         if (!res.ok) {
-            throw new Error('Failed to load posts');
+            throw new Error('Failed to load slots');
         }
         return res.json();
     }
@@ -172,7 +172,7 @@ export default function DashboardPage() {
         })
         const res = await fetch(`/api/slots/available?${params.toString()}`);
         if (!res.ok) {
-            throw new Error('Failed to load posts');
+            throw new Error('Failed to load slots');
         }
         return res.json();
     }
@@ -221,6 +221,7 @@ export default function DashboardPage() {
                         {queryBooked.data?.map((card: SlotType) => (
                             <li key={card.id}>
                                 <Slot
+                                    id={card.id}
                                     imageSrc={card.host.image ?? ""}
                                     username={card.host.name}
                                     description={card.description}
@@ -280,6 +281,7 @@ export default function DashboardPage() {
                             queryAvailable.data?.data.map((card: SlotType) => (
                                 <li key={card.id} className="relative">
                                     <Slot
+                                        id={card.id}
                                         imageSrc={card.host.image ?? ""}
                                         username={card.host.name}
                                         description={card.description}

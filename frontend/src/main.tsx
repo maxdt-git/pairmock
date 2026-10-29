@@ -36,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/service" element={<ServicePage />} />
               <Route path="/policy" element={<PolicyPage />} />
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/interview" element={<InterviewPage />} />
+              <Route path="/interview/:id" element={<InterviewPage />} />
             </Route>
           </Routes>
           <Toaster />

@@ -1,51 +1,86 @@
 import Footer from '@/components/layout/Footer/Footer';
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Editor from '@monaco-editor/react';
-import { ArrowLeft } from 'lucide-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Video } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 export const INTERVIEW_LANGUAGES = [
-  { value: 'python', label: 'Python' },
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'java', label: 'Java' },
-  { value: 'cpp', label: 'C++' },
-  { value: 'csharp', label: 'C#' },
-  { value: 'go', label: 'Go' },
-  { value: 'rust', label: 'Rust' },
-  { value: 'sql', label: 'SQL' },
-  { value: 'ruby', label: 'Ruby' },
-  { value: 'swift', label: 'Swift' },
-  { value: 'kotlin', label: 'Kotlin' }
+    { value: 'python', label: 'Python' },
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'typescript', label: 'TypeScript' },
+    { value: 'java', label: 'Java' },
+    { value: 'cpp', label: 'C++' },
+    { value: 'csharp', label: 'C#' },
+    { value: 'go', label: 'Go' },
+    { value: 'rust', label: 'Rust' },
+    { value: 'sql', label: 'SQL' },
+    { value: 'ruby', label: 'Ruby' },
+    { value: 'swift', label: 'Swift' },
+    { value: 'kotlin', label: 'Kotlin' }
 ];
 
 export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript")
+    const { id } = useParams();
+    // const queryClient = useQueryClient()
+    async function getInterviewData() {
+        const res = await fetch(`/api/interview/${id}`)
+        if (!res.ok) {
+            throw new Error('Failed to load data');
+        }
+        return res.json()
+    }
+    const queryInterviewData = useQuery({ queryKey: ["interview"], queryFn: getInterviewData })
+    const interviewData = queryInterviewData?.data?.[0]
     return (
         <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
-            <div className="mb-4 flex items-center gap-4">
-                <Button variant="outline" size={"lg"}>
-                    <Link to={"/dashboard"} className="flex gap-2 items-center">
-                        <ArrowLeft /> Dashboard
-                    </Link>
-                </Button>
-                <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => setLanguage(value ?? "javascript")}>
-                    <SelectTrigger className="w-45">
-                        <SelectValue placeholder="Language" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {INTERVIEW_LANGUAGES.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+            <div className='flex items-center justify-between'>
+                <div className="mb-4 flex items-center gap-4">
+                    <Button variant="outline" size={"lg"}>
+                        <Link to={"/dashboard"} className="flex gap-2 items-center">
+                            <ArrowLeft /> Dashboard
+                        </Link>
+                    </Button>
+                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => setLanguage(value ?? "javascript")}>
+                        <SelectTrigger className="w-45">
+                            <SelectValue placeholder="Language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {INTERVIEW_LANGUAGES.map((item) => (
+                                    <SelectItem key={item.value} value={item.value}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="mb-4 flex items-center gap-3">
+                    <AvatarGroup>
+                        <Avatar className="mr-2">
+                            <AvatarImage src={interviewData?.host.image} alt={interviewData?.host.name} />
+                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+                        </Avatar>
+                        <Avatar>
+                            <AvatarImage src={interviewData?.booker.image} alt={interviewData?.booker.name} />
+                            <AvatarFallback>LR</AvatarFallback>
+                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+                        </Avatar>
+                    </AvatarGroup>
+                    {interviewData?.meetLink &&
+                        <Button render={<a href={interviewData.meetLink} target='_blank' rel="noopener noreferrer"></a>} nativeButton={false}>
+                            <Video /> Join Google Meet
+                        </Button>
+                    }
+                </div>
+
             </div>
             <ResizablePanelGroup
                 orientation="horizontal"

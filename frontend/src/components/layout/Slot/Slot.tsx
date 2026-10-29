@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 export interface SlotProps {
+    id: number
     imageSrc: string | undefined,
     username: string,
     description: string,
@@ -29,7 +30,7 @@ const difficultyStyles = {
 
 
 export default function Slot(props: SlotProps) {
-    const { imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
+    const { id, imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     const [slotDeleteOpen, setSlotDeleteOpen] = useState(false)
 
@@ -95,7 +96,7 @@ export default function Slot(props: SlotProps) {
                         nativeButton={false}
                         className="bg-green-700 hover:bg-green-800"
                         size="lg"
-                        render={<Link to={"/interview"} />}
+                        render={<Link to={`/interview/${id}`} />}
                     >
                         <Video />
                         Enter interview

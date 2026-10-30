@@ -9,13 +9,25 @@ import { HocuspocusProvider } from "@hocuspocus/provider";
 import { MonacoBinding } from "y-monaco";
 import * as Y from "yjs";
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Video } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
-import { Questionnaire, QuestionnaireActions, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireDescription, QuestionnaireError, QuestionnaireInput, QuestionnaireItem, QuestionnaireNext, QuestionnairePrevious, QuestionnaireProgress, QuestionnaireSkip, QuestionnaireSubmit, QuestionnaireTitle } from '@/components/ui/questionnaire';
+import {
+    Questionnaire,
+    QuestionnaireActions,
+    QuestionnaireChoice,
+    QuestionnaireChoices,
+    QuestionnaireDescription,
+    QuestionnaireError,
+    QuestionnaireInput,
+    QuestionnaireItem,
+    QuestionnaireNext,
+    QuestionnairePrevious,
+    QuestionnaireProgress,
+    QuestionnaireSkip,
+    QuestionnaireSubmit,
+    QuestionnaireTitle
+} from '@/components/ui/questionnaire';
 import { toast } from '@/components/ui/toast';
 
 export const INTERVIEW_LANGUAGES = [
@@ -118,94 +130,75 @@ const questionnaireItems = [
         required: true,
         title: "What was the final result of the coding task?",
     },
-] as const
-
+] as const;
 
 export default function InterviewPage() {
-    const [language, setLanguage] = useState("javascript")
-    const [editor, setEditor] = useState<
-        MonacoEditor.IStandaloneCodeEditor | null
-    >(null);
+    const [language, setLanguage] = useState("javascript");
+    const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const settingsRef = useRef<Y.Map<string> | null>(null);
-    // will use later for connection status display
-    // const [status, setStatus] = useState("connecting");
 
     const { id } = useParams();
+
     async function getInterviewData() {
-        const res = await fetch(`/api/interview/${id}`)
+        const res = await fetch(`/api/interview/${id}`);
         if (!res.ok) {
             throw new Error('Failed to load data');
         }
-        return res.json()
+        return res.json();
     }
-    const { data, isLoading, isError } = useQuery({ queryKey: ["interview", id], queryFn: getInterviewData })
-    const interviewData = data
 
-    const queryInterviewData = useQuery({ queryKey: ["interview", id], queryFn: getInterviewData })
-    
-    const interviewData = queryInterviewData?.data
-    
+    const queryInterviewData = useQuery({
+        queryKey: ["interview", id],
+        queryFn: getInterviewData,
+        enabled: Boolean(id)
+    });
+
+    const interviewData = queryInterviewData.data;
+
     useEffect(() => {
         if (!editor || !interviewData) return;
-        
+
         const model = editor.getModel();
         if (!model) return;
-        
+
         const doc = new Y.Doc();
         const text = doc.getText("code");
         const settings = doc.getMap<string>("settings");
         settingsRef.current = settings;
-        
+
         const syncLanguage = () => {
             const sharedLanguage = settings.get("language") ?? "javascript";
             setLanguage(sharedLanguage);
         };
-        
+
         settings.observe(syncLanguage);
         syncLanguage();
-        
+
         const provider = new HocuspocusProvider({
             url: "ws://localhost:4001",
             name: `interview-${id}`,
             document: doc
         });
-        
+
         const binding = new MonacoBinding(
             text,
             model,
             new Set([editor]),
             provider.awareness ?? undefined
         );
-        
-        // const handleStatus = (event: { status: string }) => {
-        //     setStatus(event.status);
-        // };
-        // will use later for connection status display
-        // provider.on("status", handleStatus);
 
         return () => {
-            // provider.off("status", handleStatus);
+            settings.unobserve(syncLanguage);
+            settingsRef.current = null;
             binding.destroy();
             provider.destroy();
             doc.destroy();
         };
-    }, [editor]);
-
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center min-h-dvh">
-                <div className="text-muted-foreground animate-pulse">Loading interview session...</div>
-            </div>
-        );
-    }
-
-    if (isError || !interviewData) {
-        return <Navigate to="/dashboard" replace />;
-    }
+    }, [editor, id, interviewData]);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        const formData = new FormData(event.currentTarget)
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
         const answers = {
             problemSolving: formData.get("problemSolving"),
             codeQuality: formData.getAll("codeQuality"),
@@ -213,63 +206,52 @@ export default function InterviewPage() {
             communication: formData.get("communication"),
             signals: formData.getAll("signals"),
             outcome: formData.get("outcome"),
-        }
+        };
         toast.add({
             type: "success",
             description: "Feedback has been saved",
             priority: "high",
         });
-        console.log(answers)
+        console.log(answers);
+    }
+
+    if (queryInterviewData.isPending) {
+        return (
+            <div className="flex items-center justify-center min-h-dvh">
+                <div className="flex flex-col items-center gap-2">
+                    <p className="text-muted-foreground">Loading interview session...</p>
+                    <LoaderCircle className="size-8 animate-spin text-muted-foreground" />
+                </div>
+            </div>
+        );
+    }
+
+    if (queryInterviewData.isError || !interviewData) {
+        console.warn("[INTERVIEW REDIRECT]", {
+            status: queryInterviewData.status,
+            isPending: queryInterviewData.isPending,
+            error: queryInterviewData.error,
+        });
+        return <Navigate to="/dashboard" replace />;
     }
 
     return (
         <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
-            //     setStatus(event.status);
-            // };
-            // will use later for connection status display
-            // provider.on("status", handleStatus);
-            
-            return () => {
-                // provider.off("status", handleStatus);
-                settings.unobserve(syncLanguage);
-                settingsRef.current = null;
-                binding.destroy();
-                provider.destroy();
-                doc.destroy();
-            };
-        }, [editor]);
-        
-        if (queryInterviewData.isPending) {
-            return (
-                <div className='flex items-center justify-center min-h-screen'>
-                    <div className='flex flex-col items-center gap-2'>
-                        <p>Loading...</p>
-                        <LoaderCircle className='size-8 animate-spin' />
-                    </div>
-                </div>
-            )
-        }
-        if (!interviewData) {
-            console.warn("[INTERVIEW REDIRECT]", {
-                status: queryInterviewData.status,
-                isPending: queryInterviewData.isPending,
-                error: queryInterviewData.error,
-            });
-            return <Navigate to={"/dashboard"} />
-        }
-        return (
-            <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
-            <div className='flex items-center justify-between'>
+            <div className="flex items-center justify-between">
                 <div className="mb-4 flex items-center gap-4">
-                    <Button variant="outline" size={"lg"}>
-                        <Link to={"/dashboard"} className="flex gap-2 items-center">
+                    <Button variant="outline" size="lg">
+                        <Link to="/dashboard" className="flex gap-2 items-center">
                             <ArrowLeft /> Dashboard
                         </Link>
                     </Button>
-                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => {
-                        if (!value) return;
-                        settingsRef.current?.set("language", value);
-                    }}>
+                    <Select
+                        items={INTERVIEW_LANGUAGES}
+                        value={language}
+                        onValueChange={(value) => {
+                            if (!value) return;
+                            settingsRef.current?.set("language", value);
+                        }}
+                    >
                         <SelectTrigger className="w-45">
                             <SelectValue placeholder="Language" />
                         </SelectTrigger>
@@ -287,23 +269,25 @@ export default function InterviewPage() {
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>
                         <Avatar className="mr-2">
-                            <AvatarImage src={interviewData?.host.image} alt={interviewData?.host.name} />
+                            <AvatarImage src={interviewData?.host?.image} alt={interviewData?.host?.name} />
                             <AvatarFallback>CN</AvatarFallback>
                             <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                         <Avatar>
-                            <AvatarImage src={interviewData?.booker.image} alt={interviewData?.booker.name} />
+                            <AvatarImage src={interviewData?.booker?.image} alt={interviewData?.booker?.name} />
                             <AvatarFallback>LR</AvatarFallback>
                             <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </AvatarGroup>
-                    {interviewData?.meetLink &&
-                        <Button render={<a href={interviewData.meetLink} target='_blank' rel="noopener noreferrer"></a>} nativeButton={false}>
+                    {interviewData?.meetLink && (
+                        <Button
+                            render={<a href={interviewData.meetLink} target="_blank" rel="noopener noreferrer"></a>}
+                            nativeButton={false}
+                        >
                             <Video /> Join Google Meet
                         </Button>
-                    }
+                    )}
                 </div>
-
             </div>
             <ResizablePanelGroup
                 orientation="horizontal"
@@ -313,7 +297,7 @@ export default function InterviewPage() {
                     <div className="flex h-full items-center justify-center">
                         <Editor
                             language={language}
-                            theme='vs-dark'
+                            theme="vs-dark"
                             onMount={(instance) => setEditor(instance)}
                         />
                     </div>
@@ -382,6 +366,6 @@ export default function InterviewPage() {
                 </ResizablePanel>
             </ResizablePanelGroup>
             <Footer />
-        </main >
+        </main>
     );
 }

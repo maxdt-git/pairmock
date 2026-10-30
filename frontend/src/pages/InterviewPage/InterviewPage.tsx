@@ -11,6 +11,9 @@ import * as Y from "yjs";
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Video } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
 import { Questionnaire, QuestionnaireActions, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireDescription, QuestionnaireError, QuestionnaireInput, QuestionnaireItem, QuestionnaireNext, QuestionnairePrevious, QuestionnaireProgress, QuestionnaireSkip, QuestionnaireSubmit, QuestionnaireTitle } from '@/components/ui/questionnaire';
 import { toast } from '@/components/ui/toast';
@@ -123,6 +126,7 @@ export default function InterviewPage() {
     const [editor, setEditor] = useState<
         MonacoEditor.IStandaloneCodeEditor | null
     >(null);
+    const settingsRef = useRef<Y.Map<string> | null>(null);
     // will use later for connection status display
     // const [status, setStatus] = useState("connecting");
 
@@ -137,28 +141,42 @@ export default function InterviewPage() {
     const { data, isLoading, isError } = useQuery({ queryKey: ["interview", id], queryFn: getInterviewData })
     const interviewData = data
 
+    const queryInterviewData = useQuery({ queryKey: ["interview", id], queryFn: getInterviewData })
+    
+    const interviewData = queryInterviewData?.data
+    
     useEffect(() => {
         if (!editor || !interviewData) return;
-
+        
         const model = editor.getModel();
         if (!model) return;
-
+        
         const doc = new Y.Doc();
         const text = doc.getText("code");
-
+        const settings = doc.getMap<string>("settings");
+        settingsRef.current = settings;
+        
+        const syncLanguage = () => {
+            const sharedLanguage = settings.get("language") ?? "javascript";
+            setLanguage(sharedLanguage);
+        };
+        
+        settings.observe(syncLanguage);
+        syncLanguage();
+        
         const provider = new HocuspocusProvider({
             url: "ws://localhost:4001",
-            name: `inteview-${id}`,
+            name: `interview-${id}`,
             document: doc
         });
-
+        
         const binding = new MonacoBinding(
             text,
             model,
             new Set([editor]),
             provider.awareness ?? undefined
         );
-
+        
         // const handleStatus = (event: { status: string }) => {
         //     setStatus(event.status);
         // };
@@ -206,6 +224,41 @@ export default function InterviewPage() {
 
     return (
         <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
+            //     setStatus(event.status);
+            // };
+            // will use later for connection status display
+            // provider.on("status", handleStatus);
+            
+            return () => {
+                // provider.off("status", handleStatus);
+                settings.unobserve(syncLanguage);
+                settingsRef.current = null;
+                binding.destroy();
+                provider.destroy();
+                doc.destroy();
+            };
+        }, [editor]);
+        
+        if (queryInterviewData.isPending) {
+            return (
+                <div className='flex items-center justify-center min-h-screen'>
+                    <div className='flex flex-col items-center gap-2'>
+                        <p>Loading...</p>
+                        <LoaderCircle className='size-8 animate-spin' />
+                    </div>
+                </div>
+            )
+        }
+        if (!interviewData) {
+            console.warn("[INTERVIEW REDIRECT]", {
+                status: queryInterviewData.status,
+                isPending: queryInterviewData.isPending,
+                error: queryInterviewData.error,
+            });
+            return <Navigate to={"/dashboard"} />
+        }
+        return (
+            <main className="max-w-full p-5 flex flex-col grow mx-auto min-h-dvh">
             <div className='flex items-center justify-between'>
                 <div className="mb-4 flex items-center gap-4">
                     <Button variant="outline" size={"lg"}>
@@ -213,7 +266,10 @@ export default function InterviewPage() {
                             <ArrowLeft /> Dashboard
                         </Link>
                     </Button>
-                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => setLanguage(value ?? "javascript")}>
+                    <Select items={INTERVIEW_LANGUAGES} value={language} onValueChange={(value) => {
+                        if (!value) return;
+                        settingsRef.current?.set("language", value);
+                    }}>
                         <SelectTrigger className="w-45">
                             <SelectValue placeholder="Language" />
                         </SelectTrigger>

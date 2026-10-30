@@ -69,6 +69,8 @@ Origin: http://localhost:3000
   "status": "COMPLETED"
 }
 
+
+
 ### Get all AvailableCards
 GET http://localhost:4000/api/slots/available
 
@@ -78,6 +80,11 @@ GET http://localhost:4000/api/slots/booked
 ### Book slot
 PATCH http://localhost:4000/api/slots/8/book
 
+{
+  "description": "Test1",
+  "status": "COMPLETED"
+}
+
 ### 1. Sign In (Capture response into variable 'authSession')
 # @name authSession
 POST http://localhost:4000/api/auth/sign-in/email
@@ -85,13 +92,36 @@ Content-Type: application/json
 Origin: http://localhost:3000
 
 {
-  "email": "testuser2@example.com",
-  "password": "MySecurePassword123"
+  "description": "Test1",
+  "status": "COMPLETED"
 }
 
-### 2. Verify Session (Checks if connection/session is valid)
+### get notifs
+GET http://localhost:4000/api/notifications/
+{
+  "email": "testuser2@example.com",
+  "password": "MySecurePassword123!"
+}
+
+### 2. Verify Session
 GET http://localhost:4000/api/auth/get-session
 Cookie: {{authSession.response.headers.Set-Cookie}}
+
+### 3. Post Notification (Authenticated)
+POST http://localhost:4000/api/notifications
+Content-Type: application/json
+Origin: http://localhost:3000
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
+{
+  "description": "New appointment booked",
+  "status": "UNREAD"
+}
+
+### 4. Get Notifications (Authenticated)
+GET http://localhost:4000/api/notifications
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
 
 ### 3. Create a Slot (Authenticated)
 POST http://localhost:4000/api/slots

@@ -28,6 +28,9 @@ backlogs:
 ps:
 	$(COMPOSE) ps
 
+opendb:
+	$(COMPOSE) exec db sh -c 'exec psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
+
 # Prepare host-side dependencies for VS Code / TypeScript in both projects.
 editor-deps: editor-deps-frontend editor-deps-backend
 	@echo "Editor dependencies ready for frontend and backend!"

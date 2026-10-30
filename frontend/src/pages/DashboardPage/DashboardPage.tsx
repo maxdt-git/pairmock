@@ -23,7 +23,7 @@ export default function DashboardPage() {
         mutationFn: async (slotId: SlotType["id"]) => {
             const response = await fetch(`/api/slots/${slotId}/book`, {
                 method: "PATCH",
-            });   
+            });
             if (!response.ok) {
                 throw new Error(`Failed to book slot: ${response.status}`);
             }
@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
         onError: (error) => {
             console.error(error);
-            
+
             toast.add({
                 title: "Booking failed",
                 description: "Unable to book this slot. Retry later",
@@ -60,7 +60,7 @@ export default function DashboardPage() {
         mutationFn: async (slotId: SlotType["id"]) => {
             const response = await fetch(`/api/slots/${slotId}/cancel-book`, {
                 method: "PATCH",
-            });   
+            });
             if (!response.ok) {
                 throw new Error(`Failed to cancel slot: ${response.status}`);
             }
@@ -74,7 +74,7 @@ export default function DashboardPage() {
                 queryClient.invalidateQueries({
                     queryKey: ["slot-booked"],
                 }),
-            ]);   
+            ]);
             toast.add({
                 title: "Slot Canceled!",
                 description: "This slot has been canceled successfully.",
@@ -84,7 +84,7 @@ export default function DashboardPage() {
 
         onError: (error) => {
             console.error(error);
-            
+
             toast.add({
                 title: "Cancelation failed",
                 description: "Unable to cancel this slot. Retry later",
@@ -97,7 +97,7 @@ export default function DashboardPage() {
         mutationFn: async (slotId: SlotType["id"]) => {
             const response = await fetch(`/api/slots/${slotId}`, {
                 method: "DELETE",
-            });   
+            });
             if (!response.ok) {
                 throw new Error(`Failed to delete slot: ${response.status}`);
             }
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                 queryClient.invalidateQueries({
                     queryKey: ["slot-booked"],
                 }),
-            ]);   
+            ]);
             toast.add({
                 title: "Slot deleted!",
                 description: "Your slot has been deleted successfully.",
@@ -121,7 +121,7 @@ export default function DashboardPage() {
 
         onError: (error) => {
             console.error(error);
-            
+
             toast.add({
                 title: "Deletion failed",
                 description: "Unable to delete this slot.",
@@ -176,10 +176,10 @@ export default function DashboardPage() {
         }
         return res.json();
     }
-    const queryBooked = useQuery({ 
+    const queryBooked = useQuery({
         queryKey: ['slot-booked'],
         queryFn: getBookedSlots,
-        refetchInterval: 5 * 1000 
+        refetchInterval: 5 * 1000
     })
     const queryAvailable = useQuery({
         queryKey: ['slot-available', { currentPage, difficultyFilter, timeFilter }],

@@ -51,6 +51,7 @@ export type SlotMinAggregateOutputType = {
   infoThirty: boolean | null
   googleEventId: string | null
   meetLink: string | null
+  code: string | null
 }
 
 export type SlotMaxAggregateOutputType = {
@@ -68,6 +69,7 @@ export type SlotMaxAggregateOutputType = {
   infoThirty: boolean | null
   googleEventId: string | null
   meetLink: string | null
+  code: string | null
 }
 
 export type SlotCountAggregateOutputType = {
@@ -85,6 +87,9 @@ export type SlotCountAggregateOutputType = {
   infoThirty: number
   googleEventId: number
   meetLink: number
+  code: number
+  hostFeedback: number
+  bookerFeedback: number
   _all: number
 }
 
@@ -114,6 +119,7 @@ export type SlotMinAggregateInputType = {
   infoThirty?: true
   googleEventId?: true
   meetLink?: true
+  code?: true
 }
 
 export type SlotMaxAggregateInputType = {
@@ -131,6 +137,7 @@ export type SlotMaxAggregateInputType = {
   infoThirty?: true
   googleEventId?: true
   meetLink?: true
+  code?: true
 }
 
 export type SlotCountAggregateInputType = {
@@ -148,6 +155,9 @@ export type SlotCountAggregateInputType = {
   infoThirty?: true
   googleEventId?: true
   meetLink?: true
+  code?: true
+  hostFeedback?: true
+  bookerFeedback?: true
   _all?: true
 }
 
@@ -252,6 +262,9 @@ export type SlotGroupByOutputType = {
   infoThirty: boolean
   googleEventId: string | null
   meetLink: string | null
+  code: string | null
+  hostFeedback: runtime.JsonValue | null
+  bookerFeedback: runtime.JsonValue | null
   _count: SlotCountAggregateOutputType | null
   _avg: SlotAvgAggregateOutputType | null
   _sum: SlotSumAggregateOutputType | null
@@ -292,6 +305,9 @@ export type SlotWhereInput = {
   infoThirty?: Prisma.BoolFilter<"Slot"> | boolean
   googleEventId?: Prisma.StringNullableFilter<"Slot"> | string | null
   meetLink?: Prisma.StringNullableFilter<"Slot"> | string | null
+  code?: Prisma.StringNullableFilter<"Slot"> | string | null
+  hostFeedback?: Prisma.JsonNullableFilter<"Slot">
+  bookerFeedback?: Prisma.JsonNullableFilter<"Slot">
   host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   booker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -311,6 +327,9 @@ export type SlotOrderByWithRelationInput = {
   infoThirty?: Prisma.SortOrder
   googleEventId?: Prisma.SortOrderInput | Prisma.SortOrder
   meetLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  code?: Prisma.SortOrderInput | Prisma.SortOrder
+  hostFeedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookerFeedback?: Prisma.SortOrderInput | Prisma.SortOrder
   host?: Prisma.UserOrderByWithRelationInput
   booker?: Prisma.UserOrderByWithRelationInput
 }
@@ -333,6 +352,9 @@ export type SlotWhereUniqueInput = Prisma.AtLeast<{
   infoThirty?: Prisma.BoolFilter<"Slot"> | boolean
   googleEventId?: Prisma.StringNullableFilter<"Slot"> | string | null
   meetLink?: Prisma.StringNullableFilter<"Slot"> | string | null
+  code?: Prisma.StringNullableFilter<"Slot"> | string | null
+  hostFeedback?: Prisma.JsonNullableFilter<"Slot">
+  bookerFeedback?: Prisma.JsonNullableFilter<"Slot">
   host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   booker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
@@ -352,6 +374,9 @@ export type SlotOrderByWithAggregationInput = {
   infoThirty?: Prisma.SortOrder
   googleEventId?: Prisma.SortOrderInput | Prisma.SortOrder
   meetLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  code?: Prisma.SortOrderInput | Prisma.SortOrder
+  hostFeedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookerFeedback?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SlotCountOrderByAggregateInput
   _avg?: Prisma.SlotAvgOrderByAggregateInput
   _max?: Prisma.SlotMaxOrderByAggregateInput
@@ -377,6 +402,9 @@ export type SlotScalarWhereWithAggregatesInput = {
   infoThirty?: Prisma.BoolWithAggregatesFilter<"Slot"> | boolean
   googleEventId?: Prisma.StringNullableWithAggregatesFilter<"Slot"> | string | null
   meetLink?: Prisma.StringNullableWithAggregatesFilter<"Slot"> | string | null
+  code?: Prisma.StringNullableWithAggregatesFilter<"Slot"> | string | null
+  hostFeedback?: Prisma.JsonNullableWithAggregatesFilter<"Slot">
+  bookerFeedback?: Prisma.JsonNullableWithAggregatesFilter<"Slot">
 }
 
 export type SlotCreateInput = {
@@ -391,6 +419,9 @@ export type SlotCreateInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   host: Prisma.UserCreateNestedOneWithoutHostedSlotsInput
   booker?: Prisma.UserCreateNestedOneWithoutBookedSlotsInput
 }
@@ -410,6 +441,9 @@ export type SlotUncheckedCreateInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUpdateInput = {
@@ -424,6 +458,9 @@ export type SlotUpdateInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   host?: Prisma.UserUpdateOneRequiredWithoutHostedSlotsNestedInput
   booker?: Prisma.UserUpdateOneWithoutBookedSlotsNestedInput
 }
@@ -443,6 +480,9 @@ export type SlotUncheckedUpdateInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotCreateManyInput = {
@@ -460,6 +500,9 @@ export type SlotCreateManyInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUpdateManyMutationInput = {
@@ -474,6 +517,9 @@ export type SlotUpdateManyMutationInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUncheckedUpdateManyInput = {
@@ -491,6 +537,9 @@ export type SlotUncheckedUpdateManyInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotCountOrderByAggregateInput = {
@@ -508,6 +557,9 @@ export type SlotCountOrderByAggregateInput = {
   infoThirty?: Prisma.SortOrder
   googleEventId?: Prisma.SortOrder
   meetLink?: Prisma.SortOrder
+  code?: Prisma.SortOrder
+  hostFeedback?: Prisma.SortOrder
+  bookerFeedback?: Prisma.SortOrder
 }
 
 export type SlotAvgOrderByAggregateInput = {
@@ -530,6 +582,7 @@ export type SlotMaxOrderByAggregateInput = {
   infoThirty?: Prisma.SortOrder
   googleEventId?: Prisma.SortOrder
   meetLink?: Prisma.SortOrder
+  code?: Prisma.SortOrder
 }
 
 export type SlotMinOrderByAggregateInput = {
@@ -547,6 +600,7 @@ export type SlotMinOrderByAggregateInput = {
   infoThirty?: Prisma.SortOrder
   googleEventId?: Prisma.SortOrder
   meetLink?: Prisma.SortOrder
+  code?: Prisma.SortOrder
 }
 
 export type SlotSumOrderByAggregateInput = {
@@ -676,6 +730,9 @@ export type SlotCreateWithoutHostInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   booker?: Prisma.UserCreateNestedOneWithoutBookedSlotsInput
 }
 
@@ -693,6 +750,9 @@ export type SlotUncheckedCreateWithoutHostInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotCreateOrConnectWithoutHostInput = {
@@ -717,6 +777,9 @@ export type SlotCreateWithoutBookerInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   host: Prisma.UserCreateNestedOneWithoutHostedSlotsInput
 }
 
@@ -734,6 +797,9 @@ export type SlotUncheckedCreateWithoutBookerInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotCreateOrConnectWithoutBookerInput = {
@@ -780,6 +846,9 @@ export type SlotScalarWhereInput = {
   infoThirty?: Prisma.BoolFilter<"Slot"> | boolean
   googleEventId?: Prisma.StringNullableFilter<"Slot"> | string | null
   meetLink?: Prisma.StringNullableFilter<"Slot"> | string | null
+  code?: Prisma.StringNullableFilter<"Slot"> | string | null
+  hostFeedback?: Prisma.JsonNullableFilter<"Slot">
+  bookerFeedback?: Prisma.JsonNullableFilter<"Slot">
 }
 
 export type SlotUpsertWithWhereUniqueWithoutBookerInput = {
@@ -812,6 +881,9 @@ export type SlotCreateManyHostInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotCreateManyBookerInput = {
@@ -828,6 +900,9 @@ export type SlotCreateManyBookerInput = {
   infoThirty?: boolean
   googleEventId?: string | null
   meetLink?: string | null
+  code?: string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUpdateWithoutHostInput = {
@@ -842,6 +917,9 @@ export type SlotUpdateWithoutHostInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   booker?: Prisma.UserUpdateOneWithoutBookedSlotsNestedInput
 }
 
@@ -859,6 +937,9 @@ export type SlotUncheckedUpdateWithoutHostInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUncheckedUpdateManyWithoutHostInput = {
@@ -875,6 +956,9 @@ export type SlotUncheckedUpdateManyWithoutHostInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUpdateWithoutBookerInput = {
@@ -889,6 +973,9 @@ export type SlotUpdateWithoutBookerInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   host?: Prisma.UserUpdateOneRequiredWithoutHostedSlotsNestedInput
 }
 
@@ -906,6 +993,9 @@ export type SlotUncheckedUpdateWithoutBookerInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SlotUncheckedUpdateManyWithoutBookerInput = {
@@ -922,6 +1012,9 @@ export type SlotUncheckedUpdateManyWithoutBookerInput = {
   infoThirty?: Prisma.BoolFieldUpdateOperationsInput | boolean
   googleEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   meetLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hostFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bookerFeedback?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -941,6 +1034,9 @@ export type SlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   infoThirty?: boolean
   googleEventId?: boolean
   meetLink?: boolean
+  code?: boolean
+  hostFeedback?: boolean
+  bookerFeedback?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
@@ -960,6 +1056,9 @@ export type SlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   infoThirty?: boolean
   googleEventId?: boolean
   meetLink?: boolean
+  code?: boolean
+  hostFeedback?: boolean
+  bookerFeedback?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
@@ -979,6 +1078,9 @@ export type SlotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   infoThirty?: boolean
   googleEventId?: boolean
   meetLink?: boolean
+  code?: boolean
+  hostFeedback?: boolean
+  bookerFeedback?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
 }, ExtArgs["result"]["slot"]>
@@ -998,9 +1100,12 @@ export type SlotSelectScalar = {
   infoThirty?: boolean
   googleEventId?: boolean
   meetLink?: boolean
+  code?: boolean
+  hostFeedback?: boolean
+  bookerFeedback?: boolean
 }
 
-export type SlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imageSrc" | "hostId" | "bookerId" | "description" | "difficulty" | "scheduledAt" | "durationMinutes" | "status" | "createdAt" | "updatedAt" | "infoThirty" | "googleEventId" | "meetLink", ExtArgs["result"]["slot"]>
+export type SlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "imageSrc" | "hostId" | "bookerId" | "description" | "difficulty" | "scheduledAt" | "durationMinutes" | "status" | "createdAt" | "updatedAt" | "infoThirty" | "googleEventId" | "meetLink" | "code" | "hostFeedback" | "bookerFeedback", ExtArgs["result"]["slot"]>
 export type SlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   booker?: boolean | Prisma.Slot$bookerArgs<ExtArgs>
@@ -1035,6 +1140,9 @@ export type $SlotPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     infoThirty: boolean
     googleEventId: string | null
     meetLink: string | null
+    code: string | null
+    hostFeedback: runtime.JsonValue | null
+    bookerFeedback: runtime.JsonValue | null
   }, ExtArgs["result"]["slot"]>
   composites: {}
 }
@@ -1474,6 +1582,9 @@ export interface SlotFieldRefs {
   readonly infoThirty: Prisma.FieldRef<"Slot", 'Boolean'>
   readonly googleEventId: Prisma.FieldRef<"Slot", 'String'>
   readonly meetLink: Prisma.FieldRef<"Slot", 'String'>
+  readonly code: Prisma.FieldRef<"Slot", 'String'>
+  readonly hostFeedback: Prisma.FieldRef<"Slot", 'Json'>
+  readonly bookerFeedback: Prisma.FieldRef<"Slot", 'Json'>
 }
     
 

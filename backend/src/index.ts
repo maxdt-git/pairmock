@@ -187,7 +187,7 @@ app.post("/api/slots", async (req, res) => {
 
   if (scheduledDate.getTime() < minDate) {
     return res.status(400).json({
-        error: "Slot must start at least an hour from now"
+      error: "Slot must start at least an hour from now"
     })
   }
 
@@ -590,6 +590,53 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
   }
 })
 
+// add the code at the end of interview to the slot
+app.patch("/api/slots/:id/addcode", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+
+    console.log(req.body)
+
+    try {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        }); 
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }   
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+
+        res.sendStatus(200)
+
+        const result = await prisma.slot.updateMany({
+            where: { id },
+            data: {
+              code: req.body.code
+            }
+        });
+        if (result.count === 0) {
+          res.status(409).json({ error: "Slot is no longer booked" });
+          return;
+        }
+
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({
+          error: "Unable to update slot" 
+      })
+    }
+})
+
 // DELETE expired slots
 async function cleanExpiredSlots() {
   const result = await prisma.slot.deleteMany({
@@ -613,6 +660,7 @@ cron.schedule("* * * * *", async () => {
   }
 });
 
+// GET info for the InterviewPage
 app.get("/api/interview/:id", async (req, res) => {
   try {
     const id = Number(req.params.id)
@@ -648,6 +696,49 @@ app.get("/api/interview/:id", async (req, res) => {
       return res.status(403).json({ error: "Forbidden: Access denied" });
     }
     res.status(200).json(slot)
+  } catch (e) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+
+app.post("/api/interview/:id/feedback", async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    if (!session?.user?.id) {
+      return res.status(401).json({ error: "Unauthorized: Please log in" });
+    }
+    const feedbackData = req.body ?? {};
+    const slot = await prisma.slot.findUnique({
+      where: { id },
+    });
+    if (!slot) {
+      return res.status(404).json({ error: "Interview not found" });
+    }
+    if (session.user.id !== slot.hostId && session.user.id !== slot.bookerId) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+    if (session.user.id === slot?.hostId) {
+      await prisma.slot.update({
+        where: { id },
+        data: {
+          hostFeedback: feedbackData
+        }
+      })
+    }
+    if (session.user.id === slot?.bookerId) {
+      await prisma.slot.update({
+        where: { id },
+        data: {
+          bookerFeedback: feedbackData
+        }
+      })
+    }
+    console.log(feedbackData)
+    res.sendStatus(200)
   } catch (e) {
     return res.status(500).json({ error: "Internal server error" });
   }

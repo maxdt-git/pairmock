@@ -71,7 +71,7 @@ export default function CreateSlotForm({
             });
         },
     });
-    
+
     function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -88,6 +88,11 @@ export default function CreateSlotForm({
         
         createSlotMutation.mutate(slot)
       }
+    
+    const minDate = new Date(Date.now() + 60 * 60 * 1000);
+    const minDateTime = new Date(
+        minDate.getTime() - minDate.getTimezoneOffset() * 60_000
+    ).toISOString().slice(0, 16);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -138,6 +143,7 @@ export default function CreateSlotForm({
                         id="scheduledAt"
                         name="scheduledAt"
                         type="datetime-local"
+                        min={minDateTime}
                         required
                     />
                 </Field>

@@ -5,6 +5,7 @@ import { auth } from "./lib/auth.ts";
 import { createMeetAndCalendarEvent, deleteCalendarEvent } from "./lib/googleCalendar.ts";
 import cron from "node-cron";
 import { collaborationServer } from "./collaboration.ts";
+import { error } from "node:console";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -179,6 +180,15 @@ app.post("/api/slots", async (req, res) => {
     return res.status(400).json({
       error: "durationMinutes must be a positive integer",
     });
+  }
+
+  const scheduledDate = new Date(scheduledAt)
+  const minDate = Date.now() + 60 * 60 * 1000
+
+  if (scheduledDate.getTime() < minDate) {
+    return res.status(400).json({
+        error: "Slot must start at least an hour from now"
+    })
   }
 
   try {

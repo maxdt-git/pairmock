@@ -9,11 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import CreateSlotForm from "./CreateSlotForm";
-import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 
 export default function SlotCreation() {
-    const { data: session } = authClient.useSession();
     const [open, setOpen] = useState(false);
 
     return (
@@ -26,12 +24,10 @@ export default function SlotCreation() {
                 <DialogHeader>
                     <DialogTitle>Create a Slot</DialogTitle>
                     <DialogDescription>
-                    Configure your new interview slot.
+                        Configure your new interview slot.
                     </DialogDescription>
                 </DialogHeader>
                 <CreateSlotForm
-                    hostUsername={session?.user.name!}
-                    hostImage={session?.user.image!}
                     onCreated={() => setOpen(false)}
                 />
             </DialogContent>

@@ -43,6 +43,8 @@ model Slot {
   infoThirty      Boolean    @default(false)
   googleEventId   String?
   meetLink        String?
+  hostFeedback    Json?
+  bookerFeedback  Json?
 
 
   host            User       @relation("HostedSlots", fields: [hostId], references: [id])

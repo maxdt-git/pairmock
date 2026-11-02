@@ -13,6 +13,8 @@ import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
 import type { SlotType } from "@/types/slot";
+import { toast } from '@/components/ui/toast';
+import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -29,113 +31,6 @@ import {
     QuestionnaireSubmit,
     QuestionnaireTitle
 } from '@/components/ui/questionnaire';
-import { toast } from '@/components/ui/toast';
-import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
-import { useQuery, useMutation } from "@tanstack/react-query";
-
-export const INTERVIEW_LANGUAGES = [
-    { value: 'python', label: 'Python' },
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'typescript', label: 'TypeScript' },
-    { value: 'java', label: 'Java' },
-    { value: 'cpp', label: 'C++' },
-    { value: 'csharp', label: 'C#' },
-    { value: 'go', label: 'Go' },
-    { value: 'rust', label: 'Rust' },
-    { value: 'sql', label: 'SQL' },
-    { value: 'ruby', label: 'Ruby' },
-    { value: 'swift', label: 'Swift' },
-    { value: 'kotlin', label: 'Kotlin' }
-];
-
-const questionnaireItems = [
-    {
-        choices: [
-            { label: "5", value: "5", description: "Optimal approach without hints" },
-            { label: "4", value: "4", description: "Solved with minor guidance" },
-            { label: "3", value: "3", description: "Solved with significant guidance" },
-            { label: "2", value: "2", description: "Suboptimal or brute-force approach" },
-            { label: "1", value: "1", description: "Struggled to make progress" },
-            { label: "0", value: "0", description: "Did not solve" },
-        ],
-        description: "Rate from 0 (did not solve) to 5 (optimal approach without hints).",
-        name: "problemSolving",
-        required: true,
-        title: "Problem Solving & Algorithm Design",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Clean, idiomatic, bug-free" },
-            { label: "4", value: "4", description: "Readable with minor style flaws" },
-            { label: "3", value: "3", description: "Working but messy or unorganized" },
-            { label: "2", value: "2", description: "Significant bugs or syntax issues" },
-            { label: "1", value: "1", description: "Hard to follow, multiple bugs" },
-            { label: "0", value: "0", description: "Broken and unreadable" },
-        ],
-        description: "Rate from 0 (broken/unreadable) to 5 (clean, idiomatic, bug-free).",
-        name: "codeQuality",
-        required: true,
-        title: "Code Quality & Implementation",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Accurate Time & Space Big-O analysis" },
-            { label: "4", value: "4", description: "Correct with minor prompting" },
-            { label: "3", value: "3", description: "Partially correct analysis" },
-            { label: "2", value: "2", description: "Confused time and space complexity" },
-            { label: "1", value: "1", description: "Guessed without reasoning" },
-            { label: "0", value: "0", description: "Incorrect or missing analysis" },
-        ],
-        description: "Rate from 0 (incorrect/missing) to 5 (accurate Time & Space Big-O analysis).",
-        name: "complexityAnalysis",
-        required: true,
-        title: "Time & Space Complexity (Big-O)",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Structured thinking out loud" },
-            { label: "4", value: "4", description: "Good communication with slight hesitation" },
-            { label: "3", value: "3", description: "Needed occasional prompting to speak" },
-            { label: "2", value: "2", description: "Quiet, unclear explanations" },
-            { label: "1", value: "1", description: "Minimal communication" },
-            { label: "0", value: "0", description: "Silent or incoherent" },
-        ],
-        description: "Rate from 0 (silent/unclear) to 5 (structured thinking out loud).",
-        name: "communication",
-        required: true,
-        title: "Communication & Thought Process",
-    },
-    {
-        choices: [
-            { label: "Clarified constraints & edge cases early", value: "clarified-constraints", description: "" },
-            { label: "Compared trade-offs before coding", value: "compared-tradeoffs", description: "" },
-            { label: "Dry-ran code with test cases", value: "dry-run", description: "" },
-            { label: "Caught and fixed bugs independently", value: "self-debugged", description: "" },
-        ],
-        description: "Select all that apply, or skip this question.",
-        multiple: true,
-        name: "signals",
-        required: false,
-        title: "Which positive signals did the candidate show?",
-    },
-    {
-        choices: [
-            { label: "Solved optimally without hints", value: "optimal-no-hints", description: "" },
-            { label: "Solved optimally with minor hints", value: "optimal-with-hints", description: "" },
-            { label: "Working brute-force / suboptimal solution", value: "suboptimal", description: "" },
-            { label: "Did not finish a working solution", value: "incomplete", description: "" },
-        ],
-        description: "Select the outcome of the coding task.",
-        input: {
-            label: "Custom feedback note",
-            placeholder: "Add specific advice or missed edge cases…",
-        },
-        name: "outcome",
-        required: true,
-        title: "What was the final result of the coding task?",
-    },
-] as const;
-
 
 interface feedbackDataProps {
     problemSolving: string;
@@ -274,12 +169,12 @@ export default function InterviewPage() {
             const response = await fetch(`/api/slots/${slotId}/addcode`, {
                 method: "PATCH",
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     code: code,
                 }),
-                });
+            });
             if (!response.ok) {
                 throw new Error(`Failed to book slot: ${response.status}`);
             }
@@ -358,8 +253,8 @@ export default function InterviewPage() {
                     <Button onClick={() => {
                         const text = textRef.current
                         if (!text) return;
-                        testApi.mutate({slotId: interviewData.id, code: text.toString()})
-                        }}>
+                        testApi.mutate({ slotId: interviewData.id, code: text.toString() })
+                    }}>
                         TEST API
                     </Button>
                 </div>

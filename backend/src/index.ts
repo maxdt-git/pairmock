@@ -187,7 +187,7 @@ app.post("/api/slots", async (req, res) => {
 
   if (scheduledDate.getTime() < minDate) {
     return res.status(400).json({
-        error: "Slot must start at least an hour from now"
+      error: "Slot must start at least an hour from now"
     })
   }
 
@@ -660,6 +660,7 @@ cron.schedule("* * * * *", async () => {
   }
 });
 
+// GET info for the InterviewPage
 app.get("/api/interview/:id", async (req, res) => {
   try {
     const id = Number(req.params.id)
@@ -695,6 +696,49 @@ app.get("/api/interview/:id", async (req, res) => {
       return res.status(403).json({ error: "Forbidden: Access denied" });
     }
     res.status(200).json(slot)
+  } catch (e) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+
+app.post("/api/interview/:id/feedback", async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    if (!session?.user?.id) {
+      return res.status(401).json({ error: "Unauthorized: Please log in" });
+    }
+    const feedbackData = req.body ?? {};
+    const slot = await prisma.slot.findUnique({
+      where: { id },
+    });
+    if (!slot) {
+      return res.status(404).json({ error: "Interview not found" });
+    }
+    if (session.user.id !== slot.hostId && session.user.id !== slot.bookerId) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+    if (session.user.id === slot?.hostId) {
+      await prisma.slot.update({
+        where: { id },
+        data: {
+          hostFeedback: feedbackData
+        }
+      })
+    }
+    if (session.user.id === slot?.bookerId) {
+      await prisma.slot.update({
+        where: { id },
+        data: {
+          bookerFeedback: feedbackData
+        }
+      })
+    }
+    console.log(feedbackData)
+    res.sendStatus(200)
   } catch (e) {
     return res.status(500).json({ error: "Internal server error" });
   }

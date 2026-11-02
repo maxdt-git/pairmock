@@ -44,6 +44,9 @@ model Slot {
   googleEventId   String?
   meetLink        String?
   code            String?
+  hostFeedback    Json?
+  bookerFeedback  Json?
+
 
   host            User       @relation("HostedSlots", fields: [hostId], references: [id])
   booker          User?      @relation("BookedSlots", fields: [bookerId], references: [id])

@@ -668,6 +668,12 @@ app.post("/api/interview/:id/feedback", async (req, res) => {
     const slot = await prisma.slot.findUnique({
       where: { id },
     });
+    if (!slot) {
+      return res.status(404).json({ error: "Interview not found" });
+    }
+    if (session.user.id !== slot.hostId && session.user.id !== slot.bookerId) {
+      return res.status(403).json({ error: "Access denied" });
+    }
     if (session.user.id === slot?.hostId) {
       await prisma.slot.update({
         where: { id },

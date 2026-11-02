@@ -183,7 +183,7 @@ export default function InterviewPage() {
     const mutationFeedback = useMutation({
         mutationFn: postFeedback,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['feedback'] })
+            queryClient.invalidateQueries({ queryKey: ['interview', id] })
             toast.add({
                 type: "success",
                 description: "Feedback has been saved",

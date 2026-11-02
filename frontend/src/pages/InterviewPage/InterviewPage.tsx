@@ -8,10 +8,10 @@ import type { editor as MonacoEditor } from "monaco-editor";
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import { MonacoBinding } from "y-monaco";
 import * as Y from "yjs";
-import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
+import type { SlotType } from "@/types/slot";
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -29,113 +29,15 @@ import {
     QuestionnaireTitle
 } from '@/components/ui/questionnaire';
 import { toast } from '@/components/ui/toast';
+import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
+import { useQuery, useMutation } from "@tanstack/react-query";
 
-export const INTERVIEW_LANGUAGES = [
-    { value: 'python', label: 'Python' },
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'typescript', label: 'TypeScript' },
-    { value: 'java', label: 'Java' },
-    { value: 'cpp', label: 'C++' },
-    { value: 'csharp', label: 'C#' },
-    { value: 'go', label: 'Go' },
-    { value: 'rust', label: 'Rust' },
-    { value: 'sql', label: 'SQL' },
-    { value: 'ruby', label: 'Ruby' },
-    { value: 'swift', label: 'Swift' },
-    { value: 'kotlin', label: 'Kotlin' }
-];
-
-const questionnaireItems = [
-    {
-        choices: [
-            { label: "5", value: "5" },
-            { label: "4", value: "4" },
-            { label: "3", value: "3" },
-            { label: "2", value: "2" },
-            { label: "1", value: "1" },
-            { label: "0", value: "0" },
-        ],
-        description: "Rate from 0 (did not solve) to 5 (optimal approach without hints).",
-        name: "problemSolving",
-        required: true,
-        title: "Problem Solving & Algorithm Design",
-    },
-    {
-        choices: [
-            { label: "5", value: "5" },
-            { label: "4", value: "4" },
-            { label: "3", value: "3" },
-            { label: "2", value: "2" },
-            { label: "1", value: "1" },
-            { label: "0", value: "0" },
-        ],
-        description: "Rate from 0 (broken/unreadable) to 5 (clean, idiomatic, bug-free).",
-        name: "codeQuality",
-        required: true,
-        title: "Code Quality & Implementation",
-    },
-    {
-        choices: [
-            { label: "5", value: "5" },
-            { label: "4", value: "4" },
-            { label: "3", value: "3" },
-            { label: "2", value: "2" },
-            { label: "1", value: "1" },
-            { label: "0", value: "0" },
-        ],
-        description: "Rate from 0 (incorrect/missing) to 5 (accurate Time & Space Big-O analysis).",
-        name: "complexityAnalysis",
-        required: true,
-        title: "Time & Space Complexity (Big-O)",
-    },
-    {
-        choices: [
-            { label: "5", value: "5" },
-            { label: "4", value: "4" },
-            { label: "3", value: "3" },
-            { label: "2", value: "2" },
-            { label: "1", value: "1" },
-            { label: "0", value: "0" },
-        ],
-        description: "Rate from 0 (silent/unclear) to 5 (structured thinking out loud).",
-        name: "communication",
-        required: true,
-        title: "Communication & Thought Process",
-    },
-    {
-        choices: [
-            { label: "Clarified constraints & edge cases early", value: "clarified-constraints" },
-            { label: "Compared trade-offs before coding", value: "compared-tradeoffs" },
-            { label: "Dry-ran code with test cases", value: "dry-run" },
-            { label: "Caught and fixed bugs independently", value: "self-debugged" },
-        ],
-        description: "Select all that apply, or skip this question.",
-        multiple: true,
-        name: "signals",
-        required: false,
-        title: "Which positive signals did the candidate show?",
-    },
-    {
-        choices: [
-            { label: "Solved optimally without hints", value: "optimal-no-hints" },
-            { label: "Solved optimally with minor hints", value: "optimal-with-hints" },
-            { label: "Working brute-force / suboptimal solution", value: "suboptimal" },
-            { label: "Did not finish a working solution", value: "incomplete" },
-        ],
-        input: {
-            label: "Custom feedback note",
-            placeholder: "Add specific advice or missed edge cases…",
-        },
-        name: "outcome",
-        required: true,
-        title: "What was the final result of the coding task?",
-    },
-] as const;
 
 export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const settingsRef = useRef<Y.Map<string> | null>(null);
+    const textRef = useRef<Y.Text | null>(null);
 
     const { id } = useParams();
 
@@ -163,6 +65,7 @@ export default function InterviewPage() {
 
         const doc = new Y.Doc();
         const text = doc.getText("code");
+        textRef.current = text
         const settings = doc.getMap<string>("settings");
         settingsRef.current = settings;
 
@@ -190,6 +93,7 @@ export default function InterviewPage() {
         return () => {
             settings.unobserve(syncLanguage);
             settingsRef.current = null;
+            textRef.current = null;
             binding.destroy();
             provider.destroy();
             doc.destroy();
@@ -214,6 +118,48 @@ export default function InterviewPage() {
         });
         console.log(answers);
     }
+
+    const testApi = useMutation({
+        mutationFn: async ({
+            slotId,
+            code
+        }: {
+            slotId: SlotType["id"],
+            code: string
+        }) => {
+            const response = await fetch(`/api/slots/${slotId}/addcode`, {
+                method: "PATCH",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    code: code,
+                }),
+                });
+            if (!response.ok) {
+                throw new Error(`Failed to book slot: ${response.status}`);
+            }
+        },
+
+        onSuccess: async () => {
+            toast.add({
+                title: "Code added to review!",
+                description: "This slot has been updated.",
+                type: "success",
+            });
+        },
+
+        onError: (error) => {
+            console.error(error);
+
+            toast.add({
+                title: "Update failed",
+                description: "Unable to update this slot. Retry later",
+                type: "error",
+            });
+        },
+    })
+
 
     if (queryInterviewData.isPending) {
         return (
@@ -265,6 +211,13 @@ export default function InterviewPage() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                    <Button onClick={() => {
+                        const text = textRef.current
+                        if (!text) return;
+                        testApi.mutate({slotId: interviewData.id, code: text.toString()})
+                        }}>
+                        TEST API
+                    </Button>
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>

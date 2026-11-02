@@ -1,0 +1,101 @@
+export const INTERVIEW_LANGUAGES = [
+    { value: 'python', label: 'Python' },
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'typescript', label: 'TypeScript' },
+    { value: 'java', label: 'Java' },
+    { value: 'cpp', label: 'C++' },
+    { value: 'csharp', label: 'C#' },
+    { value: 'go', label: 'Go' },
+    { value: 'rust', label: 'Rust' },
+    { value: 'sql', label: 'SQL' },
+    { value: 'ruby', label: 'Ruby' },
+    { value: 'swift', label: 'Swift' },
+    { value: 'kotlin', label: 'Kotlin' }
+];
+
+export const questionnaireItems = [
+    {
+        choices: [
+            { label: "5", value: "5" },
+            { label: "4", value: "4" },
+            { label: "3", value: "3" },
+            { label: "2", value: "2" },
+            { label: "1", value: "1" },
+            { label: "0", value: "0" },
+        ],
+        description: "Rate from 0 (did not solve) to 5 (optimal approach without hints).",
+        name: "problemSolving",
+        required: true,
+        title: "Problem Solving & Algorithm Design",
+    },
+    {
+        choices: [
+            { label: "5", value: "5" },
+            { label: "4", value: "4" },
+            { label: "3", value: "3" },
+            { label: "2", value: "2" },
+            { label: "1", value: "1" },
+            { label: "0", value: "0" },
+        ],
+        description: "Rate from 0 (broken/unreadable) to 5 (clean, idiomatic, bug-free).",
+        name: "codeQuality",
+        required: true,
+        title: "Code Quality & Implementation",
+    },
+    {
+        choices: [
+            { label: "5", value: "5" },
+            { label: "4", value: "4" },
+            { label: "3", value: "3" },
+            { label: "2", value: "2" },
+            { label: "1", value: "1" },
+            { label: "0", value: "0" },
+        ],
+        description: "Rate from 0 (incorrect/missing) to 5 (accurate Time & Space Big-O analysis).",
+        name: "complexityAnalysis",
+        required: true,
+        title: "Time & Space Complexity (Big-O)",
+    },
+    {
+        choices: [
+            { label: "5", value: "5" },
+            { label: "4", value: "4" },
+            { label: "3", value: "3" },
+            { label: "2", value: "2" },
+            { label: "1", value: "1" },
+            { label: "0", value: "0" },
+        ],
+        description: "Rate from 0 (silent/unclear) to 5 (structured thinking out loud).",
+        name: "communication",
+        required: true,
+        title: "Communication & Thought Process",
+    },
+    {
+        choices: [
+            { label: "Clarified constraints & edge cases early", value: "clarified-constraints" },
+            { label: "Compared trade-offs before coding", value: "compared-tradeoffs" },
+            { label: "Dry-ran code with test cases", value: "dry-run" },
+            { label: "Caught and fixed bugs independently", value: "self-debugged" },
+        ],
+        description: "Select all that apply, or skip this question.",
+        multiple: true,
+        name: "signals",
+        required: false,
+        title: "Which positive signals did the candidate show?",
+    },
+    {
+        choices: [
+            { label: "Solved optimally without hints", value: "optimal-no-hints" },
+            { label: "Solved optimally with minor hints", value: "optimal-with-hints" },
+            { label: "Working brute-force / suboptimal solution", value: "suboptimal" },
+            { label: "Did not finish a working solution", value: "incomplete" },
+        ],
+        input: {
+            label: "Custom feedback note",
+            placeholder: "Add specific advice or missed edge cases…",
+        },
+        name: "outcome",
+        required: true,
+        title: "What was the final result of the coding task?",
+    },
+] as const;

@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router';
+import type { SlotType } from "@/types/slot";
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -29,6 +30,8 @@ import {
     QuestionnaireTitle
 } from '@/components/ui/questionnaire';
 import { toast } from '@/components/ui/toast';
+import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 export const INTERVIEW_LANGUAGES = [
     { value: 'python', label: 'Python' },
@@ -147,6 +150,7 @@ export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const settingsRef = useRef<Y.Map<string> | null>(null);
+    const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
 
     const { id } = useParams();
@@ -223,6 +227,7 @@ export default function InterviewPage() {
 
         const doc = new Y.Doc();
         const text = doc.getText("code");
+        textRef.current = text
         const settings = doc.getMap<string>("settings");
         settingsRef.current = settings;
 
@@ -250,11 +255,54 @@ export default function InterviewPage() {
         return () => {
             settings.unobserve(syncLanguage);
             settingsRef.current = null;
+            textRef.current = null;
             binding.destroy();
             provider.destroy();
             doc.destroy();
         };
     }, [editor, id, interviewData]);
+
+
+    const testApi = useMutation({
+        mutationFn: async ({
+            slotId,
+            code
+        }: {
+            slotId: SlotType["id"],
+            code: string
+        }) => {
+            const response = await fetch(`/api/slots/${slotId}/addcode`, {
+                method: "PATCH",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    code: code,
+                }),
+                });
+            if (!response.ok) {
+                throw new Error(`Failed to book slot: ${response.status}`);
+            }
+        },
+
+        onSuccess: async () => {
+            toast.add({
+                title: "Code added to review!",
+                description: "This slot has been updated.",
+                type: "success",
+            });
+        },
+
+        onError: (error) => {
+            console.error(error);
+
+            toast.add({
+                title: "Update failed",
+                description: "Unable to update this slot. Retry later",
+                type: "error",
+            });
+        },
+    })
 
 
     if (queryInterviewData.isPending) {
@@ -307,6 +355,13 @@ export default function InterviewPage() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                    <Button onClick={() => {
+                        const text = textRef.current
+                        if (!text) return;
+                        testApi.mutate({slotId: interviewData.id, code: text.toString()})
+                        }}>
+                        TEST API
+                    </Button>
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>

@@ -43,6 +43,7 @@ model Slot {
   infoThirty      Boolean    @default(false)
   googleEventId   String?
   meetLink        String?
+  code            String?
   hostFeedback    Json?
   bookerFeedback  Json?
 

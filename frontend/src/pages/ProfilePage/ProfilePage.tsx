@@ -81,7 +81,7 @@ export default function ProfilePage() {
     const isHost = session?.user.id === card.hostId
     const isBooker = session?.user.id === card.bookerId
 
-    const feedback = isHost ? card.hostFeedback : isBooker ? card.bookerFeedback : null;
+    const feedback = isHost ? card.bookerFeedback : isBooker ? card.hostFeedback : null;
 
     if (!feedback) {
       return acc
@@ -89,16 +89,13 @@ export default function ProfilePage() {
 
     const cardScore = scoreKeys.reduce((sum, key) => sum + (Number(feedback[key]) || 0), 0);
 
-    if (cardScore > 0) {
-      evaluatedCount += 1;
-      return acc + cardScore / scoreKeys.length;
-    }
-    return acc
+    evaluatedCount += 1;
+    return acc + cardScore / scoreKeys.length;
   }, 0) ?? 0
 
   const passedInterviewCount = queryCompleted?.data?.length ?? 0
   const hoursPracticeScore = Math.round(queryCompleted?.data?.reduce((acc: number, curr: SlotType) => acc + curr.durationMinutes, 0) ?? 0) / 60
-  const feedbackScore = Number(totalScoreAverage / evaluatedCount).toFixed(1)
+  const feedbackScore = evaluatedCount > 0 ? Number(totalScoreAverage / evaluatedCount).toFixed(1) : 0
 
   return (
     <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh">

@@ -74,6 +74,7 @@ export default function InterviewPage() {
     const userFeedback = isHost ? interviewData.hostFeedback : isBooker ? interviewData.bookerFeedback : null
     const isFeedbackSubmitted = Boolean(userFeedback && Object.keys(userFeedback).length > 0)
 
+
     async function postFeedback(feedback: feedbackDataProps) {
         const res = await fetch(`/api/interview/${id}/feedback`, {
             method: "POST",
@@ -192,6 +193,25 @@ export default function InterviewPage() {
         },
     })
 
+    useEffect(() => {
+        if (!interviewData) return;
+
+        const start = new Date(interviewData.scheduledAt).getTime();
+        const delay = start - Date.now();
+
+        if (delay <= 0) {
+            setHasStarted(true);
+            return;
+        }
+
+        setHasStarted(false);
+
+        const timeout = setTimeout(() => {
+            setHasStarted(true);
+        }, delay);
+
+        return () => clearTimeout(timeout);
+    }, [interviewData?.scheduledAt]);
 
     if (queryInterviewData.isPending || isSessionPending) {
         return (
@@ -237,27 +257,29 @@ export default function InterviewPage() {
                             <ArrowLeft /> Dashboard
                         </Link>
                     </Button>
-                    <Select
-                        items={INTERVIEW_LANGUAGES}
-                        value={language}
-                        onValueChange={(value) => {
-                            if (!value) return;
-                            settingsRef.current?.set("language", value);
-                        }}
-                    >
-                        <SelectTrigger className="w-45">
-                            <SelectValue placeholder="Language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                {INTERVIEW_LANGUAGES.map((item) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
+                    {hasStarted && (
+                        <Select
+                            items={INTERVIEW_LANGUAGES}
+                            value={language}
+                            onValueChange={(value) => {
+                                if (!value) return;
+                                settingsRef.current?.set("language", value);
+                            }}
+                        >
+                            <SelectTrigger className="w-45">
+                                <SelectValue placeholder="Language" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {INTERVIEW_LANGUAGES.map((item) => (
+                                        <SelectItem key={item.value} value={item.value}>
+                                            {item.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    )}
                     <Button onClick={() => {
                         const text = textRef.current
                         if (!text) return;
@@ -293,6 +315,7 @@ export default function InterviewPage() {
                     )}
                 </div>
             </div>
+            {hasStarted ? (
             <ResizablePanelGroup
                 orientation="horizontal"
                 className="rounded-lg border grow mb-3"
@@ -373,6 +396,9 @@ export default function InterviewPage() {
                     </ResizablePanelGroup>
                 </ResizablePanel>
             </ResizablePanelGroup>
+            ) : (
+            <p></p>
+            )}
             <Footer />
         </main>
     );

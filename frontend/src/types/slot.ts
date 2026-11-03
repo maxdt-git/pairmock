@@ -4,15 +4,9 @@ export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
 export interface SlotType {
   id: number;
+  imageSrc: string | null;
   hostId: string;
   bookerId: string | null;
-  host: {
-      name: string;
-      image: string | null;
-  };
-  booker: {
-    name: string
-  }
   description: string;
   difficulty: Difficulty;
   scheduledAt: string;
@@ -20,12 +14,23 @@ export interface SlotType {
   status: SlotStatus;
   createdAt: string;
   updatedAt: string;
+  infoThirty: boolean;
+  googleEventId: string | null
+  meetLink: string | null
+  code: string | null
+  host: {
+    name: string;
+    image: string | null;
+  };
+  booker: {
+    name: string
+  }
 }
 
 export type CreateSlotPayload = {
-    description: string;
-    difficulty: string;
-    scheduledAt: string;
-    durationMinutes: number;
-    status: "AVAILABLE";
+  description: string;
+  difficulty: string;
+  scheduledAt: string;
+  durationMinutes: number;
+  status: "AVAILABLE";
 };

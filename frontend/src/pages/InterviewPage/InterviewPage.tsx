@@ -15,6 +15,7 @@ import { Link, Navigate, useParams } from 'react-router';
 import type { SlotType } from "@/types/slot";
 import { toast } from '@/components/ui/toast';
 import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
+import { authClient } from '@/lib/auth-client';
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -47,8 +48,8 @@ export default function InterviewPage() {
     const settingsRef = useRef<Y.Map<string> | null>(null);
     const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
-
     const { id } = useParams();
+    const { data: session, isPending: isSessionPending } = authClient.useSession();
 
     async function getInterviewData() {
         const res = await fetch(`/api/interview/${id}`);
@@ -65,6 +66,11 @@ export default function InterviewPage() {
     });
 
     const interviewData = queryInterviewData.data;
+
+    const isHost = session?.user.id === interviewData?.hostId
+    const isBooker = session?.user.id === interviewData?.bookerId
+    const userFeedback = isHost ? interviewData.hostFeedback : isBooker ? interviewData.bookerFeedback : null
+    const isFeedbackSubmitted = Boolean(userFeedback && Object.keys(userFeedback).length > 0)
 
     async function postFeedback(feedback: feedbackDataProps) {
         const res = await fetch(`/api/interview/${id}/feedback`, {
@@ -98,21 +104,6 @@ export default function InterviewPage() {
             });
         },
     })
-
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const feedbackData: feedbackDataProps = {
-            problemSolving: String(formData.get('problemSolving') ?? ''),
-            codeQuality: String(formData.get('codeQuality') ?? ''),
-            complexityAnalysis: String(formData.get('complexityAnalysis') ?? ''),
-            communication: String(formData.get('communication') ?? ''),
-            signals: formData.getAll('signals').map((s) => String(s)),
-            outcome: String(formData.get('outcome') ?? ''),
-        };
-        console.log(feedbackData);
-        mutationFeedback.mutate(feedbackData)
-    }
 
     useEffect(() => {
         if (!editor || !interviewData) return;
@@ -200,7 +191,7 @@ export default function InterviewPage() {
     })
 
 
-    if (queryInterviewData.isPending) {
+    if (queryInterviewData.isPending || isSessionPending) {
         return (
             <div className="flex items-center justify-center min-h-dvh">
                 <div className="flex flex-col items-center gap-2">
@@ -218,6 +209,21 @@ export default function InterviewPage() {
             error: queryInterviewData.error,
         });
         return <Navigate to="/dashboard" replace />;
+    }
+
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const feedbackData: feedbackDataProps = {
+            problemSolving: String(formData.get('problemSolving') ?? ''),
+            codeQuality: String(formData.get('codeQuality') ?? ''),
+            complexityAnalysis: String(formData.get('complexityAnalysis') ?? ''),
+            communication: String(formData.get('communication') ?? ''),
+            signals: formData.getAll('signals').map((s) => String(s)),
+            outcome: String(formData.get('outcome') ?? ''),
+        };
+        console.log(feedbackData);
+        mutationFeedback.mutate(feedbackData)
     }
 
     return (
@@ -299,53 +305,57 @@ export default function InterviewPage() {
                     <ResizablePanelGroup orientation="vertical">
                         <ResizablePanel defaultSize="75%">
                             <div className="flex h-full items-center justify-center p-6">
-                                <Questionnaire
-                                    className="mx-auto max-w-md"
-                                    defaultItem="direction"
-                                    items={questionnaireItems}
-                                    shortcuts="letters"
-                                    onSubmit={handleSubmit}
-                                >
-                                    <QuestionnaireProgress />
-                                    {questionnaireItems.map((question) => (
-                                        <QuestionnaireItem
-                                            key={question.name}
-                                            multiple={"multiple" in question && question.multiple}
-                                            name={question.name}
-                                            required={question.required}
-                                        >
-                                            <QuestionnaireTitle>{question.title}</QuestionnaireTitle>
-                                            <QuestionnaireDescription>
-                                                {question.description}
-                                            </QuestionnaireDescription>
-                                            <QuestionnaireChoices>
-                                                {question.choices.map((choice) => (
-                                                    <QuestionnaireChoice key={choice.value} value={choice.value}>
-                                                        <span className="font-medium">{choice.label}</span>
-                                                        {"description" in choice ? (
-                                                            <span className="text-muted-foreground">
-                                                                {choice.description}
-                                                            </span>
-                                                        ) : null}
-                                                    </QuestionnaireChoice>
-                                                ))}
-                                                {"input" in question ? (
-                                                    <QuestionnaireInput
-                                                        aria-label={question.input.label}
-                                                        placeholder={question.input.placeholder}
-                                                    />
-                                                ) : null}
-                                            </QuestionnaireChoices>
-                                            <QuestionnaireError />
-                                        </QuestionnaireItem>
-                                    ))}
-                                    <QuestionnaireActions>
-                                        <QuestionnairePrevious />
-                                        <QuestionnaireSkip />
-                                        <QuestionnaireNext>Next</QuestionnaireNext>
-                                        <QuestionnaireSubmit>Save plan</QuestionnaireSubmit>
-                                    </QuestionnaireActions>
-                                </Questionnaire>
+                                {isFeedbackSubmitted ?
+                                    <p>Thanks for providing feedback!</p>
+                                    :
+                                    <Questionnaire
+                                        className="mx-auto max-w-md"
+                                        defaultItem="direction"
+                                        items={questionnaireItems}
+                                        shortcuts="letters"
+                                        onSubmit={handleSubmit}
+                                    >
+                                        <QuestionnaireProgress />
+                                        {questionnaireItems.map((question) => (
+                                            <QuestionnaireItem
+                                                key={question.name}
+                                                multiple={"multiple" in question && question.multiple}
+                                                name={question.name}
+                                                required={question.required}
+                                            >
+                                                <QuestionnaireTitle>{question.title}</QuestionnaireTitle>
+                                                <QuestionnaireDescription>
+                                                    {question.description}
+                                                </QuestionnaireDescription>
+                                                <QuestionnaireChoices>
+                                                    {question.choices.map((choice) => (
+                                                        <QuestionnaireChoice key={choice.value} value={choice.value}>
+                                                            <span className="font-medium">{choice.label}</span>
+                                                            {"description" in choice ? (
+                                                                <span className="text-muted-foreground">
+                                                                    {choice.description}
+                                                                </span>
+                                                            ) : null}
+                                                        </QuestionnaireChoice>
+                                                    ))}
+                                                    {"input" in question ? (
+                                                        <QuestionnaireInput
+                                                            aria-label={question.input.label}
+                                                            placeholder={question.input.placeholder}
+                                                        />
+                                                    ) : null}
+                                                </QuestionnaireChoices>
+                                                <QuestionnaireError />
+                                            </QuestionnaireItem>
+                                        ))}
+                                        <QuestionnaireActions>
+                                            <QuestionnairePrevious />
+                                            <QuestionnaireSkip />
+                                            <QuestionnaireNext>Next</QuestionnaireNext>
+                                            <QuestionnaireSubmit>Save plan</QuestionnaireSubmit>
+                                        </QuestionnaireActions>
+                                    </Questionnaire>
+                                }
                             </div>
                         </ResizablePanel>
                         <ResizableHandle withHandle />

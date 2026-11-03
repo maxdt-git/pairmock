@@ -211,7 +211,7 @@ export default function DashboardPage() {
                 <header className="flex justify-between pt-2 pb-2 items-center border-b border-border mb-2.5 max-[540px]:justify-center ">
                     <h1 className="text-2xl font-bold max-[540px]:hidden">PairMock</h1>
                     <div className="flex items-center gap-4 ">
-                        <SlotCreation/>
+                        <SlotCreation />
                         <UserNavigation username={session?.user.name ?? "User"} imageSrc={session?.user.image ? session.user.image : ""} />
                     </div>
                 </header>
@@ -231,7 +231,7 @@ export default function DashboardPage() {
                                     status={card.status}
                                     onDelete={
                                         card.hostId === session.user.id ?
-                                        async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
+                                            async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                     }
                                     onBooking={undefined}
                                     onCancel={() => cancelSlotMutation.mutate(card.id)}
@@ -291,11 +291,11 @@ export default function DashboardPage() {
                                         status={card.status}
                                         onDelete={
                                             card.hostId === session.user.id ?
-                                            async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
+                                                async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                         }
                                         onBooking={
                                             card.hostId !== session.user.id ?
-                                            () => bookSlotMutation.mutateAsync(card.id) : undefined
+                                                () => bookSlotMutation.mutateAsync(card.id) : undefined
                                         }
                                     />
                                 </li>
@@ -305,45 +305,49 @@ export default function DashboardPage() {
                         }
                     </ul>
                 </section>
-                <Pagination className="mb-5">
-                    <PaginationContent>
-                        <PaginationItem
-                            onClick={(e) => {
-                                e.preventDefault()
-                                if (currentPage > 1) {
-                                    handlePageChange(currentPage - 1)
-                                }
-                            }}>
-                            <PaginationPrevious href="#" />
-                        </PaginationItem>
-                        {Array.from({ length: queryAvailable.data?.totalPages }, (_, index) => {
-                            const page = index + 1
-                            return (
-                                <PaginationItem
-                                    key={index}
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        handlePageChange(page)
-                                    }}
-                                >
-                                    <PaginationLink href="#" isActive={currentPage === page} >{page}</PaginationLink>
-                                </PaginationItem>
-                            )
-                        }
-                        )}
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                        <PaginationItem
-                            onClick={(e) => {
-                                e.preventDefault()
-                                handlePageChange(currentPage + 1)
-                            }}
-                        >
-                            <PaginationNext href="#" />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+                {queryAvailable?.data?.data.length > 0 ?
+                    <Pagination className="mb-5">
+                        <PaginationContent>
+                            <PaginationItem
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    if (currentPage > 1) {
+                                        handlePageChange(currentPage - 1)
+                                    }
+                                }}>
+                                <PaginationPrevious href="#" />
+                            </PaginationItem>
+                            {Array.from({ length: queryAvailable.data?.totalPages }, (_, index) => {
+                                const page = index + 1
+                                return (
+                                    <PaginationItem
+                                        key={index}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePageChange(page)
+                                        }}
+                                    >
+                                        <PaginationLink href="#" isActive={currentPage === page} >{page}</PaginationLink>
+                                    </PaginationItem>
+                                )
+                            }
+                            )}
+                            <PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem>
+                            <PaginationItem
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePageChange(currentPage + 1)
+                                }}
+                            >
+                                <PaginationNext href="#" />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                    :
+                    null
+                }
                 <Footer />
             </main>
         </div>

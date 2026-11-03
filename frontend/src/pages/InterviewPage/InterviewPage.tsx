@@ -15,6 +15,7 @@ import { Link, Navigate, useParams } from 'react-router';
 import type { SlotType } from "@/types/slot";
 import { toast } from '@/components/ui/toast';
 import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
+import InterviewTimer from '@/components/layout/Timer/InterviewTimer';
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -44,6 +45,7 @@ interface feedbackDataProps {
 export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
+    const [hasStarted, setHasStarted] = useState(false);
     const settingsRef = useRef<Y.Map<string> | null>(null);
     const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
@@ -198,8 +200,7 @@ export default function InterviewPage() {
             });
         },
     })
-
-
+    
     if (queryInterviewData.isPending) {
         return (
             <div className="flex items-center justify-center min-h-dvh">
@@ -257,6 +258,10 @@ export default function InterviewPage() {
                     }}>
                         TEST API
                     </Button>
+                    <InterviewTimer
+                        durationMinutes={interviewData.durationMinutes}
+                        scheduledDate={interviewData.scheduledAt}
+                    />
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>

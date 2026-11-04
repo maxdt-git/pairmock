@@ -47,6 +47,7 @@ export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const [hasStarted, setHasStarted] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
     const settingsRef = useRef<Y.Map<string> | null>(null);
     const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
@@ -290,7 +291,9 @@ export default function InterviewPage() {
                     <InterviewTimer
                         durationMinutes={interviewData.durationMinutes}
                         scheduledDate={interviewData.scheduledAt}
+                        onFinished={() => setIsFinished(true)}
                     />
+                    {isFinished ? <p>finished</p> : <p>not finished</p>}
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>

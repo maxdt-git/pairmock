@@ -293,7 +293,6 @@ export default function InterviewPage() {
                         scheduledDate={interviewData.scheduledAt}
                         onFinished={() => setIsFinished(true)}
                     />
-                    {isFinished ? <p>finished</p> : <p>not finished</p>}
                 </div>
                 <div className="mb-4 flex items-center gap-3">
                     <AvatarGroup>
@@ -329,6 +328,9 @@ export default function InterviewPage() {
                             language={language}
                             theme="vs-dark"
                             onMount={(instance) => setEditor(instance)}
+                            options={{
+                                readOnly: isFinished
+                            }}
                         />
                     </div>
                 </ResizablePanel>

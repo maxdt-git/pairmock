@@ -3,7 +3,7 @@ import { fromNodeHeaders } from "better-auth/node";
 import { prisma } from "../lib/prisma.ts";
 import cron from "node-cron";
 import { auth } from "../lib/auth.ts";
-import { createMeetAndCalendarEvent, deleteCalendarEvent } from "../lib/googleCalendar.ts";
+import { createMeetAndCalendarEvent, deleteCalendarEvent, getGoogleAccessToken } from "../lib/googleCalendar.ts";
 import { Difficulty } from "../generated/prisma/client.ts";
 
 export const slotsRouter = express.Router();
@@ -194,6 +194,10 @@ slotsRouter.post("/", async (req, res) => {
         if (!session) {
             res.status(401).json({ error: "Not authenticated" });
             return;
+        }
+        const googleToken = await getGoogleAccessToken(session.user.id)
+        if (!googleToken) {
+            return res.status(403).json({ error: "Not authenticated with Google" });
         }
         const card = await prisma.slot.create({
             data: {
@@ -488,19 +492,19 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
                 where: { id },
                 select: { code: true }
             });
-        
+
             if (!currentSlot) {
                 return res.status(404).json({
                     error: "Slot not found"
                 });
             }
-        
+
             if (currentSlot.code !== null) {
                 return res.status(200).json({
                     message: "Code already saved"
                 });
             }
-        
+
             return res.status(409).json({
                 error: "Unable to save code"
             });

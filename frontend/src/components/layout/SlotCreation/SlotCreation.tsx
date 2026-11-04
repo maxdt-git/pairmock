@@ -11,6 +11,7 @@ import { Plus } from "lucide-react";
 import CreateSlotForm from "./CreateSlotForm";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/ui/toast";
 
 export default function SlotCreation() {
     const [open, setOpen] = useState(false);
@@ -20,15 +21,17 @@ export default function SlotCreation() {
         async function checkGoogleConnection() {
             const { data: accounts, error } = await authClient.listAccounts();
             if (error) {
-                throw new Error(error.message);
+                toast.add({
+                    type: "error",
+                    description: (error.message),
+                    priority: "high",
+                });
             }
             const connected = accounts?.find((account) => account.providerId === "google");
             setIsGoogleConnected(Boolean(connected));
         }
         checkGoogleConnection()
     }, [])
-
-    console.log(isGoogleConnected)
 
     async function linkGoogleAccount() {
         await authClient.linkSocial({

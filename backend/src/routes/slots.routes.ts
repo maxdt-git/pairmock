@@ -483,6 +483,19 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
                 code: req.body.code
             }
         });
+
+        const canComplete =
+            slot.code !== null &&
+            slot.hostFeedback !== null &&
+            slot.bookerFeedback !== null;
+        
+        if (canComplete) {
+            await prisma.slot.updateMany({
+                where: { id, status: "BOOKED" },
+                data: { status: "COMPLETED" }
+            })
+        }
+
         if (result.count === 0) {
             const currentSlot = await prisma.slot.findUnique({
                 where: { id },
@@ -505,6 +518,7 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
                 error: "Unable to save code"
             });
         }
+
         res.sendStatus(200)
     } catch (error) {
         console.error(error)
@@ -513,6 +527,7 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
         })
     }
 })
+
 
 // DELETE expired slots
 async function cleanExpiredSlots() {

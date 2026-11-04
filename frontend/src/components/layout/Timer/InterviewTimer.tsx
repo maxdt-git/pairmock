@@ -1,21 +1,31 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Timer } from "lucide-react";
 
 type InterviewTimerProps = {
     durationMinutes: number;
     scheduledDate: string;
+    onFinished: () => void;
 };
 
 export default function InterviewTimer({
     durationMinutes,
-    scheduledDate
+    scheduledDate,
+    onFinished
 }: InterviewTimerProps) {
     const durationMilliSeconds = durationMinutes * 60 * 1000
     const timerStart = (new Date(scheduledDate).getTime())
     const timerEnd = timerStart + durationMilliSeconds
     const [ timer, setTimer ] = useState(timerEnd - Date.now())
     const hasStarted = Date.now() >= timerStart;
+    const hasNotified = useRef(false);
+
+    useEffect(() => {
+        if (timer <= 0 && !hasNotified.current) {
+            hasNotified.current = true;
+            onFinished();
+        }
+    }, [timer, onFinished]);
 
     useEffect(() => {
         const interval = setInterval(() => {

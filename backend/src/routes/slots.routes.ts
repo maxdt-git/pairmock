@@ -469,15 +469,41 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
             res.status(404).json({ error: "Slot not found" });
             return;
         }
+        if (
+            slot.hostId !== session.user.id &&
+            slot.bookerId !== session.user.id
+        ) {
+            return res.status(403).json({
+                error: "You are not a participant of this interview"
+            });
+        }
         const result = await prisma.slot.updateMany({
-            where: { id },
+            where: { id, code: null },
             data: {
                 code: req.body.code
             }
         });
         if (result.count === 0) {
-            res.status(409).json({ error: "Slot is no longer booked" });
-            return;
+            const currentSlot = await prisma.slot.findUnique({
+                where: { id },
+                select: { code: true }
+            });
+        
+            if (!currentSlot) {
+                return res.status(404).json({
+                    error: "Slot not found"
+                });
+            }
+        
+            if (currentSlot.code !== null) {
+                return res.status(200).json({
+                    message: "Code already saved"
+                });
+            }
+        
+            return res.status(409).json({
+                error: "Unable to save code"
+            });
         }
         res.sendStatus(200)
     } catch (error) {

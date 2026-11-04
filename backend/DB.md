@@ -46,6 +46,16 @@ SELECT tablename FROM pg_tables WHERE schemaname = 'public';
 -- See which Prisma migrations have been applied
 SELECT migration_name, finished_at FROM "_prisma_migrations"
 ORDER BY started_at DESC;
+
+-- see all slots and ids
+SELECT id, "scheduledAt"
+FROM "Slot";
+
+-- update a slot
+UPDATE "Slot"
+SET "scheduledAt" = NOW() + INTERVAL '10 seconds'
+WHERE id = 37
+RETURNING id, "scheduledAt";
 ```
 
 ## Run a query without opening an interactive shell

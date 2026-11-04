@@ -11,12 +11,13 @@ import * as Y from "yjs";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Video, LoaderCircle } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { Link, Navigate, useParams } from 'react-router';
+import { Link, Navigate, useParams, useNavigate } from 'react-router';
 import type { SlotType } from "@/types/slot";
 import { toast } from '@/components/ui/toast';
 import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
 import InterviewTimer from '@/components/layout/Timer/InterviewTimer';
 import { authClient } from '@/lib/auth-client';
+import InterviewExit from '@/components/layout/InterviewExit/InterviewExit';
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -47,11 +48,14 @@ export default function InterviewPage() {
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const [hasStarted, setHasStarted] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
+    const [logoutOpen, setLogoutOpen] = useState(false);
     const settingsRef = useRef<Y.Map<string> | null>(null);
     const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
     const { id } = useParams();
     const { data: session, isPending: isSessionPending } = authClient.useSession();
+    const navigate = useNavigate();
 
     async function getInterviewData() {
         const res = await fetch(`/api/interview/${id}`);
@@ -152,7 +156,7 @@ export default function InterviewPage() {
     }, [editor, id, interviewData]);
 
 
-    const testApi = useMutation({
+    const saveCodeMutation = useMutation({
         mutationFn: async ({
             slotId,
             code
@@ -192,6 +196,22 @@ export default function InterviewPage() {
             });
         },
     })
+
+    async function handleLeave() {
+        const text = textRef.current;
+        if (!text || !interviewData) return;
+
+        try {
+            await saveCodeMutation.mutateAsync({
+                slotId: interviewData.id,
+                code: text.toString(),
+            });
+
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Unable to save code before leaving:", error);
+        }
+    }
 
     useEffect(() => {
         if (!interviewData) return;
@@ -280,16 +300,10 @@ export default function InterviewPage() {
                             </SelectContent>
                         </Select>
                     )}
-                    <Button onClick={() => {
-                        const text = textRef.current
-                        if (!text) return;
-                        testApi.mutate({ slotId: interviewData.id, code: text.toString() })
-                    }}>
-                        TEST API
-                    </Button>
                     <InterviewTimer
                         durationMinutes={interviewData.durationMinutes}
                         scheduledDate={interviewData.scheduledAt}
+                        onFinished={() => setIsFinished(true)}
                     />
                 </div>
                 <div className="mb-4 flex items-center gap-3">
@@ -326,6 +340,9 @@ export default function InterviewPage() {
                             language={language}
                             theme="vs-dark"
                             onMount={(instance) => setEditor(instance)}
+                            options={{
+                                readOnly: isFinished
+                            }}
                         />
                     </div>
                 </ResizablePanel>
@@ -335,7 +352,16 @@ export default function InterviewPage() {
                         <ResizablePanel defaultSize="75%">
                             <div className="flex h-full items-center justify-center p-6">
                                 {isFeedbackSubmitted ?
-                                    <p>Thanks for providing feedback!</p>
+                                    <div className='flex flex-col justify-center items-center gap-8'>
+                                        <p>Thanks for providing feedback!</p>
+                                        <Button onClick={() => setLogoutOpen(true)}>Exit Interview</Button>
+                                        <InterviewExit 
+                                            open={logoutOpen}
+                                            onOpenChange={setLogoutOpen}
+                                            onLeave={handleLeave}
+                                            isSaving={saveCodeMutation.isPending}
+                                        />
+                                    </div>
                                     :
                                     <Questionnaire
                                         className="mx-auto max-w-md"

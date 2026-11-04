@@ -53,8 +53,8 @@ FROM "Slot";
 
 -- update a slot
 UPDATE "Slot"
-SET "scheduledAt" = NOW() + INTERVAL '2 minutes'
-WHERE id = 42
+SET "scheduledAt" = NOW() + INTERVAL '10 seconds'
+WHERE id = 37
 RETURNING id, "scheduledAt";
 ```
 

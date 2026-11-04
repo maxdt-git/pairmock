@@ -9,23 +9,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useNavigate } from "react-router";
 
 interface ExitDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onLeave: () => Promise<void>;
+  isSaving: boolean;
 }
 
 export default function InterviewExit({
     open,
-    onOpenChange    
+    onOpenChange,
+    onLeave,
+    isSaving
 }: ExitDialogProps) {
-    const navigate = useNavigate()
-
-    async function handleLeave() {
-        navigate("/dashboard")
-    }
-
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogTrigger/>
@@ -37,8 +34,16 @@ export default function InterviewExit({
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleLeave}>Continue</AlertDialogAction>
+                    <AlertDialogCancel disabled={isSaving}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        disabled={isSaving}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            void onLeave();
+                        }}
+                    >
+                        {isSaving ? "Saving..." : "Continue"}
+                    </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -17,6 +17,7 @@ import { toast } from '@/components/ui/toast';
 import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
 import InterviewTimer from '@/components/layout/Timer/InterviewTimer';
 import { authClient } from '@/lib/auth-client';
+import InterviewExit from '@/components/layout/InterviewExit/InterviewExit';
 import {
     Questionnaire,
     QuestionnaireActions,
@@ -48,6 +49,7 @@ export default function InterviewPage() {
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const [hasStarted, setHasStarted] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
+    const [logoutOpen, setLogoutOpen] = useState(false);
     const settingsRef = useRef<Y.Map<string> | null>(null);
     const textRef = useRef<Y.Text | null>(null);
     const queryClient = useQueryClient()
@@ -340,7 +342,11 @@ export default function InterviewPage() {
                         <ResizablePanel defaultSize="75%">
                             <div className="flex h-full items-center justify-center p-6">
                                 {isFeedbackSubmitted ?
-                                    <p>Thanks for providing feedback!</p>
+                                    <div className='flex flex-col justify-center items-center gap-8'>
+                                        <p>Thanks for providing feedback!</p>
+                                        <Button onClick={() => setLogoutOpen(true)}>Exit Interview</Button>
+                                        <InterviewExit open={logoutOpen} onOpenChange={setLogoutOpen}/>
+                                    </div>
                                     :
                                     <Questionnaire
                                         className="mx-auto max-w-md"

@@ -93,6 +93,54 @@ app.get("/api/notifications", async (req, res) => {
   }
 })
 
+// delete notifs
+app.delete("/api/notifications/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    res.status(400).json({ error: "Invalid notification ID" });
+    return;
+  }
+
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
+
+    const notification = await prisma.notification.findUnique({
+      where: { id },
+    });
+
+    if (!notification) {
+      res.status(404).json({ error: "Notification not found" });
+      return;
+    }
+
+    if (notification.userId !== session.user.id) {
+      res.status(403).json({
+        error: "You cannot delete this notification",
+      });
+      return;
+    }
+
+    await prisma.notification.delete({
+      where: { id },
+    });
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to delete notification",
+    });
+  }
+});
+
 // Create a test entry
 app.post("/api/test-entries", async (req, res) => {
   const label = req.body?.label;
@@ -407,7 +455,7 @@ app.delete("/api/slots/:id", async (req, res) => {
       await prisma.notification.create({
         data: {
           userId: slot.bookerId,
-          description: `Your slot has been deleted by the host: ${session.user.name}`,
+          description: `Slot deleted by the host: ${session.user.name}`,
           status: "NEW",
           },
       })
@@ -496,10 +544,10 @@ app.patch("/api/slots/:id/book", async (req, res) => {
     // create notif for the slot host when slot is booked
     await prisma.notification.create({
       data: {
-          userId: slot.hostId,
-          description: `Your slot has been booked by ${session.user.name}`,
-          status: "NEW",
-        },
+        userId: slot.hostId,
+        description: `Slot booked by ${session.user.name}`,
+        status: "NEW",
+      },
     });
     res.sendStatus(200);
   } catch (error) {
@@ -578,6 +626,53 @@ app.patch("/api/slots/:id/cancel-book", async (req, res) => {
       error: "Unable to cancel slot",
     });
   }
+})
+
+// add the code at the end of interview to the slot
+app.patch("/api/slots/:id/addcode", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid slot ID" });
+        return;
+    }
+
+    console.log(req.body)
+
+    try {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+        const slot = await prisma.slot.findUnique({
+            where: { id },
+        });
+        if (!slot) {
+            res.status(404).json({ error: "Slot not found" });
+            return;
+        }
+
+        res.sendStatus(200)
+
+        const result = await prisma.slot.updateMany({
+            where: { id },
+            data: {
+              code: req.body.code
+            }
+        });
+        if (result.count === 0) {
+          res.status(409).json({ error: "Slot is no longer booked" });
+          return;
+        }
+
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({
+          error: "Unable to update slot"
+      })
+    }
 })
 
 // DELETE expired slots

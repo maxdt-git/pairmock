@@ -195,6 +195,39 @@ slotsRouter.post("/", async (req, res) => {
             res.status(401).json({ error: "Not authenticated" });
             return;
         }
+        // prevents overlapping with AVAILABLE & BOOKED slots
+        const existingSlots = await prisma.slot.findMany({
+        where: {
+            OR: [
+                {hostId: session.user.id,},
+                {bookerId: session.user.id}
+            ],
+            status: {
+                in: ["AVAILABLE", "BOOKED"]
+            }
+        }
+        });
+
+        const scheduledEnd = new Date(
+            scheduledDate.getTime() + durationMinutes * 60 * 1000
+        );
+        // if any slot has overlapping, return true
+        const hasOverlap = existingSlots.some((slot) => {
+            const existingStart = slot.scheduledAt.getTime();
+
+            const existingEnd =
+                existingStart + slot.durationMinutes * 60 * 1000;
+
+            return existingStart < scheduledEnd.getTime()
+                && existingEnd > scheduledDate.getTime();
+        });
+
+        if (hasOverlap) {
+            return res.status(409).json({
+                error: "You already have a slot during this time"
+            });
+        }
+
         const googleToken = await getGoogleAccessToken(session.user.id)
         if (!googleToken) {
             return res.status(403).json({ error: "Not authenticated with Google" });

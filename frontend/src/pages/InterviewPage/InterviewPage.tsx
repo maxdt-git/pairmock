@@ -35,7 +35,7 @@ import {
     QuestionnaireTitle
 } from '@/components/ui/questionnaire';
 
-interface feedbackDataProps {
+export interface feedbackDataProps {
     problemSolving: string;
     codeQuality: string;
     complexityAnalysis: string;

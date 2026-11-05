@@ -75,9 +75,9 @@ export default function ProfilePage() {
 
   // stats
   let evaluatedCount = 0;
-  const scoreKeys = ['codeQuality', 'communication', 'problemSolving', 'complexityAnalysis'];
+  const scoreKeys = ['codeQuality', 'communication', 'problemSolving', 'complexityAnalysis'] as const;
 
-  const totalScoreAverage = queryCompleted?.data?.reduce((acc: number, card) => {
+  const totalScoreAverage = queryCompleted?.data?.reduce((acc: number, card: SlotType) => {
     const isHost = session?.user.id === card.hostId
     const isBooker = session?.user.id === card.bookerId
 
@@ -126,7 +126,6 @@ export default function ProfilePage() {
                     placeholder="https://github.com/shadcn.png"
                     value={imageSrc}
                     onChange={(e) => setImageSrc(e.target.value)}
-                    required
                   />
                 </div>
                 <div className="grid gap-2">

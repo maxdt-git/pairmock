@@ -1,3 +1,5 @@
+import type { feedbackDataProps } from "@/pages/InterviewPage/InterviewPage";
+
 export type SlotStatus = 'AVAILABLE' | 'BOOKED' | 'CANCELLED' | 'COMPLETED';
 
 export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
@@ -18,6 +20,8 @@ export interface SlotType {
   googleEventId: string | null
   meetLink: string | null
   code: string | null
+  bookerFeedback: feedbackDataProps
+  hostFeedback: feedbackDataProps
   host: {
     name: string;
     image: string | null;

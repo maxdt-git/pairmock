@@ -79,6 +79,7 @@ export default function RegisterForm() {
                                 placeholder="Choose a username"
                                 autoComplete="username"
                                 required
+                                maxLength={25}
                             />
                         </div>
                         <div className="grid gap-2">

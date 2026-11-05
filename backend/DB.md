@@ -48,13 +48,14 @@ SELECT migration_name, finished_at FROM "_prisma_migrations"
 ORDER BY started_at DESC;
 
 -- see all slots and ids
-SELECT id, "scheduledAt"
+SELECT id, "code"
 FROM "Slot";
+WHERE id = 49
 
 -- update a slot
 UPDATE "Slot"
 SET "scheduledAt" = NOW() + INTERVAL '10 seconds'
-WHERE id = 37
+WHERE id = 48
 RETURNING id, "scheduledAt";
 ```
 

@@ -163,7 +163,11 @@ export default function CreateSlotForm({
                         required
                     />
                 </Field>
-
+                {createSlotMutation.isError && (
+                    <p role="alert" className="text-sm text-destructive">
+                        {createSlotMutation.error.message}
+                    </p>
+                )}
                 <Button type="submit" className="w-full">
                     Create Slot
                 </Button>

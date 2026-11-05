@@ -31,7 +31,7 @@ export default function ReviewPage() {
 
     const isHost = session?.user.id === interviewData?.hostId
     const isBooker = session?.user.id === interviewData?.bookerId
-    const userFeedback = isHost ? interviewData?.hostFeedback : isBooker ? interviewData?.bookerFeedback : null
+    const userFeedback = isHost ? interviewData?.bookerFeedback : isBooker ? interviewData?.hostFeedback : null
 
     const code = `REVIEW PAGE (READ-ONLY) \n \n` + interviewData?.code
 
@@ -109,7 +109,7 @@ export default function ReviewPage() {
                                         return (
                                             <div key={item.name} className="w-full">
                                                 <span className="font-semibold block">{item.title}:</span>
-                                                <ul className="list-disc list-inside text-gray-600 pl-2">
+                                                <ul className="list-disc list-insid pl-2">
                                                     {value.map((val) => {
                                                         const match = item.choices.find((c) => c.value === val);
                                                         return <li key={val}>{match ? match.label : val}</li>;
@@ -126,7 +126,7 @@ export default function ReviewPage() {
                                     return (
                                         <div key={item.name} className="w-full">
                                             <span className="font-semibold">{item.title}: </span>
-                                            <span className="text-gray-700">{displayLabel}</span>
+                                            <span>{displayLabel}</span>
                                         </div>
                                     );
                                 })}

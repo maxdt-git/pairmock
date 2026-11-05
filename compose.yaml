@@ -26,6 +26,15 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
 
+  caddy:
+    image: docker.io/library/caddy:2
+    ports:
+      - "127.0.0.1:8443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+      - caddy_data:/data
+      - caddy_config:/config
+
   db:
     image: docker.io/library/postgres:17
     restart: unless-stopped
@@ -43,3 +52,5 @@ services:
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:

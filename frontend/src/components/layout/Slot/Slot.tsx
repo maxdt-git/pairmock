@@ -111,7 +111,7 @@ export default function Slot(props: SlotProps) {
                     <Button
                         className="bg-gray-600 hover:bg-gray-700 w-full"
                         size="lg"
-                        render={<Link to={"/review"} />}
+                        render={<Link to={`/review/${id}`} />}
                         nativeButton={false}
                     >
                         <RotateCcwClock />

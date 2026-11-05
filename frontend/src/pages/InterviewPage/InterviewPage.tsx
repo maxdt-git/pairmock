@@ -335,7 +335,7 @@ export default function InterviewPage() {
                 className="rounded-lg border grow mb-3"
             >
                 <ResizablePanel defaultSize="75%">
-                    <div className="flex h-full items-center justify-center">
+                    <div className="h-full w-full min-h-100 overflow-hidden">
                         <Editor
                             language={language}
                             theme="vs-dark"

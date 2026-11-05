@@ -1,38 +1,17 @@
 import Footer from '@/components/layout/Footer/Footer';
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import Editor from '@monaco-editor/react';
-import type { editor as MonacoEditor } from "monaco-editor";
-import { HocuspocusProvider } from "@hocuspocus/provider";
-import { MonacoBinding } from "y-monaco";
-import * as Y from "yjs";
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, LoaderCircle, Video } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
-import { Link, useParams, useNavigate, Navigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft, LoaderCircle } from 'lucide-react';
+import { Link, useParams, Navigate } from 'react-router';
 import { authClient } from '@/lib/auth-client';
-
-interface feedbackDataProps {
-    problemSolving: string;
-    codeQuality: string;
-    complexityAnalysis: string;
-    communication: string;
-    signals: string[];
-    outcome: string;
-};
+import { questionnaireItems } from '../InterviewPage/interviewData';
 
 export default function ReviewPage() {
-    const [language, setLanguage] = useState("javascript");
-    const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
-    const settingsRef = useRef<Y.Map<string> | null>(null);
-    const textRef = useRef<Y.Text | null>(null);
-    const queryClient = useQueryClient()
-    let { id } = useParams(); // CHANGE TO CONST AFTER 
+    const { id } = useParams();
     const { data: session, isPending: isSessionPending } = authClient.useSession();
-    const navigate = useNavigate();
-
-    id = "1"
 
     async function getInterviewData() {
         const res = await fetch(`/api/interview/${id}`);
@@ -52,56 +31,9 @@ export default function ReviewPage() {
 
     const isHost = session?.user.id === interviewData?.hostId
     const isBooker = session?.user.id === interviewData?.bookerId
-    const userFeedback = isHost ? interviewData.hostFeedback : isBooker ? interviewData.bookerFeedback : null
-    const isFeedbackSubmitted = Boolean(userFeedback && Object.keys(userFeedback).length > 0)
+    const userFeedback = isHost ? interviewData?.hostFeedback : isBooker ? interviewData?.bookerFeedback : null
 
-
-    const code = "REVIEW PAGE (READ-ONLY)" + `
-
-print("Hello World!)`;
-
-    useEffect(() => {
-        if (!editor || !interviewData) return;
-
-        const model = editor.getModel();
-        if (!model) return;
-
-        const doc = new Y.Doc();
-        const text = doc.getText("code");
-        textRef.current = text
-        const settings = doc.getMap<string>("settings");
-        settingsRef.current = settings;
-
-        const syncLanguage = () => {
-            const sharedLanguage = settings.get("language") ?? "javascript";
-            setLanguage(sharedLanguage);
-        };
-
-        settings.observe(syncLanguage);
-        syncLanguage();
-
-        const provider = new HocuspocusProvider({
-            url: "ws://localhost:4001",
-            name: `interview-${id}`,
-            document: doc
-        });
-
-        const binding = new MonacoBinding(
-            text,
-            model,
-            new Set([editor]),
-            provider.awareness ?? undefined
-        );
-
-        return () => {
-            settings.unobserve(syncLanguage);
-            settingsRef.current = null;
-            textRef.current = null;
-            binding.destroy();
-            provider.destroy();
-            doc.destroy();
-        };
-    }, [editor, id, interviewData]);
+    const code = `REVIEW PAGE (READ-ONLY) \n \n` + interviewData?.code
 
     if (queryInterviewData.isPending || isSessionPending) {
         return (
@@ -138,12 +70,10 @@ print("Hello World!)`;
                         <Avatar className="mr-2">
                             <AvatarImage src={interviewData?.host?.image} alt={interviewData?.host?.name} />
                             <AvatarFallback>CN</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                         <Avatar>
                             <AvatarImage src={interviewData?.booker?.image} alt={interviewData?.booker?.name} />
                             <AvatarFallback>LR</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </AvatarGroup>
                 </div>
@@ -153,11 +83,10 @@ print("Hello World!)`;
                 className="rounded-lg border grow mb-3"
             >
                 <ResizablePanel defaultSize="75%">
-                    <div className="flex h-full items-center justify-center">
+                    <div className="h-full w-full min-h-100 overflow-hidden">
                         <Editor
                             language="plaintext"
                             theme="vs-dark"
-                            onMount={(instance) => setEditor(instance)}
                             options={{
                                 readOnly: true
                             }}
@@ -169,8 +98,38 @@ print("Hello World!)`;
                 <ResizablePanel defaultSize="50%">
                     <ResizablePanelGroup orientation="vertical">
                         <ResizablePanel defaultSize="50%">
-                            <div className="flex h-full items-center justify-center p-6">
-                                Feedback display
+                            <div className="flex h-full items-start justify-center flex-col p-6 space-y-4 max-w-175 mx-auto">
+                                <b className='text-lg'>Feedback:</b>
+                                {questionnaireItems.map((item) => {
+                                    const value = userFeedback[item.name as keyof typeof userFeedback];
+                                    if (!value || (Array.isArray(value) && value.length === 0)) {
+                                        return null;
+                                    }
+                                    if (Array.isArray(value)) {
+                                        return (
+                                            <div key={item.name} className="w-full">
+                                                <span className="font-semibold block">{item.title}:</span>
+                                                <ul className="list-disc list-inside text-gray-600 pl-2">
+                                                    {value.map((val) => {
+                                                        const match = item.choices.find((c) => c.value === val);
+                                                        return <li key={val}>{match ? match.label : val}</li>;
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        );
+                                    }
+                                    const choice = item.choices.find((c) => c.value === value);
+                                    const displayLabel = choice?.description
+                                        ? `${choice.label} (${choice.description})`
+                                        : (choice?.label ?? value);
+
+                                    return (
+                                        <div key={item.name} className="w-full">
+                                            <span className="font-semibold">{item.title}: </span>
+                                            <span className="text-gray-700">{displayLabel}</span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </ResizablePanel>
                         <ResizableHandle withHandle />

@@ -1,4 +1,15 @@
 localhost {
     tls internal
-    respond "Caddy HTTPS OK"
+
+    handle /api/* {
+        reverse_proxy backend:4000
+    }
+
+    handle_path /collaboration* {
+        reverse_proxy backend:4001
+    }
+
+    handle {
+        reverse_proxy frontend:5173
+    }
 }

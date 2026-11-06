@@ -31,8 +31,6 @@ export default function LogOutDialog({
             console.log("Logout failed", error);
             return;
         }
-    
-        navigate("/login")
     }
 
     return (

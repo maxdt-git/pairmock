@@ -54,8 +54,8 @@ WHERE id = 49
 
 -- update a slot
 UPDATE "Slot"
-SET "scheduledAt" = NOW() + INTERVAL '10 seconds'
-WHERE id = 48
+SET "scheduledAt" = NOW() + INTERVAL '5 seconds'
+WHERE id = 51
 RETURNING id, "scheduledAt";
 ```
 

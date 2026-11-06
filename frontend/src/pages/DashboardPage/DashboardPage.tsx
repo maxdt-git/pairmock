@@ -177,10 +177,10 @@ export default function DashboardPage() {
         return res.json();
     }
     const queryBooked = useQuery({
-        queryKey: ['slot-booked'],
+        queryKey: ["slot-booked"],
         queryFn: getBookedSlots,
-        refetchInterval: 5 * 1000
-    })
+        refetchInterval: 5 * 1000,
+    });
     const queryAvailable = useQuery({
         queryKey: ['slot-available', { currentPage, difficultyFilter, timeFilter }],
         queryFn: () => getAvailableSlots(currentPage, difficultyFilter, timeFilter),
@@ -212,7 +212,10 @@ export default function DashboardPage() {
                     <h1 className="text-2xl font-bold max-[540px]:hidden">PairMock</h1>
                     <div className="flex items-center gap-4 ">
                         <SlotCreation />
-                        <UserNavigation username={session?.user.name ?? "User"} imageSrc={session?.user.image ? session.user.image : ""} />
+                        <UserNavigation 
+                            username={session?.user.name ?? "User"}
+                            imageSrc={session?.user.image ? session.user.image : ""} 
+                        />
                     </div>
                 </header>
                 <section className="mb-5">

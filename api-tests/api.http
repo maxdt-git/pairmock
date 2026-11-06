@@ -1,6 +1,6 @@
 ### note: this is a test file for api calls with the VScode RestClient extension
 
-@baseUrl = http://localhost:3000
+@baseUrl = https://localhost:8443
 
 ### Check backend health
 GET {{baseUrl}}/api/health

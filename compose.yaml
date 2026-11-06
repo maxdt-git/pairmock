@@ -2,8 +2,6 @@ services:
   frontend:
     build:
       context: ./frontend
-    ports:
-      - "3000:5173"
     volumes:
       - ./frontend/src:/app/src:Z
       - ./frontend/public:/app/public:Z
@@ -12,9 +10,6 @@ services:
   backend:
     build:
       context: ./backend
-    ports:
-      - "127.0.0.1:4000:4000"
-      - "127.0.0.1:4001:4001"
     volumes:
       - ./backend/src:/app/src:Z
       - ./backend/prisma:/app/prisma:Z
@@ -25,6 +20,15 @@ services:
       BETTER_AUTH_URL: ${BETTER_AUTH_URL}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+
+  caddy:
+    image: docker.io/library/caddy:2
+    ports:
+      - "127.0.0.1:8443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,Z
+      - caddy_data:/data
+      - caddy_config:/config
 
   db:
     image: docker.io/library/postgres:17
@@ -43,3 +47,5 @@ services:
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:

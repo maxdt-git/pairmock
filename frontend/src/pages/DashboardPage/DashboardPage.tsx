@@ -114,7 +114,7 @@ export default function DashboardPage() {
             ]);
             toast.add({
                 title: "Slot deleted!",
-                description: "Your slot has been deleted successfully.",
+                description: "Slot deleted successfully.",
                 type: "success",
             });
         },

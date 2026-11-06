@@ -137,6 +137,10 @@ Cookie: {{authSession.response.headers.Set-Cookie}}
 GET http://localhost:4000/api/notifications
 Cookie: {{authSession.response.headers.Set-Cookie}}
 
+### delete notif
+DELETE http://localhost:4000/api/notifications/39
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
 
 ### 3. Create a Slot (Authenticated)
 POST http://localhost:4000/api/slots

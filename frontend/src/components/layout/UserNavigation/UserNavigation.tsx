@@ -100,6 +100,11 @@ export default function UserNavigation(props: UserNavigationProps) {
 
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-70">
+          {!notifFound.data?.length && (
+            <p className="px-2 py-3 text-center text-sm text-muted-foreground">
+              No notifications
+            </p>
+          )}
           {notifFound?.data?.map((notif: Notif) => (
             <DropdownMenuItem key={notif.id} className="flex justify-between">
               <div>

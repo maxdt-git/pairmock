@@ -73,6 +73,30 @@ export default function ProfilePage() {
     return <p>Not logged in</p>
   }
 
+  // stats
+  let evaluatedCount = 0;
+  const scoreKeys = ['codeQuality', 'communication', 'problemSolving', 'complexityAnalysis'] as const;
+
+  const totalScoreAverage = queryCompleted?.data?.reduce((acc: number, card: SlotType) => {
+    const isHost = session?.user.id === card.hostId
+    const isBooker = session?.user.id === card.bookerId
+
+    const feedback = isHost ? card.bookerFeedback : isBooker ? card.hostFeedback : null;
+
+    if (!feedback) {
+      return acc
+    }
+
+    const cardScore = scoreKeys.reduce((sum, key) => sum + (Number(feedback[key]) || 0), 0);
+
+    evaluatedCount += 1;
+    return acc + cardScore / scoreKeys.length;
+  }, 0) ?? 0
+
+  const passedInterviewCount = queryCompleted?.data?.length ?? 0
+  const hoursPracticeScore = Math.round(queryCompleted?.data?.reduce((acc: number, curr: SlotType) => acc + curr.durationMinutes, 0) ?? 0) / 60
+  const feedbackScore = evaluatedCount > 0 ? Number(totalScoreAverage / evaluatedCount).toFixed(1) : 0
+
   return (
     <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh">
       <div className="mb-4">
@@ -102,7 +126,6 @@ export default function ProfilePage() {
                     placeholder="https://github.com/shadcn.png"
                     value={imageSrc}
                     onChange={(e) => setImageSrc(e.target.value)}
-                    required
                   />
                 </div>
                 <div className="grid gap-2">
@@ -133,7 +156,7 @@ export default function ProfilePage() {
                 <MessagesSquare />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Passed interviews: {queryCompleted?.data?.length ?? 0}</ItemTitle>
+                <ItemTitle>Passed interviews: {passedInterviewCount}</ItemTitle>
               </ItemContent>
             </Item>
             <Item variant="outline" size="sm" className="min-w-55">
@@ -141,7 +164,7 @@ export default function ProfilePage() {
                 <Hourglass />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Hours of practice: {Math.round(queryCompleted?.data?.reduce((acc: number, curr: SlotType) => acc + curr.durationMinutes, 0) ?? 0) / 60}</ItemTitle>
+                <ItemTitle>Hours of practice: {hoursPracticeScore}</ItemTitle>
               </ItemContent>
             </Item>
             <Item variant="outline" size="sm" className="min-w-55">
@@ -149,7 +172,7 @@ export default function ProfilePage() {
                 <GraduationCap />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Feedback score: 4.2</ItemTitle>
+                <ItemTitle>Feedback score: {feedbackScore}</ItemTitle>
               </ItemContent>
             </Item>
           </div>
@@ -158,6 +181,7 @@ export default function ProfilePage() {
             {queryCompleted?.data?.map((card: SlotType) => (
               <li key={card.id}>
                 <Slot
+                  id={card.id}
                   imageSrc={card.host.image ?? ""}
                   username={card.host.name}
                   description={card.description}

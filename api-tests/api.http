@@ -64,20 +64,26 @@ Origin: http://localhost:3000
 {
   "description": "Coding mastery",
   "difficulty": "EASY",
-  "scheduledAt": "2026-10-05T15:22:30.153Z",
-  "durationMinutes": 60,
+  "scheduledAt": "2026-11-05T16:22:30.153Z",
+  "durationMinutes": 120,
   "status": "COMPLETED"
 }
 
-### Sign In (Capture response into variable 'authSession')
-### name authSession
-POST http://localhost:4000/api/auth/sign-in/email
+### Provide feedback (look for the id)
+POST http://localhost:4000/api/interview/8/feedback
 Content-Type: application/json
-Origin: http://localhost:3000/
+Origin: http://localhost:3000
+Cookie: {{authSession.response.headers.Set-Cookie}}
 
 {
-  "email": "max@test.com",
-  "password": "max123"
+  "outcome": "optimal-with-hints",
+  "signals": [
+    "clarified-constraints"
+  ],
+  "codeQuality": "5",
+  "communication": "5",
+  "problemSolving": "5",
+  "complexityAnalysis": "5"
 }
 
 ### Get all AvailableCards
@@ -89,9 +95,11 @@ GET http://localhost:4000/api/slots/booked
 ### Book slot
 PATCH http://localhost:4000/api/slots/8/book
 
+{
+  "description": "Test1",
+  "status": "COMPLETED"
+}
 
-### Post notif
-POST http://localhost:4000/api/notifications
 ### 1. Sign In (Capture response into variable 'authSession')
 # @name authSession
 POST http://localhost:4000/api/auth/sign-in/email
@@ -105,11 +113,12 @@ Origin: http://localhost:3000
 
 ### get notifs
 GET http://localhost:4000/api/notifications/
+{
   "email": "testuser2@example.com",
-  "password": "MySecurePassword123"
+  "password": "MySecurePassword123!"
 }
 
-### 2. Verify Session (Checks if connection/session is valid)
+### 2. Verify Session
 GET http://localhost:4000/api/auth/get-session
 Cookie: {{authSession.response.headers.Set-Cookie}}
 

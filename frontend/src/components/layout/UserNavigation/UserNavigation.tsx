@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Bell } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Bell,
   LogOutIcon,
   UserIcon,
 } from "lucide-react"
@@ -23,29 +23,29 @@ import { formatDateTime } from "@/lib/dateFormat";
 
 
 interface UserNavigationProps {
-    imageSrc: string
-    username: string
+  imageSrc: string
+  username: string
 }
 
 
 export default function UserNavigation(props: UserNavigationProps) {
-    const { username, imageSrc } = props
-    const [logoutOpen, setLogoutOpen] = useState(false);
-    const navigate = useNavigate()
+  const { username, imageSrc } = props
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const navigate = useNavigate()
 
-    function handleNavigate() {
-        navigate("/profile")
+  function handleNavigate() {
+    navigate("/profile")
+  }
+
+  async function getNotifications() {
+    const res = await fetch('/api/notifications');
+    if (!res.ok) {
+      throw new Error('Failed to load notifs');
     }
+    return res.json();
+  }
 
-    async function getNotifications() {
-      const res = await fetch('/api/notifications');
-      if (!res.ok) {
-        throw new Error('Failed to load notifs');
-      }
-      return res.json();
-    }
-
-    const notifFound = useQuery({
+  const notifFound = useQuery({
     queryKey: ['notifications'],
     queryFn: getNotifications,
     refetchInterval: 5 * 1000

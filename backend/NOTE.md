@@ -36,6 +36,12 @@ Run these commands **from the `Transcendence-React` project root**, with the `ba
     ```bash
     podman-compose exec backend ./node_modules/.bin/prisma migrate deploy
     ```
+
+A visual browser and editor for the data in your Prisma project
+   ```bash
+   DATABASE_URL="postgresql://transcendence:yourpass@localhost:5432/transcendence?schema=public" npx prisma studio
+   ```
+
 ## Other useful commands
 
 | Command | Purpose |

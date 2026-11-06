@@ -197,15 +197,15 @@ slotsRouter.post("/", async (req, res) => {
         }
         // prevents overlapping with AVAILABLE & BOOKED slots
         const existingSlots = await prisma.slot.findMany({
-        where: {
-            OR: [
-                {hostId: session.user.id,},
-                {bookerId: session.user.id}
-            ],
-            status: {
-                in: ["AVAILABLE", "BOOKED"]
+            where: {
+                OR: [
+                    { hostId: session.user.id, },
+                    { bookerId: session.user.id }
+                ],
+                status: {
+                    in: ["AVAILABLE", "BOOKED"]
+                }
             }
-        }
         });
 
         const scheduledEnd = new Date(
@@ -307,11 +307,11 @@ slotsRouter.delete("/:id", async (req, res) => {
             await prisma.notification.create({
                 data: {
                     userId: slot.bookerId,
-                    description: `Your slot has been deleted by the host: ${session.user.name}`,
+                    description: `Slot deleted by the host: ${session.user.name}`,
                     status: "NEW",
                 },
-            })
-        };
+            });
+        }
 
         res.sendStatus(204);
     } catch (error) {
@@ -362,18 +362,18 @@ slotsRouter.patch("/:id/book", async (req, res) => {
         }
 
         const scheduledDate = new Date(slot.scheduledAt)
-        const durationMinutes = slot.durationMinutes 
+        const durationMinutes = slot.durationMinutes
 
         const existingSlots = await prisma.slot.findMany({
-        where: {
-            OR: [
-                {hostId: session.user.id,},
-                {bookerId: session.user.id}
-            ],
-            status: {
-                in: ["AVAILABLE", "BOOKED"]
+            where: {
+                OR: [
+                    { hostId: session.user.id, },
+                    { bookerId: session.user.id }
+                ],
+                status: {
+                    in: ["AVAILABLE", "BOOKED"]
+                }
             }
-        }
         });
 
         const scheduledEnd = new Date(
@@ -433,7 +433,7 @@ slotsRouter.patch("/:id/book", async (req, res) => {
         await prisma.notification.create({
             data: {
                 userId: slot.hostId,
-                description: `Your slot has been booked by ${session.user.name}`,
+                description: `Slot booked by ${session.user.name}`,
                 status: "NEW",
             },
         });
@@ -561,7 +561,7 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
             slot.code !== null &&
             slot.hostFeedback !== null &&
             slot.bookerFeedback !== null;
-        
+
         if (canComplete) {
             await prisma.slot.updateMany({
                 where: { id, status: "BOOKED" },

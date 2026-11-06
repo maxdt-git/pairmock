@@ -35,6 +35,46 @@ notificationsRouter.get("/", async (req, res) => {
     }
 })
 
+// delete notifs
+notificationsRouter.delete("/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        res.status(400).json({ error: "Invalid notification ID" });
+        return;
+    }
+    try {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        });
+        if (!session) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+        const notification = await prisma.notification.findUnique({
+            where: { id },
+        });
+        if (!notification) {
+            res.status(404).json({ error: "Notification not found" });
+            return;
+        }
+        if (notification.userId !== session.user.id) {
+            res.status(403).json({
+                error: "You cannot delete this notification",
+            });
+            return;
+        }
+        await prisma.notification.delete({
+            where: { id },
+        });
+        res.sendStatus(204);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Unable to delete notification",
+        });
+    }
+});
+
 // Post notifications
 notificationsRouter.post("/", async (req, res) => {
     const {

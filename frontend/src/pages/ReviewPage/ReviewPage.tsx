@@ -8,6 +8,8 @@ import { ArrowLeft, LoaderCircle } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router';
 import { authClient } from '@/lib/auth-client';
 import { questionnaireItems } from '../InterviewPage/interviewData';
+import AiFeedback from "@/components/layout/AiFeedback/AiFeedback";
+
 
 export default function ReviewPage() {
     const { id } = useParams();
@@ -134,9 +136,7 @@ export default function ReviewPage() {
                         </ResizablePanel>
                         <ResizableHandle withHandle />
                         <ResizablePanel defaultSize="50%">
-                            <div className="flex h-full items-center justify-center p-6">
-                                <span className="font-semibold">AI</span>
-                            </div>
+                            <AiFeedback slotId={ id! } code={ interviewData.code } />
                         </ResizablePanel>
                     </ResizablePanelGroup>
                 </ResizablePanel>

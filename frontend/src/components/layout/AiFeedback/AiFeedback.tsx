@@ -10,20 +10,23 @@ interface AiFeedbackProps {
     code: string | null | undefined
 }
 
+const AI_BUTTONS = [
+    { type: "tips", label: "Tips" },
+    { type: "complexity", label: "Complexity" },
+    { type: "bugs", label: "Bugs" },
+    { type: "optimal", label: "Optimal solution" },
+]
+
 export default function AiFeedback(props: AiFeedbackProps) {
     const { slotId, code } = props
 
     const [messages, setMessages] = useState<string[]>([])
 
-    function handleClick() {
-        aiFeedbackMutation.mutate()
-    }
-
     const aiFeedbackMutation = useMutation({
-        mutationFn: async () => {
+        mutationFn: async (type: string) => {
             const response = await fetch (`/api/slots/${slotId}/ai-tips`, {
                   method: "POST",
-                  body: JSON.stringify({ code }),
+                  body: JSON.stringify({ code, type }),
                   headers: { "Content-Type": "application/json" },
                 });
 
@@ -53,15 +56,20 @@ export default function AiFeedback(props: AiFeedbackProps) {
         <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b p-3">
                 <b className="text-lg">AI Feedback</b>
-                <Button disabled={messages.length > 0 || aiFeedbackMutation.isPending} variant="outline" size="sm" onClick={handleClick}>
-                    Tips
+                <div className="flex flex-wrap gap-2">
+                    { AI_BUTTONS.map((btn) => (
+                        <Button
+                            key={btn.type}
+                            onClick={() => aiFeedbackMutation.mutate(btn.type)}
+                            disabled={aiFeedbackMutation.isPending}
+                            variant="outline" size="sm">
+                            {btn.label}
+                        </Button>
+                    ))}
+                </div>
                 {aiFeedbackMutation.isPending && (
-                    <div>
-                        <LoaderCircle className="size-4 animate-spin text-muted-foreground"/>
-                    </div>
+                    <LoaderCircle className="size-4 animate-spin text-muted-foreground"/>
                 )}
-                </Button>
-
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">

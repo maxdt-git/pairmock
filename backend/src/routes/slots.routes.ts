@@ -9,7 +9,7 @@ import {
   getGoogleAccessToken,
 } from "../lib/googleCalendar.ts";
 import { Difficulty } from "../generated/prisma/client.ts";
-import { getCodeTips } from "../lib/ai.ts";
+import { AI_PROMPTS, getAiFeedback, type AiReviewType } from "../lib/ai.ts";
 
 export const slotsRouter = express.Router();
 
@@ -651,8 +651,13 @@ slotsRouter.post("/:id/ai-tips", async (req, res) => {
     if (code.length > 10_000)
       return res.status(400).json({ error: "Code too long" });
 
-    const tips = await getCodeTips(code);
-    res.status(200).json({ tips });
+    const reviewType = String(req.body?.type ?? "");
+    if (!(Object.hasOwn(AI_PROMPTS, reviewType))) {
+      return res.status(400).json({ error: "Wrong type of review" });
+    }
+
+    const aiFb = await getAiFeedback(code, reviewType as AiReviewType);
+    res.status(200).json({ tips: aiFb });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: "AI review failed" });

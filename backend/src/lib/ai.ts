@@ -43,7 +43,16 @@ async function askAI(systemPrompt: string, userCode: string): Promise<string> {
   throw new Error("All keys are rate limited");
 }
 
-export function getCodeTips(code: string) {
-  const systemPrompt = "Review the code and give some tips";
+export const AI_PROMPTS = {
+  tips: "Review the code and give some tips",
+  complexity: "What is the complexity of the code and can it be optimized?",
+  bugs: "Read the code to find bugs and limit cases",
+  optimal: "Give some tips to resolve the problem with the optimal solution",
+}
+
+export type AiReviewType = keyof typeof AI_PROMPTS;
+
+export function getAiFeedback(code: string, type: AiReviewType) {
+  const systemPrompt = AI_PROMPTS[type];
   return askAI(systemPrompt, `\n\n${code}`);
 }

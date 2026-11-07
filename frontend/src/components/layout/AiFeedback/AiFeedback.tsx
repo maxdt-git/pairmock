@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from 'lucide-react';
+import ReactMarkdown from "react-markdown"
+import { toast } from "@/components/ui/toast";
 
 interface AiFeedbackProps {
     slotId: string
@@ -26,7 +28,8 @@ export default function AiFeedback(props: AiFeedbackProps) {
                 });
 
             if (!response.ok) {
-                throw new Error(`Failed to load review`)
+                const data = await response.json()
+                throw new Error(data.error)
             }
 
             return response.json()
@@ -38,6 +41,11 @@ export default function AiFeedback(props: AiFeedbackProps) {
 
         onError: (error) => {
             console.error(error)
+            toast.add({
+                title: "Issue with AI",
+                description: error.message,
+                type: "error",
+            });
         },
     });
 
@@ -49,7 +57,7 @@ export default function AiFeedback(props: AiFeedbackProps) {
                     Tips
                 {aiFeedbackMutation.isPending && (
                     <div>
-                        <LoaderCircle className="size-8 animate-spin text-muted-foreground"/>
+                        <LoaderCircle className="size-4 animate-spin text-muted-foreground"/>
                     </div>
                 )}
                 </Button>
@@ -63,8 +71,10 @@ export default function AiFeedback(props: AiFeedbackProps) {
                     </p>
                 )}
                 {messages.map((message, index) => (
-                    <div key={index} className="rounded-xl border p-3 text-sm">
-                        <p className="whitespace-pre-wrap">{message}</p>
+                    <div key={index} className="rounded-xl border p-3 prose prose-sm dark:prose-invert max-w-none">
+                        <ReactMarkdown>
+                            {message}
+                        </ReactMarkdown>
                     </div>
                 ))}
             </div>

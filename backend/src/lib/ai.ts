@@ -44,6 +44,6 @@ async function askAI(systemPrompt: string, userCode: string): Promise<string> {
 }
 
 export function getCodeTips(code: string) {
-  const systemPrompt = "...";
+  const systemPrompt = "Review the code and give some tips";
   return askAI(systemPrompt, `\n\n${code}`);
 }

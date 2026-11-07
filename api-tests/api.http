@@ -159,3 +159,13 @@ Cookie: {{authSession.response.headers.Set-Cookie}}
 ### 4. Book Slot (Authenticated)
 PATCH http://localhost:4000/api/slots/2/book
 Cookie: {{authSession.response.headers.Set-Cookie}}
+
+### AI tips on interview code
+POST {{baseUrl}}/api/slots/2/ai-tips
+Content-Type: application/json
+Origin: {{baseUrl}}
+Cookie: {{authSession.response.headers.Set-Cookie}}
+
+{
+  "code": "function twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++)\n    for (let j = i + 1; j < nums.length; j++)\n      if (nums[i] + nums[j] === target) return [i, j];\n}"
+}

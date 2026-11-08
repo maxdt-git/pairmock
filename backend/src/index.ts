@@ -6,6 +6,7 @@ import { slotsRouter } from "./routes/slots.routes.ts";
 import { notificationsRouter } from "./routes/notifications.routes.ts";
 import { devRouter } from "./routes/dev.routes.ts";
 import { interviewRouter } from "./routes/interview.routes.ts";
+import { analyticsRouter } from "./routes/analytics.routes.ts";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -17,6 +18,7 @@ app.use("/api/slots", slotsRouter)
 app.use("/api/notifications", notificationsRouter)
 app.use("/api/interview", interviewRouter)
 app.use("/api", devRouter)
+app.use("/api/analytics", analyticsRouter)
 
 app.get("/api/health", (_req, res) => {
   res.status(200).json({

@@ -18,6 +18,7 @@ import RerouteAll from './components/auth/RerouteAll.tsx'
 import GuestRoute from './components/auth/GuestRoute.tsx'
 import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
 import ReviewPage from './pages/ReviewPage/ReviewPage.tsx'
+import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -39,6 +40,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/interview/:id" element={<InterviewPage />} />
               <Route path="/review/:id" element={<ReviewPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
             </Route>
           </Routes>
           <Toaster />

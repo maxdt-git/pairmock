@@ -20,7 +20,8 @@ const AI_BUTTONS = [
 export default function AiFeedback(props: AiFeedbackProps) {
     const { slotId, code } = props
 
-    const [messages, setMessages] = useState<string[]>([])
+    const [messages, setMessages] = useState<Record<string, string>>({})
+    const [activeType, setActiveType] = useState<string | null>(null)
 
     const aiFeedbackMutation = useMutation({
         mutationFn: async (type: string) => {
@@ -38,8 +39,8 @@ export default function AiFeedback(props: AiFeedbackProps) {
             return response.json()
         },
 
-        onSuccess: async (data) => {
-            setMessages([...messages, data.tips])
+        onSuccess: (data, type) => {
+            setMessages({...messages, [type]: data.tips})
         },
 
         onError: (error) => {
@@ -52,6 +53,13 @@ export default function AiFeedback(props: AiFeedbackProps) {
         },
     });
 
+    function handleClick(type: string) {
+        setActiveType(type)
+        if (!messages[type]) {
+            aiFeedbackMutation.mutate(type)
+        }
+    }
+
     return (
         <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b p-3">
@@ -60,9 +68,9 @@ export default function AiFeedback(props: AiFeedbackProps) {
                     { AI_BUTTONS.map((btn) => (
                         <Button
                             key={btn.type}
-                            onClick={() => aiFeedbackMutation.mutate(btn.type)}
+                            onClick={() => handleClick(btn.type)}
                             disabled={aiFeedbackMutation.isPending}
-                            variant="outline" size="sm">
+                            variant={ btn.type === activeType ? "default" : "outline" } size="sm">
                             {btn.label}
                         </Button>
                     ))}
@@ -73,18 +81,18 @@ export default function AiFeedback(props: AiFeedbackProps) {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {messages.length === 0 && (
+                { !activeType && (
                     <p className="text-sm text-muted-foreground">
                         Click a button to get AI feedback on the code.
                     </p>
                 )}
-                {messages.map((message, index) => (
-                    <div key={index} className="rounded-xl border p-3 prose prose-sm dark:prose-invert max-w-none">
+                { activeType && messages[activeType] && (
+                    <div className="rounded-xl border p-3 prose prose-sm dark:prose-invert max-w-none">
                         <ReactMarkdown>
-                            {message}
+                            {messages[activeType]}
                         </ReactMarkdown>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );

@@ -18,6 +18,8 @@ jobs:
           script: |
             cd ~/Transcendence-React
             git pull origin main
-            docker compose up --build -d
+            docker compose build backend
+            docker compose build frontend
+            docker compose up -d
             docker compose exec -T backend ./node_modules/.bin/prisma migrate deploy
             docker image prune -f

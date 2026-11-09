@@ -26,7 +26,7 @@ export async function getGoogleAccessToken(userId: string) {
     }
 }
 
-export async function createMeetAndCalendarEvent(slot, host, booker) {
+export async function createMeetAndCalendarEvent(slot: any, host: any, booker: any) {
     const hostToken = await getGoogleAccessToken(host.id);
     const bookerToken = await getGoogleAccessToken(booker.id);
     const organizer = hostToken ? { token: hostToken, isHost: true } : bookerToken ? { token: bookerToken, isHost: false } : null;

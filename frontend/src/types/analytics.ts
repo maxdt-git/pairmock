@@ -13,7 +13,7 @@ export type AnalyticsInterview = {
     time: string
     difficulty: string
     role: "host" | "booker"
-    problemeSolving: number
+    problemSolving: number
     codeQuality: number
     complexityAnalysis: number
     communication: number

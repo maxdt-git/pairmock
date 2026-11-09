@@ -17,7 +17,7 @@ export default function LoginForm() {
   async function handleGoogleLogin() {
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "https://localhost:8443/dashboard",
+      callbackURL: "/dashboard",
     });
 
     if (error) {

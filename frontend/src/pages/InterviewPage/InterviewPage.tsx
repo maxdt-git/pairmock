@@ -133,7 +133,7 @@ export default function InterviewPage() {
         syncLanguage();
 
         const provider = new HocuspocusProvider({
-            url: "wss://localhost:8443/collaboration",
+            url: `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/collaboration`,
             name: `interview-${id}`,
             document: doc
         });

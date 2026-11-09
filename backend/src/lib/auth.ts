@@ -12,7 +12,7 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  trustedOrigins: ["https://localhost:8443"],
+  trustedOrigins: [process.env.BETTER_AUTH_URL ?? "https://localhost:8443"],
 
   socialProviders: {
     google: {

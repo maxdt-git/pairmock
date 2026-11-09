@@ -1,6 +1,4 @@
-localhost {
-    tls internal
-
+{$DOMAIN_NAME:localhost} {
     handle /api/* {
         reverse_proxy backend:4000
     }

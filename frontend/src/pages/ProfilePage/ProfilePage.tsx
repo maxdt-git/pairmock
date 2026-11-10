@@ -114,8 +114,7 @@ export default function ProfilePage() {
         </Button>
       </div>
       <div className="flex gap-4 mb-4 flex-wrap lg:flex-nowrap">
-        <div className="flex flex-col gap-4">
-          <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
+        <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
           <form onSubmit={handleSubmit}>
             <CardHeader>
               <Avatar size="profile" className="mx-auto">
@@ -156,9 +155,7 @@ export default function ProfilePage() {
               </Button>
             </CardFooter>
           </form>
-          </Card>
-          <Button onClick={handleNavigate}>View Analytics</Button>
-        </div>
+        </Card>
         <Card className="w-full pl-3 pr-3">
           <div className="flex gap-3 flex-wrap xl:flex-nowrap">
             <Item variant="outline" size="sm" className="min-w-55">
@@ -186,7 +183,10 @@ export default function ProfilePage() {
               </ItemContent>
             </Item>
           </div>
-          <h2 className="text-xl font-bold ml-1">{t("profile.passedHeading")}</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold ml-1">{t("profile.passedHeading")}</h2>
+            <Button className={"w-36"} onClick={handleNavigate}>View Analytics</Button>
+          </div>
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5">
             {queryCompleted?.data?.map((card: SlotType) => (
               <li key={card.id}>

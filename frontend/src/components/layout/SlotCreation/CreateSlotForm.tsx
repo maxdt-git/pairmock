@@ -15,6 +15,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateSlotPayload } from "@/types/slot";
 import { toast } from "@/components/ui/toast";
+import { useTranslation } from "react-i18next";
 
 interface CreateSlotFormProps {
   onCreated: () => void;
@@ -23,6 +24,7 @@ interface CreateSlotFormProps {
 export default function CreateSlotForm({
     onCreated
 }: CreateSlotFormProps) {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
 
     const createSlotMutation = useMutation({
@@ -38,7 +40,7 @@ export default function CreateSlotForm({
             const result = await response.json();
             
             if (!response.ok) {
-                throw new Error(result.error ?? "Failed to create slot");
+                throw new Error(result.error ?? t("slotCreation.form.failedFallback"));
             }
             
             return result;
@@ -55,8 +57,8 @@ export default function CreateSlotForm({
                 }),
             ]);
             toast.add({
-                title: "Slot created!",
-                description: "Your interview slot is now available.",
+                title: t("slotCreation.toast.created.title"),
+                description: t("slotCreation.toast.created.description"),
                 type: "success",
             });
             onCreated()
@@ -65,8 +67,8 @@ export default function CreateSlotForm({
         onError: (error) => {
             console.error("Slot creation failed:", error);
             toast.add({
-                title: "Slot creation failed!",
-                description: "Unable to create your slot.",
+                title: t("slotCreation.toast.failed.title"),
+                description: t("slotCreation.toast.failed.description"),
                 type: "error",
             });
         },
@@ -100,22 +102,22 @@ export default function CreateSlotForm({
 
                 <Field>
                     <FieldLabel htmlFor="description">
-                        Description
+                        {t("slotCreation.form.description")}
                     </FieldLabel>
                     <Textarea
                         id="description"
                         name="description"
-                        placeholder="What would you like to practice?"
+                        placeholder={t("slotCreation.form.descriptionPlaceholder")}
                         required
                     />
                     <FieldDescription>
-                        Describe the interview session.
+                        {t("slotCreation.form.descriptionHelp")}
                     </FieldDescription>
                 </Field>
 
                 <Field>
                     <FieldLabel htmlFor="difficulty">
-                        Difficulty
+                        {t("slotCreation.form.difficulty")}
                     </FieldLabel>
                     <NativeSelect
                         id="difficulty"
@@ -124,20 +126,20 @@ export default function CreateSlotForm({
                         required
                     >
                         <NativeSelectOption value="EASY">
-                            Easy
+                            {t("difficulty.EASY")}
                         </NativeSelectOption>
                         <NativeSelectOption value="MEDIUM">
-                            Medium
+                            {t("difficulty.MEDIUM")}
                         </NativeSelectOption>
                         <NativeSelectOption value="HARD">
-                            Hard
+                            {t("difficulty.HARD")}
                         </NativeSelectOption>
                     </NativeSelect>
                 </Field>
 
                 <Field>
                     <FieldLabel htmlFor="scheduledAt">
-                        Date & Time
+                        {t("slotCreation.form.dateTime")}
                     </FieldLabel>
                     <Input
                         id="scheduledAt"
@@ -150,7 +152,7 @@ export default function CreateSlotForm({
 
                 <Field>
                     <FieldLabel htmlFor="durationMinutes">
-                        Duration (minutes)
+                        {t("slotCreation.form.duration")}
                     </FieldLabel>
                     <Input
                         id="durationMinutes"
@@ -169,7 +171,7 @@ export default function CreateSlotForm({
                     </p>
                 )}
                 <Button type="submit" className="w-full">
-                    Create Slot
+                    {t("slotCreation.form.submit")}
                 </Button>
             </FieldGroup>
         </form>

@@ -7,9 +7,14 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, LoaderCircle } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router';
 import { authClient } from '@/lib/auth-client';
-import { questionnaireItems } from '../InterviewPage/interviewData';
+import { useQuestionnaireItems } from '../InterviewPage/interviewData';
+import { useTranslation } from 'react-i18next';
+import AiFeedback from "@/components/layout/AiFeedback/AiFeedback";
+
 
 export default function ReviewPage() {
+    const { t } = useTranslation();
+    const questionnaireItems = useQuestionnaireItems();
     const { id } = useParams();
     const { data: session, isPending: isSessionPending } = authClient.useSession();
 
@@ -33,13 +38,13 @@ export default function ReviewPage() {
     const isBooker = session?.user.id === interviewData?.bookerId
     const userFeedback = isHost ? interviewData?.bookerFeedback : isBooker ? interviewData?.hostFeedback : null
 
-    const code = `REVIEW PAGE (READ-ONLY) \n \n` + interviewData?.code
+    const code = `${t("review.readOnly")} \n \n` + (interviewData?.code ?? "")
 
     if (queryInterviewData.isPending || isSessionPending) {
         return (
             <div className="flex items-center justify-center min-h-dvh">
                 <div className="flex flex-col items-center gap-2">
-                    <p className="text-muted-foreground">Loading interview review session...</p>
+                    <p className="text-muted-foreground">{t("review.loading")}</p>
                     <LoaderCircle className="size-8 animate-spin text-muted-foreground" />
                 </div>
             </div>
@@ -61,7 +66,7 @@ export default function ReviewPage() {
                 <div className="mb-4 flex items-center gap-4">
                     <Button variant="outline" size="lg">
                         <Link to="/profile" className="flex gap-2 items-center">
-                            <ArrowLeft /> Profile
+                            <ArrowLeft /> {t("common.profile")}
                         </Link>
                     </Button>
                 </div>
@@ -99,9 +104,9 @@ export default function ReviewPage() {
                     <ResizablePanelGroup orientation="vertical">
                         <ResizablePanel defaultSize="50%">
                             <div className="flex h-full items-start justify-center flex-col p-6 space-y-4 max-w-175 mx-auto">
-                                <b className='text-lg'>Feedback:</b>
+                                <b className='text-lg'>{t("review.feedbackHeading")}</b>
                                 {questionnaireItems.map((item) => {
-                                    const value = userFeedback[item.name as keyof typeof userFeedback];
+                                    const value = userFeedback?.[item.name];
                                     if (!value || (Array.isArray(value) && value.length === 0)) {
                                         return null;
                                     }
@@ -134,9 +139,7 @@ export default function ReviewPage() {
                         </ResizablePanel>
                         <ResizableHandle withHandle />
                         <ResizablePanel defaultSize="50%">
-                            <div className="flex h-full items-center justify-center p-6">
-                                <span className="font-semibold">AI</span>
-                            </div>
+                            <AiFeedback slotId={ id! } code={ interviewData.code } />
                         </ResizablePanel>
                     </ResizablePanelGroup>
                 </ResizablePanel>

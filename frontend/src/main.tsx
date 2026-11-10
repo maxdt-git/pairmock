@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './i18n'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import LoginPage from './pages/LoginPage/LoginPage.tsx'
 import RegisterPage from './pages/RegisterPage/RegisterPage.tsx'
@@ -32,10 +33,11 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/register" element={<RegisterPage />} />
             </Route>
             <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
+            {/* Legal pages are public: they must be readable before signing up */}
+            <Route path="/service" element={<ServicePage />} />
+            <Route path="/policy" element={<PolicyPage />} />
             <Route element={<RerouteAll />}>
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/service" element={<ServicePage />} />
-              <Route path="/policy" element={<PolicyPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/interview/:id" element={<InterviewPage />} />
               <Route path="/review/:id" element={<ReviewPage />} />

@@ -12,8 +12,10 @@ import CreateSlotForm from "./CreateSlotForm";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
+import { useTranslation } from "react-i18next";
 
 export default function SlotCreation() {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [isGoogleConnected, setIsGoogleConnected] = useState(false);
 
@@ -44,14 +46,14 @@ export default function SlotCreation() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger render={<Button size="lg" />}>
                 <Plus className="w-4 h-4" />
-                Create Slot
+                {t("slotCreation.trigger")}
             </DialogTrigger>
             {isGoogleConnected ?
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Create a Slot</DialogTitle>
+                        <DialogTitle>{t("slotCreation.title")}</DialogTitle>
                         <DialogDescription>
-                            Configure your new interview slot.
+                            {t("slotCreation.description")}
                         </DialogDescription>
                     </DialogHeader>
                     <CreateSlotForm
@@ -61,12 +63,12 @@ export default function SlotCreation() {
                 :
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Connect Google Calendar</DialogTitle>
+                        <DialogTitle>{t("slotCreation.connectTitle")}</DialogTitle>
                         <DialogDescription>
-                            When someone books your slot, PairMock automatically creates a Google Calendar invite and a Google Meet link for both of you. Connect your Google Account once to start hosting slots.
+                            {t("slotCreation.connectDescription")}
                         </DialogDescription>
                     </DialogHeader>
-                    <Button onClick={() => linkGoogleAccount()}>Connect Google Calendar</Button>
+                    <Button onClick={() => linkGoogleAccount()}>{t("slotCreation.connectButton")}</Button>
                 </DialogContent>
             }
         </Dialog>

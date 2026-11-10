@@ -1,4 +1,5 @@
 .env
+node_modules/
 
 ########################
 Makefile_windows.txt

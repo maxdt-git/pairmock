@@ -9,8 +9,10 @@ import { useSearchParams } from "react-router";
 import SlotCreation from "@/components/layout/SlotCreation/SlotCreation";
 import { toast } from "@/components/ui/toast";
 import Slot from "@/components/layout/Slot/Slot";
+import { useTranslation } from "react-i18next";
 
 export default function DashboardPage() {
+    const { t } = useTranslation();
     const { data: session } = authClient.useSession();
     const [searchParams, setSearchParams] = useSearchParams();
     const currentPage = Number(searchParams.get('page')) || 1;
@@ -39,8 +41,8 @@ export default function DashboardPage() {
                 }),
             ]);
             toast.add({
-                title: "Slot booked!",
-                description: "This slot has been booked successfully.",
+                title: t("dashboard.toast.booked.title"),
+                description: t("dashboard.toast.booked.description"),
                 type: "success",
             });
         },
@@ -49,8 +51,8 @@ export default function DashboardPage() {
             console.error(error);
 
             toast.add({
-                title: "Booking failed",
-                description: "Unable to book this slot. Retry later",
+                title: t("dashboard.toast.bookFailed.title"),
+                description: t("dashboard.toast.bookFailed.description"),
                 type: "error",
             });
         },
@@ -76,8 +78,8 @@ export default function DashboardPage() {
                 }),
             ]);
             toast.add({
-                title: "Slot Canceled!",
-                description: "This slot has been canceled successfully.",
+                title: t("dashboard.toast.canceled.title"),
+                description: t("dashboard.toast.canceled.description"),
                 type: "success",
             });
         },
@@ -86,8 +88,8 @@ export default function DashboardPage() {
             console.error(error);
 
             toast.add({
-                title: "Cancelation failed",
-                description: "Unable to cancel this slot. Retry later",
+                title: t("dashboard.toast.cancelFailed.title"),
+                description: t("dashboard.toast.cancelFailed.description"),
                 type: "error",
             });
         },
@@ -113,8 +115,8 @@ export default function DashboardPage() {
                 }),
             ]);
             toast.add({
-                title: "Slot deleted!",
-                description: "Slot deleted successfully.",
+                title: t("dashboard.toast.deleted.title"),
+                description: t("dashboard.toast.deleted.description"),
                 type: "success",
             });
         },
@@ -123,8 +125,8 @@ export default function DashboardPage() {
             console.error(error);
 
             toast.add({
-                title: "Deletion failed",
-                description: "Unable to delete this slot.",
+                title: t("dashboard.toast.deleteFailed.title"),
+                description: t("dashboard.toast.deleteFailed.description"),
                 type: "error",
             });
         },
@@ -188,20 +190,20 @@ export default function DashboardPage() {
     })
 
     const itemsDifficulty = [
-        { label: "Easy", value: "easy" },
-        { label: "Medium", value: "medium" },
-        { label: "Hard", value: "hard" },
-        { label: "All", value: "all" },
+        { label: t("dashboard.filter.easy"), value: "easy" },
+        { label: t("dashboard.filter.medium"), value: "medium" },
+        { label: t("dashboard.filter.hard"), value: "hard" },
+        { label: t("dashboard.filter.all"), value: "all" },
     ]
 
     const itemsTime = [
-        { label: "Earliest First", value: "asc" },
-        { label: "Latest First", value: "desc" },
+        { label: t("dashboard.sort.asc"), value: "asc" },
+        { label: t("dashboard.sort.desc"), value: "desc" },
     ]
 
     if (!session) {
         return (
-            <p>Not Logged In</p>
+            <p>{t("common.notLoggedIn")}</p>
         )
     }
 
@@ -213,13 +215,13 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-4 ">
                         <SlotCreation />
                         <UserNavigation 
-                            username={session?.user.name ?? "User"}
+                            username={session?.user.name ?? t("common.user")}
                             imageSrc={session?.user.image ? session.user.image : ""} 
                         />
                     </div>
                 </header>
                 <section className="mb-5">
-                    <h2 className="text-xl font-bold mb-2.5">Booked slots:</h2>
+                    <h2 className="text-xl font-bold mb-2.5">{t("dashboard.bookedSlots")}</h2>
                     <ul className="flex gap-2 flex-wrap max-h-72 p-2 md:max-h-none overflow-y-auto">
                         {queryBooked.data?.map((card: SlotType) => (
                             <li key={card.id}>
@@ -244,13 +246,13 @@ export default function DashboardPage() {
                     </ul>
                 </section>
                 <section>
-                    <h2 className="text-xl font-bold mb-2.5">Available slots:</h2>
+                    <h2 className="text-xl font-bold mb-2.5">{t("dashboard.availableSlots")}</h2>
                     <div className="mb-2.5 ml-2 flex gap-3">
                         <Select items={itemsTime} value={timeFilter} onValueChange={(value) => {
                             handleTimeChange(value ?? "asc")
                         }}>
                             <SelectTrigger className="w-45">
-                                <SelectValue placeholder="Time" />
+                                <SelectValue placeholder={t("dashboard.timePlaceholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -266,7 +268,7 @@ export default function DashboardPage() {
                             handleDifficultyChange(value ?? "all")
                         }}>
                             <SelectTrigger className="w-45">
-                                <SelectValue placeholder="Difficulty" />
+                                <SelectValue placeholder={t("dashboard.difficultyPlaceholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -304,7 +306,7 @@ export default function DashboardPage() {
                                 </li>
                             ))
                             :
-                            <p>No slots available. Create your own!</p>
+                            <p>{t("dashboard.noSlots")}</p>
                         }
                     </ul>
                 </section>
@@ -318,7 +320,7 @@ export default function DashboardPage() {
                                         handlePageChange(currentPage - 1)
                                     }
                                 }}>
-                                <PaginationPrevious href="#" />
+                                <PaginationPrevious href="#" text={t("pagination.previous")} />
                             </PaginationItem>
                             {Array.from({ length: queryAvailable.data?.totalPages }, (_, index) => {
                                 const page = index + 1
@@ -344,7 +346,7 @@ export default function DashboardPage() {
                                     handlePageChange(currentPage + 1)
                                 }}
                             >
-                                <PaginationNext href="#" />
+                                <PaginationNext href="#" text={t("pagination.next")} />
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>

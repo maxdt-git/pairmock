@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useTranslation } from "react-i18next"
 
 interface ExitDialogProps {
   open: boolean;
@@ -23,18 +24,19 @@ export default function InterviewExit({
     onLeave,
     isSaving
 }: ExitDialogProps) {
+    const { t } = useTranslation()
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogTrigger/>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("interview.exitDialog.title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Once you leave this interview, you won't be able to rejoin the session. Make sure you've completed everything before leaving.
+                      {t("interview.exitDialog.description")}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isSaving}>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isSaving}>{t("common.cancel")}</AlertDialogCancel>
                     <AlertDialogAction
                         disabled={isSaving}
                         onClick={(event) => {
@@ -42,7 +44,7 @@ export default function InterviewExit({
                             void onLeave();
                         }}
                     >
-                        {isSaving ? "Saving..." : "Continue"}
+                        {isSaving ? t("interview.exitDialog.saving") : t("common.continue")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

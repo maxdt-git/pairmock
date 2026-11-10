@@ -160,49 +160,12 @@ Cookie: {{authSession.response.headers.Set-Cookie}}
 PATCH {{baseUrl}}/api/slots/2/book
 Cookie: {{authSession.response.headers.Set-Cookie}}
 
-### Create test user
-POST {{baseUrl}}/api/auth/sign-up/email
+### AI tips on interview code
+POST {{baseUrl}}/api/slots/2/ai-tips
 Content-Type: application/json
-Origin: https://localhost:8443
-
-{
-  "name": "TestUser",
-  "email": "testuser2@example.com",
-  "password": "MySecurePassword123!"
-}
-
-### Sign in (saves the login cookie into 'authSession')
-# @name authSession
-POST {{baseUrl}}/api/auth/sign-in/email
-Content-Type: application/json
-Origin: https://localhost:8443
-
-{
-  "name": "TestUser",
-  "email": "testuser2@example.com",
-  "password": "MySecurePassword123!"
-}
-
-@slotId = 1
-
-### Save code on the slot (only works if the slot has no code yet)
-PATCH {{baseUrl}}/api/slots/{{slotId}}/addcode
-Content-Type: application/json
-Origin: https://localhost:8443
+Origin: {{baseUrl}}
 Cookie: {{authSession.response.headers.Set-Cookie}}
 
 {
-  "code": "function twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n}"
-}
-
-@slotId = 1
-
-### Get AI review (old route version: code sent in the body)
-POST {{baseUrl}}/api/slots/{{slotId}}/ai-tips
-Content-Type: application/json
-Origin: https://localhost:8443
-Cookie: {{authSession.response.headers.Set-Cookie}}
-
-{
-  "code": "function add(a, b) {\n  return a + b;\n}"
+  "code": "function twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++)\n    for (let j = i + 1; j < nums.length; j++)\n      if (nums[i] + nums[j] === target) return [i, j];\n}"
 }

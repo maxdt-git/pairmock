@@ -10,7 +10,6 @@ import {
 } from "../lib/googleCalendar.ts";
 import { Difficulty } from "../generated/prisma/client.ts";
 import { AI_PROMPTS, getAiFeedback, toAiLanguage, type AiReviewType } from "../lib/ai.ts";
-
 export const slotsRouter = express.Router();
 
 const isDifficulty = (val: string): val is Difficulty => {

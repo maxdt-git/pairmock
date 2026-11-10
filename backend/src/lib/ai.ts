@@ -43,6 +43,7 @@ async function askAI(systemPrompt: string, userCode: string): Promise<string> {
   throw new Error("All keys are rate limited");
 }
 
+
 /** Languages the AI can answer in. Keys match the frontend i18n codes. */
 export const AI_LANGUAGES = {
   en: "English",
@@ -91,6 +92,7 @@ If the candidate's code is already optimal, say so and briefly explain why.`,
 };
 
 export type AiReviewType = keyof typeof AI_PROMPTS;
+
 
 export function getAiFeedback(
   code: string,

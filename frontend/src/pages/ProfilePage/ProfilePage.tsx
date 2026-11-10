@@ -12,7 +12,7 @@ import type { SlotType } from "@/types/slot";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, GraduationCap, Hourglass, MessagesSquare } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 export default function ProfilePage() {
@@ -98,6 +98,11 @@ export default function ProfilePage() {
   const passedInterviewCount = queryCompleted?.data?.length ?? 0
   const hoursPracticeScore = Math.round(queryCompleted?.data?.reduce((acc: number, curr: SlotType) => acc + curr.durationMinutes, 0) ?? 0) / 60
   const feedbackScore = evaluatedCount > 0 ? Number(totalScoreAverage / evaluatedCount).toFixed(1) : 0
+  const navigate = useNavigate()
+
+  function handleNavigate() {
+    navigate("/analytics")
+  }
 
   return (
     <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh">
@@ -109,7 +114,8 @@ export default function ProfilePage() {
         </Button>
       </div>
       <div className="flex gap-4 mb-4 flex-wrap lg:flex-nowrap">
-        <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
+        <div className="flex flex-col gap-4">
+          <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
           <form onSubmit={handleSubmit}>
             <CardHeader>
               <Avatar size="profile" className="mx-auto">
@@ -150,7 +156,9 @@ export default function ProfilePage() {
               </Button>
             </CardFooter>
           </form>
-        </Card>
+          </Card>
+          <Button onClick={handleNavigate}>View Analytics</Button>
+        </div>
         <Card className="w-full pl-3 pr-3">
           <div className="flex gap-3 flex-wrap xl:flex-nowrap">
             <Item variant="outline" size="sm" className="min-w-55">

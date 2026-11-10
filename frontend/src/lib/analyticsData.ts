@@ -20,6 +20,17 @@ function averageScore(interviews: AnalyticsInterview[]) {
     return Math.round((sum / (count * SKILLS.length)) * 10) / 10
 }
 
+export function byDifficulty(interviews: AnalyticsInterview[]) {
+    return DIFFICULTY.map((difficulty) => {
+        const filtered = interviews.filter((interview) => interview.difficulty === difficulty)
+        return {
+            difficulty,
+            average: averageScore(filtered),
+            count: filtered.length,
+        }
+    })
+}
+
 export function skillAverages(interviews: AnalyticsInterview[]) {
     if (interviews.length === 0) {
         return []

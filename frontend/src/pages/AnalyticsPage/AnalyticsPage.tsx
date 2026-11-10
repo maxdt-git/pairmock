@@ -4,8 +4,11 @@ import { formatDateTime } from "@/lib/dateFormat";
 import type { AnalyticsInterview, AnalyticsInterviewRaw } from "@/types/analytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
-import { getKpis, skillAverages } from "@/lib/analyticsData";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, BarChart, Bar } from "recharts";
+import { getKpis, skillAverages, byDifficulty } from "@/lib/analyticsData";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { ArrowLeft } from "lucide-react";
 
 const chartConfig = {
     problemSolving: { label: "Problem solving", theme: { light: "#16a34a", dark: "#4ade80" } },
@@ -48,12 +51,26 @@ export default function AnalyticsPage() {
 
     const kpis = getKpis(data)
     const skills = skillAverages(data)
+    const difficulty = byDifficulty(data)
 
     const dateById = new Map<number, string>(data.map((d: { id: number; date: string }) => [d.id, d.date]));
 
     return (
-        <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh">
-            <div className="flex flex-wrap gap-4 mb-4">
+        <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh mt-4">
+            <div className="flex mb-4">
+                <Button variant="outline" size={"lg"}>
+                    <Link to={"/profile"} className="flex gap-2 items-center">
+                      <ArrowLeft /> Profile
+                    </Link>
+                </Button>
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-5xl font-semibold mb-4">Data Dashboard Analytics</CardTitle>
+                    <CardDescription>Your progress across all completed interviews</CardDescription>
+                </CardHeader>
+            </Card>
+            <div className="flex flex-wrap gap-4 mb-4 mt-4">
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
                         <CardDescription>Interviews</CardDescription>
@@ -119,24 +136,53 @@ export default function AnalyticsPage() {
                     </ChartContainer>
                 </CardContent>
             </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Skills profile</CardTitle>
-                    <CardDescription>Average per skill</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer config={radarConfig} className="mx-auto aspect-square max-h-80 w-full">
-                        <RadarChart data={skills}>
-                            <ChartTooltip content={<ChartTooltipContent />}/>
-                            <PolarGrid/>
-                            <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
-                            <PolarAngleAxis dataKey="skill"
-                            tickFormatter={(skill) => chartConfig[skill as keyof typeof chartConfig]?.label ?? skill}/>
-                            <Radar dataKey="average" fill="var(--color-average)" fillOpacity={0.5} stroke="var(--color-average)"/>
-                        </RadarChart>
-                    </ChartContainer>
-                </CardContent>
-            </Card>
+            <div className="flex flex-wrap gap-4 mt-4">
+                <Card className="flex-1 min-w-48">
+                    <CardHeader>
+                        <CardTitle>Skills profile</CardTitle>
+                        <CardDescription>Average per skill</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={radarConfig} className="mx-auto aspect-square max-h-80 w-full">
+                            <RadarChart data={skills}>
+                                <ChartTooltip content={<ChartTooltipContent />}/>
+                                <PolarGrid/>
+                                <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
+                                <PolarAngleAxis dataKey="skill"
+                                tickFormatter={(skill) => chartConfig[skill as keyof typeof chartConfig]?.label ?? skill}/>
+                                <Radar dataKey="average" fill="var(--color-average)" fillOpacity={0.5} stroke="var(--color-average)"/>
+                            </RadarChart>
+                        </ChartContainer>
+                    </CardContent>
+                </Card>
+                <Card className="flex-1 min-w-48">
+                    <CardHeader>
+                        <CardTitle>Notes per difficulty</CardTitle>
+                        <CardDescription>Order by ascending difficulty</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={radarConfig} className="h-80 w-full">
+                            <BarChart data={difficulty}>
+                                <CartesianGrid vertical={false}/>
+                                <XAxis
+                                    dataKey="difficulty"
+                                    tickFormatter={(d: string) => d.charAt(0) + d.slice(1).toLowerCase()}/>
+                                <YAxis domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]}/>
+                                <ChartTooltip
+                                    content={
+                                        <ChartTooltipContent
+                                            labelFormatter={(_, payload) => {
+                                                const p = payload?.[0]?.payload;
+                                                return p ? `${p.difficulty} · ${p.count} interview${p.count > 1 ? "s" : ""}` : "";
+                                            }}/>
+                                    }/>
+                                <Bar dataKey="average" fill="var(--color-average)" radius={[4, 4, 0, 0]}/>
+                            </BarChart>
+                        </ChartContainer>
+
+                    </CardContent>
+                </Card>
+            </div>
             <Footer/>
         </main >
     );

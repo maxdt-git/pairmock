@@ -63,13 +63,16 @@ INSERT INTO "Slot" ("imageSrc", "hostId", "bookerId", description, difficulty,
                     "scheduledAt", status, code, "hostFeedback", "bookerFeedback")
 SELECT
   '',
-  CASE WHEN i % 2 = 0 THEN 'RXJ1UcgyouPzAAQ4RGAQelFDNSurtY2u' ELSE '4dBgFgmcnZwpXLTnpG5IGUVSK3j1HjuB' END,
-  CASE WHEN i % 2 = 0 THEN '4dBgFgmcnZwpXLTnpG5IGUVSK3j1HjuB' ELSE 'RXJ1UcgyouPzAAQ4RGAQelFDNSurtY2u' END,
+  CASE WHEN i % 2 = 0 THEN (SELECT id FROM "user" WHERE email = 'maxdenasdetourris@gmail.com')
+                      ELSE (SELECT id FROM "user" WHERE email = 'max@test.com') END,
+  CASE WHEN i % 2 = 0 THEN (SELECT id FROM "user" WHERE email = 'max@test.com')
+                      ELSE (SELECT id FROM "user" WHERE email = 'maxdenasdetourris@gmail.com') END,
+
   '[seed] interview #' || i,
   (ARRAY['EASY','MEDIUM','HARD'])[1 + i % 3]::"Difficulty",
   date_trunc('day', NOW())
-    - (5 - (i - 1) / 4) * INTERVAL '1 day'      -- jour : 4 interviews par jour
-    + (9 + ((i - 1) % 4) * 2) * INTERVAL '1 hour', -- heure : 9h, 11h, 13h, 15h
+    - (5 - (i - 1) / 4) * INTERVAL '1 day'
+    + (9 + ((i - 1) % 4) * 2) * INTERVAL '1 hour',
   'COMPLETED',
   '// seed',
   (SELECT jsonb_object_agg(k, LEAST(5, GREATEST(1, ROUND(1 + i*0.2 + random()*2 - 1)))::int::text)
@@ -77,7 +80,7 @@ SELECT
   (SELECT jsonb_object_agg(k, LEAST(5, GREATEST(1, ROUND(1 + i*0.2 + random()*2 - 1)))::int::text)
      FROM unnest(ARRAY['problemSolving','codeQuality','complexityAnalysis','communication']) k)
 FROM generate_series(1, 20) AS i;
-INSERT 0 20
+
 
 ## Run a query without opening an interactive shell
 

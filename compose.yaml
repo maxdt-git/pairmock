@@ -22,6 +22,7 @@ services:
       BETTER_AUTH_URL: ${BETTER_AUTH_URL}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      AI_API_KEYS: ${AI_API_KEYS}
 
   caddy:
     image: docker.io/library/caddy:2

@@ -1,3 +1,6 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
 export const INTERVIEW_LANGUAGES = [
     { value: 'python', label: 'Python' },
     { value: 'javascript', label: 'JavaScript' },
@@ -13,90 +16,76 @@ export const INTERVIEW_LANGUAGES = [
     { value: 'kotlin', label: 'Kotlin' }
 ];
 
-export const questionnaireItems = [
-    {
-        choices: [
-            { label: "5", value: "5", description: "Optimal approach without hints" },
-            { label: "4", value: "4", description: "Solved with minor guidance" },
-            { label: "3", value: "3", description: "Solved with significant guidance" },
-            { label: "2", value: "2", description: "Suboptimal or brute-force approach" },
-            { label: "1", value: "1", description: "Struggled to make progress" },
-            { label: "0", value: "0", description: "Did not solve" },
-        ],
-        description: "Rate from 0 (did not solve) to 5 (optimal approach without hints).",
-        name: "problemSolving",
-        required: true,
-        title: "Problem Solving & Algorithm Design",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Clean, idiomatic, bug-free" },
-            { label: "4", value: "4", description: "Readable with minor style flaws" },
-            { label: "3", value: "3", description: "Working but messy or unorganized" },
-            { label: "2", value: "2", description: "Significant bugs or syntax issues" },
-            { label: "1", value: "1", description: "Hard to follow, multiple bugs" },
-            { label: "0", value: "0", description: "Broken and unreadable" },
-        ],
-        description: "Rate from 0 (broken/unreadable) to 5 (clean, idiomatic, bug-free).",
-        name: "codeQuality",
-        required: true,
-        title: "Code Quality & Implementation",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Accurate Time & Space Big-O analysis" },
-            { label: "4", value: "4", description: "Correct with minor prompting" },
-            { label: "3", value: "3", description: "Partially correct analysis" },
-            { label: "2", value: "2", description: "Confused time and space complexity" },
-            { label: "1", value: "1", description: "Guessed without reasoning" },
-            { label: "0", value: "0", description: "Incorrect or missing analysis" },
-        ],
-        description: "Rate from 0 (incorrect/missing) to 5 (accurate Time & Space Big-O analysis).",
-        name: "complexityAnalysis",
-        required: true,
-        title: "Time & Space Complexity (Big-O)",
-    },
-    {
-        choices: [
-            { label: "5", value: "5", description: "Structured thinking out loud" },
-            { label: "4", value: "4", description: "Good communication with slight hesitation" },
-            { label: "3", value: "3", description: "Needed occasional prompting to speak" },
-            { label: "2", value: "2", description: "Quiet, unclear explanations" },
-            { label: "1", value: "1", description: "Minimal communication" },
-            { label: "0", value: "0", description: "Silent or incoherent" },
-        ],
-        description: "Rate from 0 (silent/unclear) to 5 (structured thinking out loud).",
-        name: "communication",
-        required: true,
-        title: "Communication & Thought Process",
-    },
-    {
-        choices: [
-            { label: "Clarified constraints & edge cases early", value: "clarified-constraints", description: "" },
-            { label: "Compared trade-offs before coding", value: "compared-tradeoffs", description: "" },
-            { label: "Dry-ran code with test cases", value: "dry-run", description: "" },
-            { label: "Caught and fixed bugs independently", value: "self-debugged", description: "" },
-        ],
-        description: "Select all that apply, or skip this question.",
-        multiple: true,
-        name: "signals",
-        required: false,
-        title: "Which positive signals did the candidate show?",
-    },
-    {
-        choices: [
-            { label: "Solved optimally without hints", value: "optimal-no-hints", description: "" },
-            { label: "Solved optimally with minor hints", value: "optimal-with-hints", description: "" },
-            { label: "Working brute-force / suboptimal solution", value: "suboptimal", description: "" },
-            { label: "Did not finish a working solution", value: "incomplete", description: "" },
-        ],
-        description: "Select the outcome of the coding task.",
-        input: {
-            label: "Custom feedback note",
-            placeholder: "Add specific advice or missed edge cases…",
+const RATING_VALUES = ["5", "4", "3", "2", "1", "0"] as const;
+const RATING_QUESTIONS = ["problemSolving", "codeQuality", "complexityAnalysis", "communication"] as const;
+const SIGNAL_VALUES = ["clarified-constraints", "compared-tradeoffs", "dry-run", "self-debugged"] as const;
+const OUTCOME_VALUES = ["optimal-no-hints", "optimal-with-hints", "suboptimal", "incomplete"] as const;
+
+export type QuestionName =
+    | (typeof RATING_QUESTIONS)[number]
+    | "signals"
+    | "outcome";
+
+export interface QuestionnaireChoiceItem {
+    value: string;
+    label: string;
+    description?: string;
+}
+
+export interface QuestionnaireQuestion {
+    name: QuestionName;
+    required: boolean;
+    multiple?: boolean;
+    title: string;
+    description: string;
+    choices: QuestionnaireChoiceItem[];
+    input?: { label: string; placeholder: string };
+}
+
+/**
+ * Feedback questionnaire in the current UI language.
+ * Choice `value`s are what gets stored in the database, so they never change with the language:
+ * feedback saved in English is displayed in French on the review page, and vice versa.
+ */
+export function useQuestionnaireItems(): QuestionnaireQuestion[] {
+    const { t } = useTranslation();
+
+    return useMemo(() => [
+        ...RATING_QUESTIONS.map((name) => ({
+            name,
+            required: true,
+            title: t(`questionnaire.${name}.title`),
+            description: t(`questionnaire.${name}.description`),
+            choices: RATING_VALUES.map((value) => ({
+                value,
+                label: value,
+                description: t(`questionnaire.${name}.choices.${value}`),
+            })),
+        })),
+        {
+            name: "signals",
+            required: false,
+            multiple: true,
+            title: t("questionnaire.signals.title"),
+            description: t("questionnaire.signals.description"),
+            choices: SIGNAL_VALUES.map((value) => ({
+                value,
+                label: t(`questionnaire.signals.choices.${value}`),
+            })),
         },
-        name: "outcome",
-        required: true,
-        title: "What was the final result of the coding task?",
-    },
-] as const;
+        {
+            name: "outcome",
+            required: true,
+            title: t("questionnaire.outcome.title"),
+            description: t("questionnaire.outcome.description"),
+            choices: OUTCOME_VALUES.map((value) => ({
+                value,
+                label: t(`questionnaire.outcome.choices.${value}`),
+            })),
+            input: {
+                label: t("questionnaire.outcome.inputLabel"),
+                placeholder: t("questionnaire.outcome.inputPlaceholder"),
+            },
+        },
+    ], [t]);
+}

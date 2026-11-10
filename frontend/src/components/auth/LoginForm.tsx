@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, type SubmitEvent } from "react";
@@ -9,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { toast } from "../ui/toast";
+import { useTranslation } from "react-i18next";
 
 export default function LoginForm() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -36,7 +37,7 @@ export default function LoginForm() {
       if (error) {
         toast.add({
           type: "error",
-          description: (error.message ?? "Login failed."),
+          description: (error.message ?? t("auth.login.failed")),
           priority: "high",
         });
         return;
@@ -44,7 +45,7 @@ export default function LoginForm() {
     } catch (error) {
       toast.add({
         type: "error",
-        description: "Unable to connect to the server.",
+        description: t("auth.serverUnreachable"),
         priority: "high",
       })
       console.error("Login error:", error);
@@ -54,13 +55,13 @@ export default function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
+        <CardTitle>{t("auth.login.title")}</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          {t("auth.login.description")}
         </CardDescription>
         <CardAction>
           <Button variant="link" render={<Link to={"/register"} />}>
-            Sign Up
+            {t("auth.login.signUp")}
           </Button>
         </CardAction>
       </CardHeader>
@@ -68,27 +69,27 @@ export default function LoginForm() {
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("auth.email")}</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
+                placeholder={t("auth.emailPlaceholder")}
                 autoComplete="email"
                 required
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.password")}</Label>
               </div>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter your password"
+                placeholder={t("auth.passwordPlaceholder")}
                 autoComplete="current-password"
                 required
               />
@@ -97,10 +98,10 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter className="flex-col gap-2 mt-6">
           <Button type="submit" className="w-full">
-            Login
+            {t("auth.login.submit")}
           </Button>
           <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin}>
-            Login with Google
+            {t("auth.login.google")}
           </Button>
         </CardFooter>
       </form>

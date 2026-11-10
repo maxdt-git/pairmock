@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import {
   DropdownMenu,
@@ -20,6 +20,7 @@ import type { Notif } from "@/types/notifications";
 import { toast } from "@/components/ui/toast";
 import { X } from "lucide-react";
 import { formatDateTime } from "@/lib/dateFormat";
+import { useTranslation } from "react-i18next";
 
 
 interface UserNavigationProps {
@@ -30,6 +31,7 @@ interface UserNavigationProps {
 
 export default function UserNavigation(props: UserNavigationProps) {
   const { username, imageSrc } = props
+  const { t } = useTranslation()
   const [logoutOpen, setLogoutOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -67,16 +69,16 @@ export default function UserNavigation(props: UserNavigationProps) {
                   queryKey: ["notifications"],
           });
           toast.add({
-              title: "Notification deleted!",
-              description: "Your notification has been deleted successfully.",
+              title: t("nav.notifDeleted.title"),
+              description: t("nav.notifDeleted.description"),
               type: "success",
           });
       },
       onError: (error) => {
           console.error(error);
           toast.add({
-              title: "Deletion failed",
-              description: "Unable to delete this notification.",
+              title: t("nav.notifDeleteFailed.title"),
+              description: t("nav.notifDeleteFailed.description"),
               type: "error",
           });
       },
@@ -87,7 +89,7 @@ export default function UserNavigation(props: UserNavigationProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
-            <Button className="relative" variant="outline" size="icon" aria-label="Notifications" />
+            <Button className="relative" variant="outline" size="icon" aria-label={t("nav.notifications")} />
           }
         >
           <Bell className="h-4 w-4" />
@@ -102,7 +104,7 @@ export default function UserNavigation(props: UserNavigationProps) {
         <DropdownMenuContent align="end" className="w-70">
           {!notifFound.data?.length && (
             <p className="px-2 py-3 text-center text-sm text-muted-foreground">
-              No notifications
+              {t("nav.noNotifications")}
             </p>
           )}
           {notifFound?.data?.map((notif: Notif) => (
@@ -116,7 +118,7 @@ export default function UserNavigation(props: UserNavigationProps) {
                 variant="ghost"
                 size="icon-sm"
                 className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                aria-label="Delete notif"
+                aria-label={t("nav.deleteNotification")}
                 onClick={() => deleteNotifMutation.mutate(notif.id)}>
                 <X className="size-4" />
               </Button>
@@ -136,11 +138,11 @@ export default function UserNavigation(props: UserNavigationProps) {
         <DropdownMenuContent>
           <DropdownMenuItem onClick={handleNavigate}>
             <UserIcon />
-            Profile
+            {t("common.profile")}
           </DropdownMenuItem>
           <DropdownMenuItem variant="destructive" onClick={() => setLogoutOpen(true)}>
             <LogOutIcon />
-            Log Out
+            {t("nav.logOut")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -3,10 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/dateFormat";
-import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2, Ghost } from "lucide-react";
+import { Calendar, CalendarDays, Clock, Hourglass, Video, RotateCcwClock, Trash2 } from "lucide-react";
 import SlotDeleteDialog from "./SlotDeleteDialog";
 import { useState } from "react";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export interface SlotProps {
     id: number
@@ -30,6 +31,7 @@ const difficultyStyles = {
 
 
 export default function Slot(props: SlotProps) {
+    const { t } = useTranslation()
     const { id, imageSrc, username, description, date, difficulty, duration, status, onDelete, onBooking, onCancel } = props
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
     const [slotDeleteOpen, setSlotDeleteOpen] = useState(false)
@@ -47,7 +49,7 @@ export default function Slot(props: SlotProps) {
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
                         <Badge className={difficultyStyles[difficulty as keyof typeof difficultyStyles] ?? difficultyStyles.EASY}>
-                            {difficulty}
+                            {difficulty in difficultyStyles ? t(`difficulty.${difficulty as keyof typeof difficultyStyles}`) : difficulty}
                         </Badge>
                         {onDelete && (
                             <>
@@ -56,7 +58,7 @@ export default function Slot(props: SlotProps) {
                                     variant="ghost"
                                     size="icon-sm"
                                     className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                    aria-label="Delete slot"
+                                    aria-label={t("slot.deleteAria")}
                                     onClick={() => setSlotDeleteOpen(true)}
                                 >
                                     <Trash2 className="size-4" />
@@ -79,14 +81,14 @@ export default function Slot(props: SlotProps) {
                 </div>
                 <div className="flex gap-0.5 items-center">
                     <Hourglass width={16} height={16} />
-                    <p>{duration}(min)</p>
+                    <p>{t("slot.duration", { count: duration })}</p>
                 </div>
             </CardContent>
             {status === "AVAILABLE" &&
                 <CardFooter>
                     <Button className="w-full" size="lg" onClick={onBooking} disabled={!onBooking}>
                         <CalendarDays />
-                        {onBooking ? <p>Book Slot</p> : <p>Hosted Slot</p>}
+                        {onBooking ? <p>{t("slot.book")}</p> : <p>{t("slot.hosted")}</p>}
                     </Button>
                 </CardFooter>
             }
@@ -99,10 +101,10 @@ export default function Slot(props: SlotProps) {
                         render={<Link to={`/interview/${id}`} />}
                     >
                         <Video />
-                        Enter interview
+                        {t("slot.enter")}
                     </Button>
                     <Button size="lg" variant="destructive" onClick={onCancel}>
-                        Cancel
+                        {t("slot.cancel")}
                     </Button>
                 </CardFooter>
             }
@@ -115,7 +117,7 @@ export default function Slot(props: SlotProps) {
                         nativeButton={false}
                     >
                         <RotateCcwClock />
-                        View history
+                        {t("slot.history")}
                     </Button>
                 </CardFooter>
             }

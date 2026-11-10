@@ -17,7 +17,6 @@ app.use(express.json());
 app.use("/api/slots", slotsRouter)
 app.use("/api/notifications", notificationsRouter)
 app.use("/api/interview", interviewRouter)
-app.use("/api", devRouter)
 app.use("/api/analytics", analyticsRouter)
 
 app.get("/api/health", (_req, res) => {

@@ -1,6 +1,6 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Timer } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type InterviewTimerProps = {
     durationMinutes: number;
@@ -13,6 +13,7 @@ export default function InterviewTimer({
     scheduledDate,
     onFinished
 }: InterviewTimerProps) {
+    const { t } = useTranslation()
     const durationMilliSeconds = durationMinutes * 60 * 1000
     const timerStart = (new Date(scheduledDate).getTime())
     const timerEnd = timerStart + durationMilliSeconds
@@ -43,9 +44,9 @@ export default function InterviewTimer({
             <Timer className="size-5 text-muted-foreground" />
             <span className="font-mono text-lg font-semibold tabular-nums">
                 {!hasStarted ? (
-                <p>Interview has not started yet</p>
+                <p>{t("interview.timer.notStarted")}</p>
                 ) : timer <= 0 ? (
-                <p>Interview is over</p>
+                <p>{t("interview.timer.over")}</p>
                 ) : (
                 <p>{minutes}:{seconds}</p>
                 )}

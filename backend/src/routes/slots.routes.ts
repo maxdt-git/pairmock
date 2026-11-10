@@ -9,8 +9,7 @@ import {
   getGoogleAccessToken,
 } from "../lib/googleCalendar.ts";
 import { Difficulty } from "../generated/prisma/client.ts";
-import { AI_PROMPTS, getAiFeedback, type AiReviewType } from "../lib/ai.ts";
-
+import { AI_PROMPTS, getAiFeedback, toAiLanguage, type AiReviewType } from "../lib/ai.ts";
 export const slotsRouter = express.Router();
 
 const isDifficulty = (val: string): val is Difficulty => {
@@ -638,28 +637,31 @@ slotsRouter.post("/:id/ai-tips", async (req, res) => {
       headers: fromNodeHeaders(req.headers),
     });
     if (!session?.user?.id) {
-      return res.status(401).json({ error: "Unauthorized: Please log in" });
+      return res.status(401).json({ error: "Unauthorized: Please log in", code: "UNAUTHORIZED" });
     }
     const slot = await prisma.slot.findUnique({ where: { id } });
-    if (!slot) return res.status(404).json({ error: "Interview not found" });
+    if (!slot) return res.status(404).json({ error: "Interview not found", code: "NOT_FOUND" });
     if (session.user.id !== slot.hostId && session.user.id !== slot.bookerId) {
-      return res.status(403).json({ error: "Access denied" });
+      return res.status(403).json({ error: "Access denied", code: "FORBIDDEN" });
     }
     const code = String(req.body?.code ?? "");
     if (!code.trim())
-      return res.status(400).json({ error: "No code to review" });
+      return res.status(400).json({ error: "No code to review", code: "NO_CODE" });
     if (code.length > 10_000)
-      return res.status(400).json({ error: "Code too long" });
+      return res.status(400).json({ error: "Code too long", code: "CODE_TOO_LONG" });
 
     const reviewType = String(req.body?.type ?? "");
     if (!(Object.hasOwn(AI_PROMPTS, reviewType))) {
-      return res.status(400).json({ error: "Wrong type of review" });
+      return res.status(400).json({ error: "Wrong type of review", code: "INVALID_TYPE" });
     }
 
-    const aiFb = await getAiFeedback(code, reviewType as AiReviewType);
-    res.status(200).json({ tips: aiFb });
+    // UI language sent by the frontend; Accept-Language as a fallback for other clients
+    const language = toAiLanguage(req.body?.lang ?? req.headers["accept-language"]);
+
+    const aiFb = await getAiFeedback(code, reviewType as AiReviewType, language);
+    res.status(200).json({ tips: aiFb, lang: language });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({ error: "AI review failed" });
+    return res.status(500).json({ error: "AI review failed", code: "AI_FAILED" });
   }
 });

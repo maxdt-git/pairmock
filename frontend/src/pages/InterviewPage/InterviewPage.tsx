@@ -14,7 +14,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams, useNavigate } from 'react-router';
 import type { SlotType } from "@/types/slot";
 import { toast } from '@/components/ui/toast';
-import { INTERVIEW_LANGUAGES, questionnaireItems } from './interviewData';
+import { INTERVIEW_LANGUAGES, useQuestionnaireItems } from './interviewData';
+import { useTranslation } from 'react-i18next';
 import InterviewTimer from '@/components/layout/Timer/InterviewTimer';
 import { authClient } from '@/lib/auth-client';
 import InterviewExit from '@/components/layout/InterviewExit/InterviewExit';
@@ -45,6 +46,8 @@ export interface feedbackDataProps {
 };
 
 export default function InterviewPage() {
+    const { t } = useTranslation();
+    const questionnaireItems = useQuestionnaireItems();
     const [language, setLanguage] = useState("javascript");
     const [editor, setEditor] = useState<MonacoEditor.IStandaloneCodeEditor | null>(null);
     const [hasStarted, setHasStarted] = useState(false);
@@ -98,7 +101,7 @@ export default function InterviewPage() {
             queryClient.invalidateQueries({ queryKey: ['interview', id] })
             toast.add({
                 type: "success",
-                description: "Feedback has been saved",
+                description: t("interview.toast.feedbackSaved"),
                 priority: "high",
             });
         },
@@ -106,7 +109,7 @@ export default function InterviewPage() {
             console.error("Submission failed:", err);
             toast.add({
                 type: "error",
-                description: "Failed to save feedback",
+                description: t("interview.toast.feedbackFailed"),
                 priority: "high",
             });
         },
@@ -133,7 +136,7 @@ export default function InterviewPage() {
         syncLanguage();
 
         const provider = new HocuspocusProvider({
-            url: "wss://localhost:8443/collaboration",
+            url: `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/collaboration`,
             name: `interview-${id}`,
             document: doc
         });
@@ -180,8 +183,8 @@ export default function InterviewPage() {
 
         onSuccess: async () => {
             toast.add({
-                title: "Code added to review!",
-                description: "This slot has been updated.",
+                title: t("interview.toast.codeSaved.title"),
+                description: t("interview.toast.codeSaved.description"),
                 type: "success",
             });
         },
@@ -190,8 +193,8 @@ export default function InterviewPage() {
             console.error(error);
 
             toast.add({
-                title: "Update failed",
-                description: "Unable to update this slot. Retry later",
+                title: t("interview.toast.updateFailed.title"),
+                description: t("interview.toast.updateFailed.description"),
                 type: "error",
             });
         },
@@ -237,7 +240,7 @@ export default function InterviewPage() {
         return (
             <div className="flex items-center justify-center min-h-dvh">
                 <div className="flex flex-col items-center gap-2">
-                    <p className="text-muted-foreground">Loading interview session...</p>
+                    <p className="text-muted-foreground">{t("interview.loading")}</p>
                     <LoaderCircle className="size-8 animate-spin text-muted-foreground" />
                 </div>
             </div>
@@ -274,7 +277,7 @@ export default function InterviewPage() {
                 <div className="mb-4 flex items-center gap-4">
                     <Button variant="outline" size="lg">
                         <Link to="/dashboard" className="flex gap-2 items-center">
-                            <ArrowLeft /> Dashboard
+                            <ArrowLeft /> {t("common.dashboard")}
                         </Link>
                     </Button>
                     {hasStarted && (
@@ -287,7 +290,7 @@ export default function InterviewPage() {
                             }}
                         >
                             <SelectTrigger className="w-45">
-                                <SelectValue placeholder="Language" />
+                                <SelectValue placeholder={t("interview.languagePlaceholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -324,7 +327,7 @@ export default function InterviewPage() {
                             render={<a href={interviewData.meetLink} target="_blank" rel="noopener noreferrer"></a>}
                             nativeButton={false}
                         >
-                            <Video /> Join Google Meet
+                            <Video /> {t("interview.joinMeet")}
                         </Button>
                     )}
                 </div>
@@ -353,8 +356,8 @@ export default function InterviewPage() {
                             <div className="flex h-full items-center justify-center p-6">
                                 {isFeedbackSubmitted ?
                                     <div className='flex flex-col justify-center items-center gap-8'>
-                                        <p>Thanks for providing feedback!</p>
-                                        <Button onClick={() => setLogoutOpen(true)}>Exit Interview</Button>
+                                        <p>{t("interview.thanks")}</p>
+                                        <Button onClick={() => setLogoutOpen(true)}>{t("interview.exit")}</Button>
                                         <InterviewExit 
                                             open={logoutOpen}
                                             onOpenChange={setLogoutOpen}
@@ -374,7 +377,7 @@ export default function InterviewPage() {
                                         {questionnaireItems.map((question) => (
                                             <QuestionnaireItem
                                                 key={question.name}
-                                                multiple={"multiple" in question && question.multiple}
+                                                multiple={Boolean(question.multiple)}
                                                 name={question.name}
                                                 required={question.required}
                                             >
@@ -386,14 +389,14 @@ export default function InterviewPage() {
                                                     {question.choices.map((choice) => (
                                                         <QuestionnaireChoice key={choice.value} value={choice.value}>
                                                             <span className="font-medium">{choice.label}</span>
-                                                            {"description" in choice ? (
+                                                            {choice.description ? (
                                                                 <span className="text-muted-foreground">
                                                                     {choice.description}
                                                                 </span>
                                                             ) : null}
                                                         </QuestionnaireChoice>
                                                     ))}
-                                                    {"input" in question ? (
+                                                    {question.input ? (
                                                         <QuestionnaireInput
                                                             aria-label={question.input.label}
                                                             placeholder={question.input.placeholder}
@@ -404,10 +407,10 @@ export default function InterviewPage() {
                                             </QuestionnaireItem>
                                         ))}
                                         <QuestionnaireActions>
-                                            <QuestionnairePrevious />
-                                            <QuestionnaireSkip />
-                                            <QuestionnaireNext>Next</QuestionnaireNext>
-                                            <QuestionnaireSubmit>Save plan</QuestionnaireSubmit>
+                                            <QuestionnairePrevious>{t("interview.questionnaire.previous")}</QuestionnairePrevious>
+                                            <QuestionnaireSkip>{t("interview.questionnaire.skip")}</QuestionnaireSkip>
+                                            <QuestionnaireNext>{t("interview.questionnaire.next")}</QuestionnaireNext>
+                                            <QuestionnaireSubmit>{t("interview.questionnaire.submit")}</QuestionnaireSubmit>
                                         </QuestionnaireActions>
                                     </Questionnaire>
                                 }
@@ -416,7 +419,7 @@ export default function InterviewPage() {
                         <ResizableHandle withHandle />
                         <ResizablePanel defaultSize="25%">
                             <div className="flex h-full items-center justify-center p-6">
-                                <span className="font-semibold">Console</span>
+                                <span className="font-semibold">{t("interview.console")}</span>
                             </div>
                         </ResizablePanel>
                     </ResizablePanelGroup>

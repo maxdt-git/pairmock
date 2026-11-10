@@ -157,7 +157,7 @@ Cookie: {{authSession.response.headers.Set-Cookie}}
 }
 
 ### 4. Book Slot (Authenticated)
-PATCH http://localhost:4000/api/slots/2/book
+PATCH {{baseUrl}}/api/slots/2/book
 Cookie: {{authSession.response.headers.Set-Cookie}}
 
 ### AI tips on interview code

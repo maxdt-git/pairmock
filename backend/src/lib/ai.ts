@@ -43,11 +43,30 @@ async function askAI(systemPrompt: string, userCode: string): Promise<string> {
   throw new Error("All keys are rate limited");
 }
 
-const AI_BASE_PROMPT = `You are a senior software engineer reviewing a candidate's code right after a mock technical interview.
+
+/** Languages the AI can answer in. Keys match the frontend i18n codes. */
+export const AI_LANGUAGES = {
+  en: "English",
+  fr: "French",
+  es: "Spanish",
+} as const;
+
+export type AiLanguage = keyof typeof AI_LANGUAGES;
+
+export const DEFAULT_AI_LANGUAGE: AiLanguage = "en";
+
+/** Accepts "fr", "fr-FR", "FR"...; anything unsupported falls back to English. */
+export function toAiLanguage(value: unknown): AiLanguage {
+  const code = String(value ?? "").trim().toLowerCase().split(/[-_]/)[0];
+  return Object.hasOwn(AI_LANGUAGES, code) ? (code as AiLanguage) : DEFAULT_AI_LANGUAGE;
+}
+
+const aiBasePrompt = (language: string) => `You are a senior software engineer reviewing a candidate's code right after a mock technical interview.
 The user message contains only the code the candidate wrote during the interview.
 
 Rules:
-- Answer in English, in a friendly and encouraging but honest tone, addressing the candidate as "you".
+- Write your whole answer in ${language}, including headings, in a friendly and encouraging but honest tone, addressing the candidate directly (second person).
+- Keep code, identifiers and Big-O notation exactly as they are; do not translate them.
 - Answer ONLY the task described below. Do not add a general code review or comment on other aspects.
 - Format your answer in simple Markdown: short headings and bullet points. Never use tables.
 - Keep it short: at most 150 words.
@@ -74,7 +93,12 @@ If the candidate's code is already optimal, say so and briefly explain why.`,
 
 export type AiReviewType = keyof typeof AI_PROMPTS;
 
-export function getAiFeedback(code: string, type: AiReviewType) {
-  const systemPrompt = `${AI_BASE_PROMPT}\n${AI_PROMPTS[type]}`;
+
+export function getAiFeedback(
+  code: string,
+  type: AiReviewType,
+  language: AiLanguage = DEFAULT_AI_LANGUAGE,
+) {
+  const systemPrompt = `${aiBasePrompt(AI_LANGUAGES[language])}\n${AI_PROMPTS[type]}`;
   return askAI(systemPrompt, `\n\n${code}`);
 }

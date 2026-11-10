@@ -13,8 +13,10 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, GraduationCap, Hourglass, MessagesSquare } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const { data: session } = authClient.useSession();
   const [imageSrc, setImageSrc] = useState("")
   const [username, setUsername] = useState("")
@@ -33,7 +35,7 @@ export default function ProfilePage() {
     if (username === session?.user.name && imageSrc === session.user.image) {
       toast.add({
         type: "error",
-        title: "No changes have actually been made"
+        title: t("profile.noChanges")
       });
       return
     }
@@ -44,13 +46,13 @@ export default function ProfilePage() {
       })
       toast.add({
         type: "success",
-        title: "Profile information has been saved"
+        title: t("profile.saved")
       });
     }
-    catch (err) {
+    catch {
       toast.add({
         type: "error",
-        title: "An unexpected error occurred"
+        title: t("profile.error")
       });
     }
   }
@@ -70,7 +72,7 @@ export default function ProfilePage() {
   })
 
   if (!session) {
-    return <p>Not logged in</p>
+    return <p>{t("common.notLoggedIn")}</p>
   }
 
   // stats
@@ -107,7 +109,7 @@ export default function ProfilePage() {
       <div className="mb-4">
         <Button variant="outline" size={"lg"}>
           <Link to={"/dashboard"} className="flex gap-2 items-center">
-            <ArrowLeft /> Dashboard
+            <ArrowLeft /> {t("common.dashboard")}
           </Link>
         </Button>
       </div>
@@ -125,7 +127,7 @@ export default function ProfilePage() {
             <CardContent>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="image">Profile image</Label>
+                  <Label htmlFor="image">{t("profile.imageLabel")}</Label>
                   <Input
                     id="image"
                     type="url"
@@ -135,11 +137,11 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="username">Username</Label>
+                  <Label htmlFor="username">{t("profile.username")}</Label>
                   <Input
                     id="username"
                     type="text"
-                    placeholder="User"
+                    placeholder={t("common.user")}
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -150,7 +152,7 @@ export default function ProfilePage() {
             </CardContent>
             <CardFooter className="flex-col gap-2 mt-6">
               <Button type="submit" className="w-full">
-                Save
+                {t("profile.save")}
               </Button>
             </CardFooter>
           </form>
@@ -164,7 +166,7 @@ export default function ProfilePage() {
                 <MessagesSquare />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Passed interviews: {passedInterviewCount}</ItemTitle>
+                <ItemTitle>{t("profile.stats.passed", { count: passedInterviewCount })}</ItemTitle>
               </ItemContent>
             </Item>
             <Item variant="outline" size="sm" className="min-w-55">
@@ -172,7 +174,7 @@ export default function ProfilePage() {
                 <Hourglass />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Hours of practice: {hoursPracticeScore}</ItemTitle>
+                <ItemTitle>{t("profile.stats.hours", { count: hoursPracticeScore })}</ItemTitle>
               </ItemContent>
             </Item>
             <Item variant="outline" size="sm" className="min-w-55">
@@ -180,11 +182,11 @@ export default function ProfilePage() {
                 <GraduationCap />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Feedback score: {feedbackScore}</ItemTitle>
+                <ItemTitle>{t("profile.stats.score", { score: feedbackScore })}</ItemTitle>
               </ItemContent>
             </Item>
           </div>
-          <h2 className="text-xl font-bold ml-1">Passed interviews:</h2>
+          <h2 className="text-xl font-bold ml-1">{t("profile.passedHeading")}</h2>
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5">
             {queryCompleted?.data?.map((card: SlotType) => (
               <li key={card.id}>

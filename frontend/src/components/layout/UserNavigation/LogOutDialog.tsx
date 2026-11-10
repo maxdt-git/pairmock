@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { authClient } from "@/lib/auth-client";
-import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 interface LogOutDialogProps {
   open: boolean;
@@ -22,7 +22,7 @@ export default function LogOutDialog({
     open,
     onOpenChange
 }: LogOutDialogProps) {
-    const navigate = useNavigate()
+    const { t } = useTranslation()
 
     async function handleLogout() {
         const { error } = await authClient.signOut();
@@ -38,14 +38,14 @@ export default function LogOutDialog({
             <AlertDialogTrigger/>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("nav.logoutDialog.title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      You will be logged out.
+                      {t("nav.logoutDialog.description")}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleLogout}>Continue</AlertDialogAction>
+                    <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleLogout}>{t("common.continue")}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

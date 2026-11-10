@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface SlotDeleteDialogProps {
   open: boolean;
@@ -23,6 +24,7 @@ export default function SlotDeleteDialog({
     onOpenChange,
     onConfirm
 }: SlotDeleteDialogProps) {
+    const { t } = useTranslation()
     const [ isDeleting, setIsDeleting ] = useState(false)
 
     async function handleDeleteSlot() {
@@ -43,20 +45,20 @@ export default function SlotDeleteDialog({
             <AlertDialogTrigger/>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("slot.deleteDialog.title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This slot will be deleted.
+                      {t("slot.deleteDialog.description")}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isDeleting}>{t("common.cancel")}</AlertDialogCancel>
                     <Button
                         type="button"
                         variant="destructive"
                         onClick={handleDeleteSlot}
                         disabled={isDeleting}
                     >
-                        {isDeleting ? "Deleting..." : "Delete slot"}
+                        {isDeleting ? t("slot.deleteDialog.deleting") : t("slot.deleteDialog.confirm")}
                     </Button>
                 </AlertDialogFooter>
             </AlertDialogContent>

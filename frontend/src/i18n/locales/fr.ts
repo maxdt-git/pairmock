@@ -163,6 +163,8 @@ const fr: Translation = {
             score: "Note moyenne : {{score}}",
         },
         passedHeading: "Entretiens passés :",
+        analytics: "Afficher les statistiques",
+        emptyDescription: "Aucun entretien terminé"
     },
 
     interview: {

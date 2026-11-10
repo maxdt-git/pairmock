@@ -185,24 +185,28 @@ export default function ProfilePage() {
           </div>
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold ml-1">{t("profile.passedHeading")}</h2>
-            <Button className={"w-36"} onClick={handleNavigate}>View Analytics</Button>
+            <Button className={"w-fit"} onClick={handleNavigate}>{t("profile.analytics")}</Button>
           </div>
-          <ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5">
-            {queryCompleted?.data?.map((card: SlotType) => (
-              <li key={card.id}>
-                <Slot
-                  id={card.id}
-                  imageSrc={card.host.image ?? ""}
-                  username={card.host.name}
-                  description={card.description}
-                  date={card.scheduledAt}
-                  difficulty={card.difficulty}
-                  duration={card.durationMinutes}
-                  status={card.status}
-                />
-              </li>
-            ))}
-          </ul>
+          {queryCompleted?.data?.length ?
+            (<ul className="grid grid-cols-[repeat(auto-fit,minmax(345px,1fr))] gap-5">
+              {queryCompleted?.data?.map((card: SlotType) => (
+                <li key={card.id}>
+                  <Slot
+                    id={card.id}
+                    imageSrc={card.host.image ?? ""}
+                    username={card.host.name}
+                    description={card.description}
+                    date={card.scheduledAt}
+                    difficulty={card.difficulty}
+                    duration={card.durationMinutes}
+                    status={card.status}
+                  />
+                </li>
+              ))}
+            </ul>)
+            :
+            <p className="ml-1">{t("profile.emptyDescription")}</p>
+          }
         </Card>
       </div>
       <Footer />

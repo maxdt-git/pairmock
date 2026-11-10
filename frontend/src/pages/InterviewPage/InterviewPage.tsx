@@ -314,12 +314,10 @@ export default function InterviewPage() {
                         <Avatar className="mr-2">
                             <AvatarImage src={interviewData?.host?.image} alt={interviewData?.host?.name} />
                             <AvatarFallback>CN</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                         <Avatar>
                             <AvatarImage src={interviewData?.booker?.image} alt={interviewData?.booker?.name} />
                             <AvatarFallback>LR</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </AvatarGroup>
                     {interviewData?.meetLink && (

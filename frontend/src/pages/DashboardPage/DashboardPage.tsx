@@ -240,7 +240,10 @@ export default function DashboardPage() {
                                             async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
                                     }
                                     onBooking={undefined}
-                                    onCancel={() => cancelSlotMutation.mutate(card.id)}
+                                    onCancel={
+                                        card.hostId !== session.user.id ?
+                                            () => cancelSlotMutation.mutate(card.id) : undefined
+                                    }
                                 />
                             </li>
                         ))}

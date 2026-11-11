@@ -20,6 +20,14 @@ export default function LoginForm() {
       provider: "google",
       callbackURL: "/dashboard",
     });
+
+    if (error) {
+      toast.add({
+        type: "error",
+        description: (error.message ?? t("auth.login.failed")),
+        priority: "high",
+      });
+    }
   }
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {

@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 export default function ProfilePage() {
   const { t } = useTranslation();
   const { data: session } = authClient.useSession();
+  const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState("")
   const [username, setUsername] = useState("")
 
@@ -98,7 +99,6 @@ export default function ProfilePage() {
   const passedInterviewCount = queryCompleted?.data?.length ?? 0
   const hoursPracticeScore = Math.round(queryCompleted?.data?.reduce((acc: number, curr: SlotType) => acc + curr.durationMinutes, 0) ?? 0) / 60
   const feedbackScore = evaluatedCount > 0 ? Number(totalScoreAverage / evaluatedCount).toFixed(1) : 0
-  const navigate = useNavigate()
 
   function handleNavigate() {
     navigate("/analytics")

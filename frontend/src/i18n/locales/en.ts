@@ -300,14 +300,14 @@ const en = {
         back: "Back",
         privacy: {
             title: "Privacy Policy",
-            intro: "PairMock is a peer-to-peer mock technical interview platform built as a student project. This policy explains what personal data we collect when you use PairMock, why we collect it, who we share it with and what rights you have over it.",
+            intro: "PairMock is a peer-to-peer mock technical interview platform built as an educational student project. This policy explains what personal data we collect when you use PairMock, why we collect it, who we share it with and what rights you have over it.",
             sections: [
                 {
                     heading: "1. Data we collect",
                     paragraphs: ["We only collect the data needed to run the service:"],
                     items: [
                         "Account data: your username, email address, password (stored only as a secure hash) and, if you add one, the URL of your profile picture.",
-                        "Google account data: if you sign in with Google or connect Google Calendar, we store your Google account identifier and the access tokens Google gives us, limited to the permission to create calendar events.",
+                        "Google account data: if you sign in with Google or connect Google Calendar, we store your Google account identifier and the access tokens Google gives us, limited to managing your mock interview calendar events (creating and deleting scheduled sessions).",
                         "Interview data: the slots you create or book (description, difficulty, date, duration, status), the code written during an interview, the feedback you give and receive, and your notifications.",
                         "Technical data: for each login session, its expiry date, your IP address and your browser's user agent, used to keep you signed in and protect your account.",
                         "Preferences: your language and theme are saved in your browser's local storage, not on our servers.",
@@ -327,7 +327,7 @@ const en = {
                 {
                     heading: "3. Legal basis",
                     paragraphs: [
-                        "We process your data because it is necessary to provide the service you signed up for (performance of a contract). Connecting Google Calendar and requesting AI feedback are optional and rely on your consent, which you can withdraw at any time by unlinking your Google account or simply not using the AI feature.",
+                        "We process your data because it is necessary to provide the service you signed up for (performance of a contract). Connecting Google Calendar and requesting AI feedback are optional and rely on your consent. You can withdraw your consent at any time by revoking PairMock's access in your Google Account security settings (myaccount.google.com/permissions), by asking us to unlink it at {{email}}, or simply by not using the AI feature.",
                     ],
                     items: [],
                 },
@@ -339,6 +339,7 @@ const en = {
                         "Your interview partner sees your name, the shared code, the feedback you leave them and, through the calendar invitation, your email address.",
                         "Google receives the details of the calendar event (title, description, date and attendees) when an interview is booked.",
                         "Groq, our AI provider, receives the interview code (and nothing else) when you click an AI feedback button. We do not store the AI's answer.",
+                        "International transfers: Google and Groq process data on servers in the United States, safeguarded under the EU-U.S. Data Privacy Framework and standard contractual clauses.",
                     ],
                 },
                 {
@@ -351,7 +352,7 @@ const en = {
                 {
                     heading: "6. How long we keep it",
                     paragraphs: [
-                        "Your data is kept for as long as your account exists. Login sessions expire automatically. When your account is deleted, your account, sessions and linked Google tokens are deleted with it.",
+                        "Your data is kept for as long as your account exists. Login sessions expire automatically. When you request the deletion of your account, your credentials, sessions and linked Google tokens are deleted. Completed interview records are retained in anonymized form so your past partners preserve their practice history.",
                     ],
                     items: [],
                 },
@@ -365,7 +366,7 @@ const en = {
                 {
                     heading: "8. Your rights",
                     paragraphs: [
-                        "Under the GDPR you can access, correct, export or delete your data, and object to or restrict its processing. You can edit your name and picture from your profile page; for anything else, contact us at {{email}}. If you believe your rights are not respected, you can file a complaint with your data protection authority (in France, the CNIL).",
+                        "Under the GDPR you can access, correct, export or delete your data, and object to or restrict its processing. You can edit your name and picture from your profile page; for any other request (including account deletion), contact the student maintainers at {{email}}. If you believe your rights are not respected, you can file a complaint with your data protection authority (in France, the CNIL).",
                     ],
                     items: [],
                 },
@@ -396,6 +397,7 @@ const en = {
                         "You must provide accurate information and keep your password confidential.",
                         "You are responsible for all activity on your account.",
                         "One person, one account: do not impersonate anyone or create accounts for others.",
+                        "You must be at least 15 years old (the age of digital consent in France) or have parental permission to use PairMock.",
                     ],
                 },
                 {

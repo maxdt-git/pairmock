@@ -103,9 +103,11 @@ export default function Slot(props: SlotProps) {
                         <Video />
                         {t("slot.enter")}
                     </Button>
-                    <Button size="lg" variant="destructive" onClick={onCancel}>
-                        {t("slot.cancel")}
-                    </Button>
+                    {onCancel && (
+                        <Button size="lg" variant="destructive" onClick={onCancel}>
+                            {t("slot.cancel")}
+                        </Button>
+                    )}
                 </CardFooter>
             }
             {status === "COMPLETED" &&

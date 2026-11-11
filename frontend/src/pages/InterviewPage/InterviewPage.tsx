@@ -1,5 +1,5 @@
 import Footer from '@/components/layout/Footer/Footer';
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

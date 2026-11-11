@@ -1,3 +1,3 @@
-// TODO: replace with real address
-export const LEGAL_CONTACT_EMAIL = "privacy@pairmock.example";
-export const LEGAL_LAST_UPDATED = "2026-11-08";
+export const LEGAL_CONTACT_EMAIL = "misamoskalenko318@gmail.com";
+export const LEGAL_LAST_UPDATED = "2026-11-11";
+

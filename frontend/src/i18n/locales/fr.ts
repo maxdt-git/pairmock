@@ -302,14 +302,14 @@ const fr: Translation = {
         back: "Retour",
         privacy: {
             title: "Politique de confidentialité",
-            intro: "PairMock est une plateforme d'entretiens techniques blancs entre pairs, réalisée dans le cadre d'un projet étudiant. Cette politique explique quelles données personnelles nous collectons lorsque vous utilisez PairMock, pourquoi nous les collectons, avec qui nous les partageons et quels sont vos droits.",
+            intro: "PairMock est une plateforme d'entretiens techniques blancs entre pairs, réalisée dans le cadre d'un projet étudiant à visée pédagogique. Cette politique explique quelles données personnelles nous collectons lorsque vous utilisez PairMock, pourquoi nous les collectons, avec qui nous les partageons et quels sont vos droits.",
             sections: [
                 {
                     heading: "1. Données collectées",
                     paragraphs: ["Nous ne collectons que les données nécessaires au fonctionnement du service :"],
                     items: [
                         "Données de compte : votre nom d'utilisateur, votre adresse e-mail, votre mot de passe (conservé uniquement sous forme de hachage sécurisé) et, si vous en ajoutez une, l'URL de votre photo de profil.",
-                        "Données de compte Google : si vous vous connectez avec Google ou reliez Google Agenda, nous conservons l'identifiant de votre compte Google et les jetons d'accès fournis par Google, limités à l'autorisation de créer des événements d'agenda.",
+                        "Données de compte Google : si vous vous connectez avec Google ou reliez Google Agenda, nous conservons l'identifiant de votre compte Google et les jetons d'accès fournis par Google, limités à la gestion des événements de vos entretiens blancs (création et suppression des créneaux planifiés).",
                         "Données d'entretien : les créneaux que vous créez ou réservez (description, difficulté, date, durée, statut), le code écrit pendant l'entretien, les évaluations données et reçues, ainsi que vos notifications.",
                         "Données techniques : pour chaque session de connexion, sa date d'expiration, votre adresse IP et l'agent utilisateur de votre navigateur, afin de vous garder connecté et de protéger votre compte.",
                         "Préférences : votre langue et votre thème sont enregistrés dans le stockage local de votre navigateur, et non sur nos serveurs.",
@@ -329,7 +329,7 @@ const fr: Translation = {
                 {
                     heading: "3. Base légale",
                     paragraphs: [
-                        "Nous traitons vos données parce que c'est nécessaire pour fournir le service auquel vous vous êtes inscrit (exécution d'un contrat). La connexion à Google Agenda et l'utilisation du retour de l'IA sont facultatives et reposent sur votre consentement, que vous pouvez retirer à tout moment en dissociant votre compte Google ou en n'utilisant pas la fonctionnalité d'IA.",
+                        "Nous traitons vos données parce que c'est nécessaire pour fournir le service auquel vous vous êtes inscrit (exécution d'un contrat). La connexion à Google Agenda et l'utilisation du retour de l'IA sont facultatives et reposent sur votre consentement. Vous pouvez retirer votre consentement à tout moment en révoquant les autorisations accordées à PairMock dans les paramètres de sécurité de votre compte Google (myaccount.google.com/permissions), en nous écrivant à {{email}}, ou simplement en n'utilisant pas la fonctionnalité d'IA.",
                     ],
                     items: [],
                 },
@@ -341,6 +341,7 @@ const fr: Translation = {
                         "Votre partenaire d'entretien voit votre nom, le code partagé, l'évaluation que vous lui laissez et, via l'invitation d'agenda, votre adresse e-mail.",
                         "Google reçoit les détails de l'événement d'agenda (titre, description, date et participants) lorsqu'un entretien est réservé.",
                         "Groq, notre fournisseur d'IA, reçoit le code de l'entretien (et rien d'autre) lorsque vous cliquez sur un bouton de retour de l'IA. Nous ne conservons pas la réponse de l'IA.",
+                        "Transferts internationaux : Google et Groq traitent les données sur des serveurs situés aux États-Unis, sous la protection du cadre UE-États-Unis de protection des données (Data Privacy Framework) et de clauses contractuelles types.",
                     ],
                 },
                 {
@@ -353,7 +354,7 @@ const fr: Translation = {
                 {
                     heading: "6. Durée de conservation",
                     paragraphs: [
-                        "Vos données sont conservées tant que votre compte existe. Les sessions de connexion expirent automatiquement. Lorsque votre compte est supprimé, votre compte, vos sessions et vos jetons Google associés sont supprimés avec lui.",
+                        "Vos données sont conservées tant que votre compte existe. Les sessions de connexion expirent automatiquement. Lorsque vous demandez la suppression de votre compte, vos identifiants, vos sessions et vos jetons Google associés sont supprimés. Les enregistrements d'entretiens terminés sont conservés sous forme anonymisée afin que vos partenaires puissent conserver leur historique d'entraînement.",
                     ],
                     items: [],
                 },
@@ -367,7 +368,7 @@ const fr: Translation = {
                 {
                     heading: "8. Vos droits",
                     paragraphs: [
-                        "Conformément au RGPD, vous pouvez accéder à vos données, les rectifier, les exporter ou les supprimer, et vous opposer à leur traitement ou en demander la limitation. Vous pouvez modifier votre nom et votre photo depuis votre page de profil ; pour toute autre demande, contactez-nous à {{email}}. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.",
+                        "Conformément au RGPD, vous pouvez accéder à vos données, les rectifier, les exporter ou les supprimer, et vous opposer à leur traitement ou en demander la limitation. Vous pouvez modifier votre nom et votre photo depuis votre page de profil ; pour toute autre demande (y compris la suppression de compte), contactez l'équipe étudiante à {{email}}. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.",
                     ],
                     items: [],
                 },
@@ -398,6 +399,7 @@ const fr: Translation = {
                         "Vous devez fournir des informations exactes et garder votre mot de passe confidentiel.",
                         "Vous êtes responsable de toute activité effectuée depuis votre compte.",
                         "Une personne, un compte : n'usurpez l'identité de personne et ne créez pas de compte pour autrui.",
+                        "Vous devez avoir au moins 15 ans (âge de la majorité numérique en France) ou l'accord d'un représentant légal pour utiliser PairMock.",
                     ],
                 },
                 {

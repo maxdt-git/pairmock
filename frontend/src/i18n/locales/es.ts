@@ -302,14 +302,14 @@ const es: Translation = {
         back: "Volver",
         privacy: {
             title: "Política de privacidad",
-            intro: "PairMock es una plataforma de simulacros de entrevistas técnicas entre compañeros, desarrollada como proyecto de estudiantes. Esta política explica qué datos personales recogemos cuando usas PairMock, para qué, con quién los compartimos y qué derechos tienes sobre ellos.",
+            intro: "PairMock es una plataforma de simulacros de entrevistas técnicas entre compañeros, desarrollada como un proyecto estudiantil con fines educativos. Esta política explica qué datos personales recogemos cuando usas PairMock, para qué, con quién los compartimos y qué derechos tienes sobre ellos.",
             sections: [
                 {
                     heading: "1. Datos que recogemos",
                     paragraphs: ["Solo recogemos los datos necesarios para que el servicio funcione:"],
                     items: [
                         "Datos de la cuenta: tu nombre de usuario, tu correo electrónico, tu contraseña (guardada únicamente como hash seguro) y, si la añades, la URL de tu foto de perfil.",
-                        "Datos de la cuenta de Google: si inicias sesión con Google o conectas Google Calendar, guardamos el identificador de tu cuenta de Google y los tokens de acceso que nos proporciona Google, limitados al permiso para crear eventos de calendario.",
+                        "Datos de la cuenta de Google: si inicias sesión con Google o conectas Google Calendar, guardamos el identificador de tu cuenta de Google y los tokens de acceso que nos proporciona Google, limitados a la gestión de los eventos de calendario de tus simulacros de entrevista (creación y eliminación de sesiones programadas).",
                         "Datos de las entrevistas: las sesiones que creas o reservas (descripción, dificultad, fecha, duración, estado), el código escrito durante la entrevista, las evaluaciones que das y recibes y tus notificaciones.",
                         "Datos técnicos: para cada sesión de inicio de sesión, su fecha de caducidad, tu dirección IP y el agente de usuario de tu navegador, para mantenerte conectado y proteger tu cuenta.",
                         "Preferencias: tu idioma y tu tema se guardan en el almacenamiento local de tu navegador, no en nuestros servidores.",
@@ -329,7 +329,7 @@ const es: Translation = {
                 {
                     heading: "3. Base jurídica",
                     paragraphs: [
-                        "Tratamos tus datos porque es necesario para prestarte el servicio en el que te has registrado (ejecución de un contrato). Conectar Google Calendar y solicitar comentarios de la IA es opcional y se basa en tu consentimiento, que puedes retirar en cualquier momento desvinculando tu cuenta de Google o simplemente no usando la función de IA.",
+                        "Tratamos tus datos porque es necesario para prestarte el servicio en el que te has registrado (ejecución de un contrato). Conectar Google Calendar y solicitar comentarios de la IA es opcional y se basa en tu consentimiento. Puedes retirar tu consentimiento en cualquier momento revocando los permisos concedidos a PairMock en la seguridad de tu cuenta de Google (myaccount.google.com/permissions), solicitándonos la desvinculación en {{email}} o simplemente no usando la función de IA.",
                     ],
                     items: [],
                 },
@@ -341,6 +341,7 @@ const es: Translation = {
                         "Tu compañero de entrevista ve tu nombre, el código compartido, la evaluación que le dejas y, a través de la invitación de calendario, tu correo electrónico.",
                         "Google recibe los detalles del evento de calendario (título, descripción, fecha y asistentes) cuando se reserva una entrevista.",
                         "Groq, nuestro proveedor de IA, recibe el código de la entrevista (y nada más) cuando pulsas un botón de comentarios de la IA. No guardamos la respuesta de la IA.",
+                        "Transferencias internacionales: Google y Groq procesan datos en servidores situados en Estados Unidos, bajo el amparo del Marco de Privacidad de Datos UE-EE. UU. y las cláusulas contractuales tipo.",
                     ],
                 },
                 {
@@ -353,7 +354,7 @@ const es: Translation = {
                 {
                     heading: "6. Cuánto tiempo los conservamos",
                     paragraphs: [
-                        "Tus datos se conservan mientras exista tu cuenta. Las sesiones de inicio de sesión caducan automáticamente. Cuando se elimina tu cuenta, se eliminan también tus sesiones y los tokens de Google vinculados.",
+                        "Tus datos se conservan mientras exista tu cuenta. Las sesiones de inicio de sesión caducan automáticamente. Cuando solicitas la eliminación de tu cuenta, tus credenciales, sesiones y tokens de Google asociados se eliminan. Los registros de entrevistas completadas se conservan de forma anonimizada para que tus compañeros puedan mantener su historial de práctica.",
                     ],
                     items: [],
                 },
@@ -367,7 +368,7 @@ const es: Translation = {
                 {
                     heading: "8. Tus derechos",
                     paragraphs: [
-                        "De acuerdo con el RGPD, puedes acceder a tus datos, rectificarlos, exportarlos o suprimirlos, y oponerte a su tratamiento o pedir su limitación. Puedes cambiar tu nombre y tu foto desde tu página de perfil; para cualquier otra solicitud, escríbenos a {{email}}. Si consideras que no se respetan tus derechos, puedes presentar una reclamación ante tu autoridad de protección de datos (en Francia, la CNIL).",
+                        "De acuerdo con el RGPD, puedes acceder a tus datos, rectificarlos, exportarlos o suprimirlos, y oponerte a su tratamiento o pedir su limitación. Puedes cambiar tu nombre y tu foto desde tu página de perfil; para cualquier otra solicitud (incluida la eliminación de tu cuenta), contacta con el equipo de estudiantes en {{email}}. Si consideras que no se respetan tus derechos, puedes presentar una reclamación ante tu autoridad de protección de datos (en Francia, la CNIL).",
                     ],
                     items: [],
                 },
@@ -398,6 +399,7 @@ const es: Translation = {
                         "Debes proporcionar información veraz y mantener tu contraseña en secreto.",
                         "Eres responsable de toda la actividad realizada con tu cuenta.",
                         "Una persona, una cuenta: no suplantes a nadie ni crees cuentas para otras personas.",
+                        "Debes tener al menos 15 años (edad de consentimiento digital en Francia) o contar con la autorización de tus tutores legales para utilizar PairMock.",
                     ],
                 },
                 {

@@ -4,7 +4,7 @@ import { formatDateTime } from "@/lib/dateFormat";
 import type { AnalyticsInterview, AnalyticsInterviewRaw } from "@/types/analytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from "@/components/ui/chart";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, BarChart, Bar } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, BarChart, Bar } from "recharts";
 import { getKpis, skillAverages, byDifficulty } from "@/lib/analyticsData";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";

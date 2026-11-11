@@ -76,3 +76,8 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

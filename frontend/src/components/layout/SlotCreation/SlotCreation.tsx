@@ -44,9 +44,9 @@ export default function SlotCreation() {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button size="lg" />}>
+            <DialogTrigger render={<Button size="lg" className="max-sm:size-10 max-sm:px-0" aria-label={t("slotCreation.trigger")} />}>
                 <Plus className="w-4 h-4" />
-                {t("slotCreation.trigger")}
+                <span className="max-sm:hidden">{t("slotCreation.trigger")}</span>
             </DialogTrigger>
             {isGoogleConnected ?
                 <DialogContent>

@@ -211,17 +211,18 @@ export default function DashboardPage() {
         <div className="bg-muted/30">
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
                 <header className="flex justify-between pt-2 pb-2 items-center border-b border-border mb-2.5 max-[540px]:justify-center ">
-                    <h1 className="text-2xl font-bold max-[540px]:hidden">PairMock</h1>
+                    <h1 className="text-4xl font-bold flex items-center gap-2 max-[540px]:hidden ">
+                        <img src="/favicon.svg" alt="" shrink-0 className="size-20"/> PairMock</h1>
                     <div className="flex items-center gap-4 ">
                         <SlotCreation />
-                        <UserNavigation 
+                        <UserNavigation
                             username={session?.user.name ?? t("common.user")}
-                            imageSrc={session?.user.image ? session.user.image : ""} 
+                            imageSrc={session?.user.image ? session.user.image : ""}
                         />
                     </div>
                 </header>
                 <section className="mb-5">
-                    <h2 className="text-xl font-bold mb-2.5">{t("dashboard.bookedSlots")}</h2>
+                    <h2 className="text-2xl font-bold mb-2.5">{t("dashboard.bookedSlots")}</h2>
                     <ul className="flex gap-2 flex-wrap max-h-72 p-2 md:max-h-none overflow-y-auto">
                         {queryBooked.data?.map((card: SlotType) => (
                             <li key={card.id}>
@@ -246,7 +247,7 @@ export default function DashboardPage() {
                     </ul>
                 </section>
                 <section>
-                    <h2 className="text-xl font-bold mb-2.5">{t("dashboard.availableSlots")}</h2>
+                    <h2 className="text-2xl font-bold mb-2.5">{t("dashboard.availableSlots")}</h2>
                     <div className="mb-2.5 ml-2 flex gap-3">
                         <Select items={itemsTime} value={timeFilter} onValueChange={(value) => {
                             handleTimeChange(value ?? "asc")

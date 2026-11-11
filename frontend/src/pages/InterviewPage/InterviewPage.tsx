@@ -105,8 +105,7 @@ export default function InterviewPage() {
                 priority: "high",
             });
         },
-        onError: (err) => {
-            console.error("Submission failed:", err);
+        onError: () => {
             toast.add({
                 type: "error",
                 description: t("interview.toast.feedbackFailed"),
@@ -189,9 +188,7 @@ export default function InterviewPage() {
             });
         },
 
-        onError: (error) => {
-            console.error(error);
-
+        onError: () => {
             toast.add({
                 title: t("interview.toast.updateFailed.title"),
                 description: t("interview.toast.updateFailed.description"),
@@ -212,7 +209,6 @@ export default function InterviewPage() {
 
             navigate("/dashboard");
         } catch (error) {
-            console.error("Unable to save code before leaving:", error);
         }
     }
 
@@ -248,11 +244,6 @@ export default function InterviewPage() {
     }
 
     if (queryInterviewData.isError || !interviewData) {
-        console.warn("[INTERVIEW REDIRECT]", {
-            status: queryInterviewData.status,
-            isPending: queryInterviewData.isPending,
-            error: queryInterviewData.error,
-        });
         return <Navigate to="/dashboard" replace />;
     }
 
@@ -267,7 +258,6 @@ export default function InterviewPage() {
             signals: formData.getAll('signals').map((s) => String(s)),
             outcome: String(formData.get('outcome') ?? ''),
         };
-        console.log(feedbackData);
         mutationFeedback.mutate(feedbackData)
     }
 
@@ -314,12 +304,10 @@ export default function InterviewPage() {
                         <Avatar className="mr-2">
                             <AvatarImage src={interviewData?.host?.image} alt={interviewData?.host?.name} />
                             <AvatarFallback>CN</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                         <Avatar>
                             <AvatarImage src={interviewData?.booker?.image} alt={interviewData?.booker?.name} />
                             <AvatarFallback>LR</AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </AvatarGroup>
                     {interviewData?.meetLink && (

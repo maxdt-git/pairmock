@@ -74,8 +74,7 @@ export default function UserNavigation(props: UserNavigationProps) {
               type: "success",
           });
       },
-      onError: (error) => {
-          console.error(error);
+      onError: () => {
           toast.add({
               title: t("nav.notifDeleteFailed.title"),
               description: t("nav.notifDeleteFailed.description"),

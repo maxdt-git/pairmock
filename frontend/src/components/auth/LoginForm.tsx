@@ -20,10 +20,6 @@ export default function LoginForm() {
       provider: "google",
       callbackURL: "/dashboard",
     });
-
-    if (error) {
-      console.error("Google login failed:", error);
-    }
   }
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -48,7 +44,6 @@ export default function LoginForm() {
         description: t("auth.serverUnreachable"),
         priority: "high",
       })
-      console.error("Login error:", error);
     }
   }
 

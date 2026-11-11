@@ -33,8 +33,6 @@ export default function SlotDeleteDialog({
         try {
             await onConfirm()
             onOpenChange(false)
-        } catch (error) {
-            console.error("Deletion failed", error)
         } finally {
             setIsDeleting(false)
         }

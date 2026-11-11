@@ -161,6 +161,8 @@ const en = {
             score: "Feedback score: {{score}}",
         },
         passedHeading: "Passed interviews:",
+        analytics: "View Analytics",
+        emptyDescription: "No completed interviews"
     },
 
     interview: {

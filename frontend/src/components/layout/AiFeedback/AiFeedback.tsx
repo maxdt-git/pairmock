@@ -65,7 +65,6 @@ export default function AiFeedback(props: AiFeedbackProps) {
         },
 
         onError: (error) => {
-            console.error(error)
             const code = error instanceof AiFeedbackError ? error.code : undefined
             toast.add({
                 title: t("ai.errorTitle"),

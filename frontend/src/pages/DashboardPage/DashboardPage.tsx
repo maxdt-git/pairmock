@@ -311,7 +311,6 @@ export default function DashboardPage() {
                         }
                     </ul>
                 </section>
-                {queryAvailable?.data?.data.length > 0 ?
                     <Pagination className="mb-5">
                         <PaginationContent>
                             <PaginationItem
@@ -351,9 +350,6 @@ export default function DashboardPage() {
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>
-                    :
-                    null
-                }
                 <Footer />
             </main>
         </div>

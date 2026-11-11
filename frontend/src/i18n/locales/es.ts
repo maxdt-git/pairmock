@@ -163,6 +163,8 @@ const es: Translation = {
             score: "Puntuación media: {{score}}",
         },
         passedHeading: "Entrevistas realizadas:",
+        analytics: "Ver estadísticas",
+        emptyDescription: "No hay entrevistas completadas"
     },
 
     interview: {

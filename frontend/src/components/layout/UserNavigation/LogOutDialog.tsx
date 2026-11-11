@@ -28,7 +28,6 @@ export default function LogOutDialog({
         const { error } = await authClient.signOut();
     
         if (error) {
-            console.log("Logout failed", error);
             return;
         }
     }

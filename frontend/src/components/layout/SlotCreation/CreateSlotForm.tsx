@@ -64,8 +64,7 @@ export default function CreateSlotForm({
             onCreated()
         },
         
-        onError: (error) => {
-            console.error("Slot creation failed:", error);
+        onError: () => {
             toast.add({
                 title: t("slotCreation.toast.failed.title"),
                 description: t("slotCreation.toast.failed.description"),

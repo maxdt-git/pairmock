@@ -52,11 +52,6 @@ export default function ReviewPage() {
     }
 
     if (queryInterviewData.isError || !interviewData) {
-        console.warn("[INTERVIEW REDIRECT]", {
-            status: queryInterviewData.status,
-            isPending: queryInterviewData.isPending,
-            error: queryInterviewData.error,
-        });
         return <Navigate to="/dashboard" replace />;
     }
 

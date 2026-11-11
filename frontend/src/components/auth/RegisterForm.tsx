@@ -42,7 +42,6 @@ export default function RegisterForm() {
                 return;
             }
         } catch (error) {
-            console.error("Registration request failed", error);
             toast.add({
                 type: "error",
                 description: t("auth.serverUnreachable"),

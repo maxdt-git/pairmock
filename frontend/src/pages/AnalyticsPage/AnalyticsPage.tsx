@@ -9,6 +9,11 @@ import { getKpis, skillAverages, byDifficulty } from "@/lib/analyticsData";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { format } from "date-fns"
+import { Input } from "@/components/ui/input";
+
 
 const chartConfig = {
     problemSolving: { label: "Problem solving", theme: { light: "#16a34a", dark: "#4ade80" } },
@@ -22,6 +27,9 @@ const radarConfig = {
 } satisfies ChartConfig
 
 export default function AnalyticsPage() {
+    const [difficultyFilter, setDifficultyFilter] = useState("ALL");
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
 
     async function getAnalytics() {
         const res = await fetch(`/api/analytics/`);
@@ -31,7 +39,10 @@ export default function AnalyticsPage() {
         return res.json();
     }
 
-    const analyticsQuery = useQuery({ queryKey: ["analytics"], queryFn: getAnalytics })
+    const analyticsQuery = useQuery({
+        queryKey: ["analytics"],
+        queryFn: getAnalytics,
+        refetchInterval: 5 * 1000 })
 
     const data = (analyticsQuery.data ?? []).filter((analytics: AnalyticsInterviewRaw) => analytics.feedback !== null).map((analytics: AnalyticsInterviewRaw) => {
         const { date, time } = formatDateTime(analytics.date)
@@ -49,11 +60,37 @@ export default function AnalyticsPage() {
         };
     });
 
-    const kpis = getKpis(data)
-    const skills = skillAverages(data)
-    const difficulty = byDifficulty(data)
+    const filteredData = data.filter((interview: AnalyticsInterview) => {
+        const day = format(new Date(interview.date_raw), "yyyy-MM-dd");
 
-    const dateById = new Map<number, string>(data.map((d: { id: number; date: string }) => [d.id, d.date]));
+        const matchDifficulty = difficultyFilter === "ALL" || interview.difficulty === difficultyFilter;
+        const matchFrom = !fromDate || day >= fromDate;
+        const matchTo = !toDate || day <= toDate;
+
+        return matchDifficulty && matchFrom && matchTo;
+    });
+
+    function exportCsv() {
+        const header = "date,difficulty,role,problemSolving,codeQuality,complexityAnalysis,communication";
+        const rows = filteredData.map((r: AnalyticsInterview) =>
+            `${format(new Date(r.date_raw), "yyyy-MM-dd")},${r.difficulty},${r.role},${r.problemSolving},${r.codeQuality},${r.complexityAnalysis},${r.communication}`
+        );
+        const csv = [header, ...rows].join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "analytics.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    const kpis = getKpis(filteredData)
+    const skills = skillAverages(filteredData)
+    const difficulty = byDifficulty(filteredData)
+
+    const dateById = new Map<number, string>(filteredData.map((d: { id: number; date: string }) => [d.id, d.date]));
 
     return (
         <main className="max-w-[1650px] p-2 flex flex-col grow mx-auto min-h-dvh mt-4">
@@ -70,12 +107,36 @@ export default function AnalyticsPage() {
                     <CardDescription>Your progress across all completed interviews</CardDescription>
                 </CardHeader>
             </Card>
+            <div className="flex flex-wrap gap-4 mt-4">
+                <NativeSelect value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
+                    <NativeSelectOption value="ALL">
+                        All difficulties
+                    </NativeSelectOption>
+                    <NativeSelectOption value="EASY">
+                        Easy
+                    </NativeSelectOption>
+                    <NativeSelectOption value="MEDIUM">
+                        Medium
+                    </NativeSelectOption>
+                    <NativeSelectOption value="HARD">
+                        Hard
+                    </NativeSelectOption>
+                </NativeSelect>
+                <div>
+                    <Input type="date" max={toDate} value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="w-fit"></Input>
+                    <Input type="date" min={fromDate} value={toDate} onChange={(e) => setToDate(e.target.value)} className="w-fit"></Input>
+                </div>
+                <Button onClick={exportCsv}> Export CSV </Button>
+                <span className="text-sm text-muted-foreground ml-auto self-center">
+                    Last updated: {analyticsQuery.dataUpdatedAt ? format(analyticsQuery.dataUpdatedAt, "HH:mm:ss") : "—"}
+                </span>
+            </div>
             <div className="flex flex-wrap gap-4 mb-4 mt-4">
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
                         <CardDescription>Interviews</CardDescription>
                         <CardTitle className="text-3xl">
-                            {data.length ?? "—"}
+                            {filteredData.length ?? "—"}
                             <span className="text-base font-normal text-muted-foreground"> </span>
                         </CardTitle>
                     </CardHeader>
@@ -115,7 +176,7 @@ export default function AnalyticsPage() {
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig} className="h-80 w-full">
-                        <LineChart data={data}>
+                        <LineChart data={filteredData}>
                             <CartesianGrid vertical={false}/>
                             <XAxis dataKey="id" tickFormatter={(id) => dateById.get(id) ?? ""}/>
                             <YAxis domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]}/>

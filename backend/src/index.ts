@@ -4,7 +4,7 @@ import { auth } from "./lib/auth.ts";
 import { collaborationServer } from "./collaboration.ts";
 import { slotsRouter } from "./routes/slots.routes.ts";
 import { notificationsRouter } from "./routes/notifications.routes.ts";
-import { devRouter } from "./routes/dev.routes.ts";
+// import { devRouter } from "./routes/dev.routes.ts";
 import { interviewRouter } from "./routes/interview.routes.ts";
 import { analyticsRouter } from "./routes/analytics.routes.ts";
 

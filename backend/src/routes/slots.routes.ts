@@ -562,18 +562,6 @@ slotsRouter.patch("/:id/addcode", async (req, res) => {
       },
     });
 
-    const canComplete =
-      slot.code !== null &&
-      slot.hostFeedback !== null &&
-      slot.bookerFeedback !== null;
-
-    if (canComplete) {
-      await prisma.slot.updateMany({
-        where: { id, status: "BOOKED" },
-        data: { status: "COMPLETED" },
-      });
-    }
-
     if (result.count === 0) {
       const currentSlot = await prisma.slot.findUnique({
         where: { id },

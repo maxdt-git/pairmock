@@ -66,21 +66,19 @@ interviewRouter.post("/:id/feedback", async (req, res) => {
         if (session.user.id !== slot.hostId && session.user.id !== slot.bookerId) {
             return res.status(403).json({ error: "Access denied" });
         }
-        if (session.user.id === slot?.hostId) {
+        const updatedSlot = await prisma.slot.update({
+            where: { id },
+            data: session.user.id === slot.hostId
+                ? { hostFeedback: feedbackData }
+                : { bookerFeedback: feedbackData }
+        });
+        if (updatedSlot.hostFeedback !== null && updatedSlot.bookerFeedback !== null) {
             await prisma.slot.update({
                 where: { id },
                 data: {
-                    hostFeedback: feedbackData
+                    status: "COMPLETED"
                 }
-            })
-        }
-        if (session.user.id === slot?.bookerId) {
-            await prisma.slot.update({
-                where: { id },
-                data: {
-                    bookerFeedback: feedbackData
-                }
-            })
+            });
         }
         console.log(feedbackData)
         res.sendStatus(200)

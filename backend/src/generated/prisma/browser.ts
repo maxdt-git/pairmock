@@ -52,3 +52,8 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model TwoFactor
+ * 
+ */
+export type TwoFactor = Prisma.TwoFactorModel

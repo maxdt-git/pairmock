@@ -1,3 +1,4 @@
+
 generator client {
   provider            = "prisma-client"
   output              = "../src/generated/prisma"
@@ -47,9 +48,9 @@ model Slot {
   hostFeedback    Json?
   bookerFeedback  Json?
 
+  host   User  @relation("HostedSlots", fields: [hostId], references: [id])
+  booker User? @relation("BookedSlots", fields: [bookerId], references: [id])
 
-  host            User       @relation("HostedSlots", fields: [hostId], references: [id])
-  booker          User?      @relation("BookedSlots", fields: [bookerId], references: [id])
   @@index([status, scheduledAt])
 }
 
@@ -63,8 +64,12 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  hostedSlots   Slot[] @relation("HostedSlots")
-  bookedSlots   Slot[] @relation("BookedSlots")
+  hostedSlots   Slot[]    @relation("HostedSlots")
+  bookedSlots   Slot[]    @relation("BookedSlots")
+
+  twoFactorEnabled Boolean?    @default(false)
+  twofactors       TwoFactor[]
+
   @@unique([email])
   @@map("user")
 }
@@ -118,9 +123,24 @@ model Verification {
 }
 
 model Notification {
-  id          Int   @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   userId      String
   description String
   status      String
   createdAt   DateTime @default(now())
+}
+
+model TwoFactor {
+  id                      String    @id
+  secret                  String
+  backupCodes             String
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verified                Boolean?  @default(true)
+  failedVerificationCount Int?      @default(0)
+  lockedUntil             DateTime?
+
+  @@index([secret])
+  @@index([userId])
+  @@map("twoFactor")
 }

@@ -14,6 +14,7 @@ import { ArrowLeft, GraduationCap, Hourglass, MessagesSquare } from "lucide-reac
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import TwoFactorSettings from "@/components/layout/TwoFactor/TwoFactorSettings";
 
 export default function ProfilePage() {
   const { t } = useTranslation();
@@ -114,48 +115,51 @@ export default function ProfilePage() {
         </Button>
       </div>
       <div className="flex gap-4 mb-4 flex-wrap lg:flex-nowrap">
-        <Card className="w-full lg:max-w-sm flex flex-col max-h-105">
-          <form onSubmit={handleSubmit}>
-            <CardHeader>
-              <Avatar size="profile" className="mx-auto">
-                <AvatarImage src={session?.user.image || ""} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <CardTitle className="text-center mb-2.5">{session?.user.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="image">{t("profile.imageLabel")}</Label>
-                  <Input
-                    id="image"
-                    type="url"
-                    placeholder="https://github.com/shadcn.png"
-                    value={imageSrc}
-                    onChange={(e) => setImageSrc(e.target.value)}
-                  />
+        <div className="flex flex-col gap-4 w-full lg:max-w-sm">
+          <Card className="w-full flex flex-col max-h-105">
+            <form onSubmit={handleSubmit}>
+              <CardHeader>
+                <Avatar size="profile" className="mx-auto">
+                  <AvatarImage src={session?.user.image || ""} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <CardTitle className="text-center mb-2.5">{session?.user.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-6">
+                  <div className="grid gap-2">
+                    <Label htmlFor="image">{t("profile.imageLabel")}</Label>
+                    <Input
+                      id="image"
+                      type="url"
+                      placeholder="https://github.com/shadcn.png"
+                      value={imageSrc}
+                      onChange={(e) => setImageSrc(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="username">{t("profile.username")}</Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder={t("common.user")}
+                      required
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      maxLength={25}
+                    />
+                  </div>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="username">{t("profile.username")}</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder={t("common.user")}
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    maxLength={25}
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex-col gap-2 mt-6">
-              <Button type="submit" className="w-full">
-                {t("profile.save")}
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
+              </CardContent>
+              <CardFooter className="flex-col gap-2 mt-6">
+                <Button type="submit" className="w-full">
+                  {t("profile.save")}
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
+          <TwoFactorSettings />
+        </div>
         <Card className="w-full pl-3 pr-3">
           <div className="flex gap-3 flex-wrap xl:flex-nowrap">
             <Item variant="outline" size="sm" className="min-w-55">

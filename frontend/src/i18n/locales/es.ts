@@ -318,80 +318,106 @@ const es: Translation = {
         back: "Volver",
         privacy: {
             title: "Política de privacidad",
-            intro: "PairMock es una plataforma de simulacros de entrevistas técnicas entre compañeros, desarrollada como un proyecto estudiantil con fines educativos. Esta política explica qué datos personales recogemos cuando usas PairMock, para qué, con quién los compartimos y qué derechos tienes sobre ellos.",
+            intro: "PairMock (https://pairmock.duckdns.org) es una plataforma de simulacros de entrevistas técnicas entre pares desarrollada como un proyecto estudiantil con fines educativos. Esta Política de privacidad explica en detalle qué datos personales y datos de usuario de Google recogemos cuando usas PairMock, cómo los utilizamos, almacenamos, protegemos y compartimos, cómo cumplimos la Política de datos de usuario de los servicios API de Google y cómo puedes ejercer tus derechos o eliminar tus datos.",
             sections: [
                 {
-                    heading: "1. Datos que recogemos",
-                    paragraphs: ["Solo recogemos los datos necesarios para que el servicio funcione:"],
+                    heading: "1. Datos que recogemos (incluidos los datos de usuario de Google)",
+                    paragraphs: [
+                        "Solo recogemos la información personal mínima necesaria para operar PairMock y ofrecer las funciones de programación de entrevistas, edición colaborativa de código y evaluación:",
+                    ],
                     items: [
-                        "Datos de la cuenta: tu nombre de usuario, tu correo electrónico, tu contraseña (guardada únicamente como hash seguro) y, si la añades, la URL de tu foto de perfil.",
-                        "Datos de la cuenta de Google: si inicias sesión con Google o conectas Google Calendar, guardamos el identificador de tu cuenta de Google y los tokens de acceso que nos proporciona Google, limitados a la gestión de los eventos de calendario de tus simulacros de entrevista (creación y eliminación de sesiones programadas).",
-                        "Datos de las entrevistas: las sesiones que creas o reservas (descripción, dificultad, fecha, duración, estado), el código escrito durante la entrevista, las evaluaciones que das y recibes y tus notificaciones.",
-                        "Datos técnicos: para cada sesión de inicio de sesión, su fecha de caducidad, tu dirección IP y el agente de usuario de tu navegador, para mantenerte conectado y proteger tu cuenta.",
-                        "Preferencias: tu idioma y tu tema se guardan en el almacenamiento local de tu navegador, no en nuestros servidores.",
+                        "Datos de registro de cuenta: Cuando te registras con correo y contraseña, recogemos tu nombre de usuario, dirección de correo electrónico, contraseña (almacenada únicamente como un hash criptográfico seguro, nunca en texto plano) y la URL opcional de tu foto de perfil.",
+                        "Datos de inicio de sesión con Google (alcances OAuth: openid, email, profile): Si inicias sesión con Google OAuth, recogemos el identificador único de tu cuenta de Google, tu nombre visible, tu correo electrónico y la URL de tu foto de perfil proporcionados por Google para autenticarte.",
+                        "Datos de Google Calendar (alcance OAuth: https://www.googleapis.com/auth/calendar.events): Si decides publicar sesiones como anfitrión y conectas Google Calendar, almacenamos los tokens OAuth 2.0 de acceso y actualización otorgados por Google. Utilizamos este permiso exclusivamente para crear, actualizar y eliminar los eventos de Google Calendar (y sus enlaces de videollamada de Google Meet asociados) que PairMock programa cuando otro usuario reserva o cancela tu sesión. PairMock NO lee, analiza, modifica ni elimina ningún otro evento personal de tu calendario de Google.",
+                        "Datos de las entrevistas y práctica: Almacenamos las sesiones que creas o reservas (descripción, dificultad, fecha y hora, duración y estado), el código fuente escrito en el editor colaborativo durante la entrevista, las evaluaciones estructuradas enviadas por los participantes y tus notificaciones.",
+                        "Datos técnicos y de sesión: Por seguridad y gestión de sesiones, registramos identificadores de sesión, fechas de caducidad, direcciones IP y el agente de usuario del navegador asociados a las sesiones activas.",
+                        "Preferencias locales: Tu idioma (inglés, español o francés) y el tema visual se guardan únicamente en el almacenamiento local (localStorage) de tu navegador y no se envían a nuestros servidores.",
                     ],
                 },
                 {
-                    heading: "2. Para qué los usamos",
-                    paragraphs: [],
+                    heading: "2. Cómo utilizamos tus datos",
+                    paragraphs: [
+                        "Utilizamos la información recogida exclusivamente para prestar y mantener el servicio PairMock:",
+                    ],
                     items: [
-                        "Para crear y proteger tu cuenta y mantener tu sesión iniciada.",
-                        "Para que puedas publicar, reservar y realizar simulacros de entrevista con otros usuarios.",
-                        "Para crear la invitación de Google Calendar y el enlace de Google Meet de una entrevista reservada.",
-                        "Para mostrarte tu historial, tus estadísticas y las evaluaciones de tus compañeros.",
-                        "Para generar comentarios de la IA sobre el código de una entrevista cuando lo solicitas.",
+                        "Autenticación y gestión de cuenta: Para crear y mantener tu cuenta, autenticarte mediante correo/contraseña o Google Sign-In y mostrar tu nombre de usuario y avatar a tus compañeros de práctica.",
+                        "Programación de entrevistas simuladas: Para permitir a los usuarios publicar sesiones disponibles, explorar horarios y reservar o cancelar entrevistas de práctica.",
+                        "Automatización de Google Calendar y Google Meet: Cuando un usuario reserva una sesión que tú ofreces, PairMock utiliza tu token de Google Calendar conectado para insertar automáticamente el evento en el calendario, generar un enlace de Google Meet para ambos participantes y eliminar o actualizar dicho evento si se cancela la reserva.",
+                        "Edición colaborativa e historial: Para sincronizar el código en tiempo real entre los dos participantes durante la entrevista y mostrarte tu historial de código, evaluaciones y estadísticas en tu panel y perfil.",
+                        "Revisión de código con IA bajo demanda: Únicamente cuando pulsas explícitamente un botón de comentarios de IA, PairMock envía el código del editor a nuestro proveedor de IA (Groq) para generar sugerencias educativas.",
                     ],
                 },
                 {
-                    heading: "3. Base jurídica",
+                    heading: "3. Cumplimiento de la Política de datos de usuario de los servicios API de Google (Uso Limitado)",
                     paragraphs: [
-                        "Tratamos tus datos porque es necesario para prestarte el servicio en el que te has registrado (ejecución de un contrato). Conectar Google Calendar y solicitar comentarios de la IA es opcional y se basa en tu consentimiento. Puedes retirar tu consentimiento en cualquier momento revocando los permisos concedidos a PairMock en la seguridad de tu cuenta de Google (myaccount.google.com/permissions), solicitándonos la desvinculación en {{email}} o simplemente no usando la función de IA.",
+                        "El uso y la transferencia por parte de PairMock a cualquier otra aplicación de la información recibida de las API de Google se ajustarán a la Política de datos de usuario de los servicios API de Google (Google API Services User Data Policy), incluidos los requisitos de Uso Limitado (Limited Use).",
                     ],
-                    items: [],
-                },
-                {
-                    heading: "4. Quién puede ver tus datos",
-                    paragraphs: [],
                     items: [
-                        "Los demás usuarios ven tu nombre de usuario, tu foto de perfil y las sesiones que publicas.",
-                        "Tu compañero de entrevista ve tu nombre, el código compartido, la evaluación que le dejas y, a través de la invitación de calendario, tu correo electrónico.",
-                        "Google recibe los detalles del evento de calendario (título, descripción, fecha y asistentes) cuando se reserva una entrevista.",
-                        "Groq, nuestro proveedor de IA, recibe el código de la entrevista (y nada más) cuando pulsas un botón de comentarios de la IA. No guardamos la respuesta de la IA.",
-                        "Transferencias internacionales: Google y Groq procesan datos en servidores situados en Estados Unidos, bajo el amparo del Marco de Privacidad de Datos UE-EE. UU. y las cláusulas contractuales tipo.",
+                        "Uso Limitado: Solo utilizamos los datos de usuario de Google (tu perfil básico y permisos de eventos de Google Calendar) para ofrecer funciones visibles para el usuario en PairMock: iniciar sesión y programar automáticamente invitaciones de Google Calendar y enlaces de Google Meet para tus entrevistas reservadas.",
+                        "Sin publicidad ni venta de datos: Nunca vendemos, alquilamos ni comercializamos tus datos de usuario de Google ni tu información personal a terceros, intermediarios de datos ni anunciantes, y nunca usamos datos de Google para publicidad personalizada.",
+                        "Sin entrenamiento de IA con datos de Google: Nunca transferimos los datos de tu cuenta de Google, tu correo electrónico ni los datos de Google Calendar a ningún proveedor de inteligencia artificial, ni se utilizan para entrenar modelos de IA.",
+                        "Sin lectura humana de datos de Google: Ninguna persona lee tus datos de usuario de Google salvo con tu consentimiento explícito para soporte técnico, por motivos de seguridad o por obligación legal.",
                     ],
                 },
                 {
-                    heading: "5. Lo que nunca hacemos",
+                    heading: "4. Base jurídica del tratamiento (RGPD)",
                     paragraphs: [
-                        "No vendemos tus datos, no mostramos publicidad y no usamos cookies de seguimiento ni de analítica. La única cookie que usamos es la cookie de sesión estrictamente necesaria para mantenerte conectado.",
-                    ],
-                    items: [],
-                },
-                {
-                    heading: "6. Cuánto tiempo los conservamos",
-                    paragraphs: [
-                        "Tus datos se conservan mientras exista tu cuenta. Las sesiones de inicio de sesión caducan automáticamente. Cuando solicitas la eliminación de tu cuenta, tus credenciales, sesiones y tokens de Google asociados se eliminan. Los registros de entrevistas completadas se conservan de forma anonimizada para que tus compañeros puedan mantener su historial de práctica.",
+                        "Para los usuarios del Espacio Económico Europeo (EEE) y el Reino Unido, tratamos tus datos personales conforme al Reglamento General de Protección de Datos (RGPD) sobre las siguientes bases: (a) Ejecución de un contrato (art. 6.1.b RGPD) para proporcionar acceso a la cuenta, reserva de sesiones, edición colaborativa y evaluaciones; (b) Consentimiento (art. 6.1.a RGPD) cuando conectas opcionalmente Google Calendar o solicitas comentarios de IA; y (c) Interés legítimo (art. 6.1.f RGPD) para mantener la seguridad del servicio.",
                     ],
                     items: [],
                 },
                 {
-                    heading: "7. Seguridad",
+                    heading: "5. Compartición de datos, proveedores externos y transferencias internacionales",
                     paragraphs: [
-                        "Todo el tráfico se cifra con HTTPS, las contraseñas se guardan con hash y nunca en texto plano, y el acceso a los datos de una entrevista está limitado a sus dos participantes. Ningún sistema es totalmente seguro, pero tomamos medidas razonables para proteger tus datos.",
+                        "Solo compartimos tu información en las circunstancias estrictamente necesarias que se detallan a continuación:",
+                    ],
+                    items: [
+                        "Otros usuarios de PairMock: Los usuarios autenticados ven tu nombre de usuario, foto de perfil y las sesiones disponibles que publicas. Al reservar una entrevista, ambos participantes ven el nombre de usuario, el código compartido, la evaluación y, a través de la invitación de Google Calendar, las direcciones de correo electrónico incluidas en el evento.",
+                        "Google LLC (OAuth y Google Calendar API): Al iniciar sesión con Google o reservarse una sesión, PairMock se comunica con las API de Google para verificar tu identidad o crear el evento de calendario y el enlace de Google Meet.",
+                        "Groq, Inc. (Comentarios de IA): Al pulsar un botón de IA, solo se envía el fragmento de código escrito en el editor y el lenguaje de programación a la API de Groq. Tu nombre, correo y datos de Google nunca se envían a Groq.",
+                        "Transferencias internacionales: Google LLC y Groq, Inc. procesan datos en servidores que pueden estar ubicados en Estados Unidos, amparados por el Marco de Privacidad de Datos UE-EE. UU. y las Cláusulas Contractuales Tipo (CCT) de la Comisión Europea.",
+                    ],
+                },
+                {
+                    heading: "6. Cookies y tecnologías de seguimiento",
+                    paragraphs: [
+                        "PairMock no utiliza cookies publicitarias, píxeles de seguimiento de terceros ni cookies de análisis de comportamiento. Únicamente establecemos la cookie de sesión propia estrictamente necesaria para mantener tu sesión iniciada de forma segura.",
                     ],
                     items: [],
                 },
                 {
-                    heading: "8. Tus derechos",
+                    heading: "7. Almacenamiento y medidas de seguridad",
                     paragraphs: [
-                        "De acuerdo con el RGPD, puedes acceder a tus datos, rectificarlos, exportarlos o suprimirlos, y oponerte a su tratamiento o pedir su limitación. Puedes cambiar tu nombre y tu foto desde tu página de perfil; para cualquier otra solicitud (incluida la eliminación de tu cuenta), contacta con el equipo de estudiantes en {{email}}. Si consideras que no se respetan tus derechos, puedes presentar una reclamación ante tu autoridad de protección de datos (en Francia, la CNIL).",
+                        "Aplicamos medidas técnicas y organizativas para proteger tus datos personales y tokens OAuth de Google frente a accesos no autorizados, alteraciones o destrucciones:",
+                    ],
+                    items: [
+                        "Cifrado en tránsito: Todas las comunicaciones entre tu navegador, nuestros servidores y las API de Google están cifradas mediante HTTPS/TLS.",
+                        "Protección de credenciales y tokens: Las contraseñas se almacenan mediante hash criptográfico seguro. Los tokens OAuth de Google se guardan en una base de datos restringida accesible únicamente por el servidor backend.",
+                        "Control de acceso: El acceso a las sesiones de entrevista, al código compartido y a las evaluaciones está restringido en el servidor exclusivamente a los dos participantes de la entrevista.",
+                    ],
+                },
+                {
+                    heading: "8. Conservación de datos, eliminación de cuenta y revocación de acceso de Google",
+                    paragraphs: [
+                        "Conservamos tus datos personales únicamente mientras tu cuenta de PairMock permanezca activa:",
+                    ],
+                    items: [
+                        "Caducidad de sesiones: Las sesiones de inicio de sesión caducan automáticamente o al cerrar sesión.",
+                        "Revocación del acceso de Google: Puedes revocar el acceso de PairMock a tu cuenta de Google y a Google Calendar en cualquier momento desde la página de permisos de tu cuenta de Google en https://myaccount.google.com/permissions o escribiéndonos a {{email}}.",
+                        "Eliminación de cuenta y datos: Puedes solicitar la eliminación completa de tu cuenta de PairMock y de tus datos personales (incluidos tu perfil, correo, sesiones y tokens de Google almacenados) escribiendo a {{email}}. Eliminamos tus credenciales y tokens de Google en un plazo máximo de 30 días. Los registros de entrevistas completadas pueden conservarse de forma anonimizada para que tus compañeros mantengan su historial de práctica.",
+                    ],
+                },
+                {
+                    heading: "9. Tus derechos de privacidad",
+                    paragraphs: [
+                        "De acuerdo con el RGPD, tienes derecho a acceder a tus datos personales, rectificarlos, solicitar su supresión, limitar u oponerte a su tratamiento y solicitar la portabilidad de los datos. Puedes editar tu nombre de usuario y foto desde tu página de Perfil. Para ejercer cualquier otro derecho o realizar consultas sobre privacidad, escríbenos a {{email}}. También tienes derecho a presentar una reclamación ante tu autoridad de protección de datos (como la CNIL en Francia o la AEPD en España).",
                     ],
                     items: [],
                 },
                 {
-                    heading: "9. Cambios",
+                    heading: "10. Cambios en esta Política de privacidad",
                     paragraphs: [
-                        "Podemos actualizar esta política a medida que evolucione el proyecto. La fecha que aparece al principio de esta página indica cuándo se modificó por última vez.",
+                        "Podemos actualizar esta Política de privacidad periódicamente para reflejar mejoras del servicio o requisitos legales. La fecha de «Última actualización» al inicio de esta página indica cuándo se realizó el último cambio.",
                     ],
                     items: [],
                 },

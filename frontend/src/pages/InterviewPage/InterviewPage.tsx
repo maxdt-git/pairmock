@@ -405,11 +405,6 @@ export default function InterviewPage() {
                             </div>
                         </ResizablePanel>
                         <ResizableHandle withHandle />
-                        <ResizablePanel defaultSize="25%">
-                            <div className="flex h-full items-center justify-center p-6">
-                                <span className="font-semibold">{t("interview.console")}</span>
-                            </div>
-                        </ResizablePanel>
                     </ResizablePanelGroup>
                 </ResizablePanel>
             </ResizablePanelGroup>

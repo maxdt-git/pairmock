@@ -21,7 +21,7 @@ export default function Footer() {
 
     return (
         <footer className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2 pb-2">
-            <ul className="flex flex-wrap">
+            <ul className="flex flex-wrap mx-auto sm:mx-0">
                 {links.map((link) => (
                     <li key={link.href}>
                         <Link to={link.href} className={buttonVariants({ variant: "link" })}>
@@ -30,7 +30,7 @@ export default function Footer() {
                     </li>
                 ))}
             </ul>
-            <nav aria-label={t("footer.language")} className="flex items-center">
+            <nav aria-label={t("footer.language")} className="flex items-center justify-center mx-auto sm:mx-0">
                 <Languages className="size-4 text-muted-foreground" aria-hidden />
                 <ul className="flex items-center">
                     {SUPPORTED_LANGUAGES.map((lang, index) => {

@@ -9,6 +9,22 @@ const en = {
         user: "User",
     },
 
+    brand: {
+        name: "PairMock",
+        tagline: "Peer-to-Peer Mock Technical Interview Platform",
+        description: "PairMock is a collaborative platform where developers practice technical coding interviews together. Schedule sessions, solve problems in a real-time shared code editor, and exchange structured feedback.",
+        features: {
+            scheduleTitle: "Schedule & Match",
+            scheduleDesc: "Publish mock interview slots or book available sessions filtered by difficulty and time.",
+            calendarTitle: "Google Calendar & Meet",
+            calendarDesc: "Automatically creates Google Calendar invitations and Google Meet video links for booked interviews.",
+            editorTitle: "Live Collaborative Editor",
+            editorDesc: "Write and debug code together in real time with multi-language syntax highlighting.",
+            feedbackTitle: "Peer & AI Feedback",
+            feedbackDesc: "Evaluate problem solving, code quality, and Big-O complexity with rubric-based and AI-assisted reviews.",
+        },
+    },
+
     footer: {
         dashboard: "Dashboard",
         login: "Log in",

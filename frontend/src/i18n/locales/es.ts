@@ -458,6 +458,48 @@ const es: Translation = {
             ],
         },
     },
+
+    analytics: {
+        title: "Panel de análisis de datos",
+        description: "Tu progreso en todas las entrevistas completadas",
+        filter: {
+            all: "Todas las dificultades",
+            easy: "Fácil",
+            medium: "Medio",
+            hard: "Difícil",
+        },
+        exportCsv: "Exportar CSV",
+        lastUpdated: "Última actualización: {{time}}",
+        kpis: {
+            interviews: "Entrevistas",
+            averageScore: "Puntuación media",
+            strength: "Punto fuerte",
+            workOn: "A mejorar",
+        },
+        skills: {
+            problemSolving: "Resolución de problemas",
+            codeQuality: "Calidad del código",
+            complexityAnalysis: "Análisis de complejidad",
+            communication: "Comunicación",
+            average: "Promedio",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Evolución de puntuaciones",
+                description: "Puntuación obtenida en cada entrevista",
+            },
+            skillsRadar: {
+                title: "Perfil de habilidades",
+                description: "Promedio por habilidad",
+            },
+            difficultyBar: {
+                title: "Notas por dificultad",
+                description: "Ordenado por dificultad ascendente",
+                tooltip_one: "{{count}} entrevista",
+                tooltip_other: "{{count}} entrevistas",
+            },
+        },
+    },
 };
 
 export default es;

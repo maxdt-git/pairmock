@@ -458,6 +458,48 @@ const fr: Translation = {
             ],
         },
     },
+
+    analytics: {
+        title: "Tableau de bord analytique",
+        description: "Votre progression sur l'ensemble des entretiens terminés",
+        filter: {
+            all: "Toutes les difficultés",
+            easy: "Facile",
+            medium: "Moyen",
+            hard: "Difficile",
+        },
+        exportCsv: "Exporter en CSV",
+        lastUpdated: "Dernière mise à jour : {{time}}",
+        kpis: {
+            interviews: "Entretiens",
+            averageScore: "Note moyenne",
+            strength: "Point fort",
+            workOn: "À travailler",
+        },
+        skills: {
+            problemSolving: "Résolution de problèmes",
+            codeQuality: "Qualité du code",
+            complexityAnalysis: "Analyse de complexité",
+            communication: "Communication",
+            average: "Moyenne",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Évolution des notes",
+                description: "Notes obtenues à chaque entretien",
+            },
+            skillsRadar: {
+                title: "Profil de compétences",
+                description: "Moyenne par compétence",
+            },
+            difficultyBar: {
+                title: "Notes par difficulté",
+                description: "Classé par ordre croissant de difficulté",
+                tooltip_one: "{{count}} entretien",
+                tooltip_other: "{{count}} entretiens",
+            },
+        },
+    },
 };
 
 export default fr;

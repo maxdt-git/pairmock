@@ -9,27 +9,28 @@ import { getKpis, skillAverages, byDifficulty } from "@/lib/analyticsData";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { format } from "date-fns"
 import { Input } from "@/components/ui/input";
-
-
-const chartConfig = {
-    problemSolving: { label: "Problem solving", theme: { light: "#16a34a", dark: "#4ade80" } },
-    codeQuality: { label: "Code Quality", theme: { light: "#2563eb", dark: "#60a5fa" } },
-    complexityAnalysis: { label: "Complexity Analysis", theme: { light: "#db2777", dark: "#f472b6" } },
-    communication: { label: "Communication", theme: { light: "#ea580c", dark: "#fb923c" } },
-} satisfies ChartConfig
-
-const radarConfig = {
-    average: { label: "Average", theme: { light: "#2563eb", dark: "#60a5fa" } },
-} satisfies ChartConfig
+import { useTranslation } from "react-i18next";
 
 export default function AnalyticsPage() {
+    const { t } = useTranslation();
     const [difficultyFilter, setDifficultyFilter] = useState("ALL");
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
+
+    const chartConfig = useMemo(() => ({
+        problemSolving: { label: t("analytics.skills.problemSolving"), theme: { light: "#16a34a", dark: "#4ade80" } },
+        codeQuality: { label: t("analytics.skills.codeQuality"), theme: { light: "#2563eb", dark: "#60a5fa" } },
+        complexityAnalysis: { label: t("analytics.skills.complexityAnalysis"), theme: { light: "#db2777", dark: "#f472b6" } },
+        communication: { label: t("analytics.skills.communication"), theme: { light: "#ea580c", dark: "#fb923c" } },
+    } satisfies ChartConfig), [t]);
+
+    const radarConfig = useMemo(() => ({
+        average: { label: t("analytics.skills.average"), theme: { light: "#2563eb", dark: "#60a5fa" } },
+    } satisfies ChartConfig), [t]);
 
     async function getAnalytics() {
         const res = await fetch(`/api/analytics/`);
@@ -97,44 +98,46 @@ export default function AnalyticsPage() {
             <div className="flex mb-4">
                 <Button variant="outline" size={"lg"}>
                     <Link to={"/profile"} className="flex gap-2 items-center">
-                      <ArrowLeft /> Profile
+                      <ArrowLeft /> {t("common.profile")}
                     </Link>
                 </Button>
             </div>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-5xl font-semibold mb-4">Data Dashboard Analytics</CardTitle>
-                    <CardDescription>Your progress across all completed interviews</CardDescription>
+                    <CardTitle className="text-5xl font-semibold mb-4">{t("analytics.title")}</CardTitle>
+                    <CardDescription>{t("analytics.description")}</CardDescription>
                 </CardHeader>
             </Card>
             <div className="flex flex-wrap gap-4 mt-4">
                 <NativeSelect value={difficultyFilter} onChange={(e) => setDifficultyFilter(e.target.value)}>
                     <NativeSelectOption value="ALL">
-                        All difficulties
+                        {t("analytics.filter.all")}
                     </NativeSelectOption>
                     <NativeSelectOption value="EASY">
-                        Easy
+                        {t("analytics.filter.easy")}
                     </NativeSelectOption>
                     <NativeSelectOption value="MEDIUM">
-                        Medium
+                        {t("analytics.filter.medium")}
                     </NativeSelectOption>
                     <NativeSelectOption value="HARD">
-                        Hard
+                        {t("analytics.filter.hard")}
                     </NativeSelectOption>
                 </NativeSelect>
                 <div>
                     <Input type="date" max={toDate} value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="w-fit"></Input>
                     <Input type="date" min={fromDate} value={toDate} onChange={(e) => setToDate(e.target.value)} className="w-fit"></Input>
                 </div>
-                <Button onClick={exportCsv}> Export CSV </Button>
+                <Button onClick={exportCsv}> {t("analytics.exportCsv")} </Button>
                 <span className="text-sm text-muted-foreground ml-auto self-center">
-                    Last updated: {analyticsQuery.dataUpdatedAt ? format(analyticsQuery.dataUpdatedAt, "HH:mm:ss") : "—"}
+                    {analyticsQuery.dataUpdatedAt
+                        ? t("analytics.lastUpdated", { time: format(analyticsQuery.dataUpdatedAt, "HH:mm:ss") })
+                        : "—"}
                 </span>
             </div>
             <div className="flex flex-wrap gap-4 mb-4 mt-4">
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardDescription>Interviews</CardDescription>
+                        <CardDescription>{t("analytics.kpis.interviews")}</CardDescription>
                         <CardTitle className="text-3xl">
                             {filteredData.length ?? "—"}
                             <span className="text-base font-normal text-muted-foreground"> </span>
@@ -143,7 +146,7 @@ export default function AnalyticsPage() {
                 </Card>
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardDescription>Average score</CardDescription>
+                        <CardDescription>{t("analytics.kpis.averageScore")}</CardDescription>
                         <CardTitle className="text-3xl">
                             {kpis.average ?? "—"}
                             <span className="text-base font-normal text-muted-foreground"> / 5</span>
@@ -152,7 +155,7 @@ export default function AnalyticsPage() {
                 </Card>
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardDescription>Strength</CardDescription>
+                        <CardDescription>{t("analytics.kpis.strength")}</CardDescription>
                         <CardTitle className="text-3xl">
                             {kpis.strength ? chartConfig[kpis.strength]?.label : "—"}
                             <span className="text-base font-normal text-muted-foreground"> </span>
@@ -161,7 +164,7 @@ export default function AnalyticsPage() {
                 </Card>
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardDescription>Work on</CardDescription>
+                        <CardDescription>{t("analytics.kpis.workOn")}</CardDescription>
                         <CardTitle className="text-3xl">
                             {kpis.weakness ? chartConfig[kpis.weakness].label : "—"}
                             <span className="text-base font-normal text-muted-foreground"> </span>
@@ -171,8 +174,8 @@ export default function AnalyticsPage() {
             </div>
                 <Card>
                 <CardHeader>
-                    <CardTitle> Score Evolution </CardTitle>
-                    <CardDescription> Score received in each interview </CardDescription>
+                    <CardTitle> {t("analytics.charts.scoreEvolution.title")} </CardTitle>
+                    <CardDescription> {t("analytics.charts.scoreEvolution.description")} </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig} className="h-80 w-full">
@@ -200,8 +203,8 @@ export default function AnalyticsPage() {
             <div className="flex flex-wrap gap-4 mt-4">
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardTitle>Skills profile</CardTitle>
-                        <CardDescription>Average per skill</CardDescription>
+                        <CardTitle>{t("analytics.charts.skillsRadar.title")}</CardTitle>
+                        <CardDescription>{t("analytics.charts.skillsRadar.description")}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ChartContainer config={radarConfig} className="mx-auto aspect-square max-h-80 w-full">
@@ -210,7 +213,7 @@ export default function AnalyticsPage() {
                                 <PolarGrid/>
                                 <PolarRadiusAxis domain={[0, 5]} tick={false} axisLine={false} />
                                 <PolarAngleAxis dataKey="skill"
-                                tickFormatter={(skill) => chartConfig[skill as keyof typeof chartConfig]?.label ?? skill}/>
+                                tickFormatter={(skill) => (chartConfig[skill as keyof typeof chartConfig]?.label as string) ?? skill}/>
                                 <Radar dataKey="average" fill="var(--color-average)" fillOpacity={0.5} stroke="var(--color-average)"/>
                             </RadarChart>
                         </ChartContainer>
@@ -218,8 +221,8 @@ export default function AnalyticsPage() {
                 </Card>
                 <Card className="flex-1 min-w-48">
                     <CardHeader>
-                        <CardTitle>Notes per difficulty</CardTitle>
-                        <CardDescription>Order by ascending difficulty</CardDescription>
+                        <CardTitle>{t("analytics.charts.difficultyBar.title")}</CardTitle>
+                        <CardDescription>{t("analytics.charts.difficultyBar.description")}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ChartContainer config={radarConfig} className="h-80 w-full">
@@ -227,14 +230,17 @@ export default function AnalyticsPage() {
                                 <CartesianGrid vertical={false}/>
                                 <XAxis
                                     dataKey="difficulty"
-                                    tickFormatter={(d: string) => d.charAt(0) + d.slice(1).toLowerCase()}/>
+                                    tickFormatter={(d: string) => t(`difficulty.${d as "EASY" | "MEDIUM" | "HARD"}`)}/>
                                 <YAxis domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]}/>
                                 <ChartTooltip
                                     content={
                                         <ChartTooltipContent
                                             labelFormatter={(_, payload) => {
                                                 const p = payload?.[0]?.payload;
-                                                return p ? `${p.difficulty} · ${p.count} interview${p.count > 1 ? "s" : ""}` : "";
+                                                if (!p) return "";
+                                                const diffLabel = t(`difficulty.${p.difficulty as "EASY" | "MEDIUM" | "HARD"}`);
+                                                const countLabel = t("analytics.charts.difficultyBar.tooltip", { count: p.count });
+                                                return `${diffLabel} · ${countLabel}`;
                                             }}/>
                                     }/>
                                 <Bar dataKey="average" fill="var(--color-average)" radius={[4, 4, 0, 0]}/>

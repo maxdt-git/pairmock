@@ -456,6 +456,48 @@ const en = {
             ],
         },
     },
+
+    analytics: {
+        title: "Data Dashboard Analytics",
+        description: "Your progress across all completed interviews",
+        filter: {
+            all: "All difficulties",
+            easy: "Easy",
+            medium: "Medium",
+            hard: "Hard",
+        },
+        exportCsv: "Export CSV",
+        lastUpdated: "Last updated: {{time}}",
+        kpis: {
+            interviews: "Interviews",
+            averageScore: "Average score",
+            strength: "Strength",
+            workOn: "Work on",
+        },
+        skills: {
+            problemSolving: "Problem solving",
+            codeQuality: "Code Quality",
+            complexityAnalysis: "Complexity Analysis",
+            communication: "Communication",
+            average: "Average",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Score Evolution",
+                description: "Score received in each interview",
+            },
+            skillsRadar: {
+                title: "Skills profile",
+                description: "Average per skill",
+            },
+            difficultyBar: {
+                title: "Notes per difficulty",
+                description: "Order by ascending difficulty",
+                tooltip_one: "{{count}} interview",
+                tooltip_other: "{{count}} interviews",
+            },
+        },
+    },
 };
 
 export default en;

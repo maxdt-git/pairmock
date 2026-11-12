@@ -36,7 +36,7 @@ updateslot:
 	@printf '%s\n' \
 		'UPDATE "Slot"' \
 		"SET \"scheduledAt\" = NOW() + INTERVAL '5 seconds'" \
-		'WHERE id = 1' \
+		'WHERE id = 2' \
 		'RETURNING id, "scheduledAt";' \
 		| $(COMPOSE) exec -T db sh -c 'exec psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
 

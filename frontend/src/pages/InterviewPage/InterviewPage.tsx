@@ -356,7 +356,7 @@ export default function InterviewPage() {
                                     :
                                     <Questionnaire
                                         className="mx-auto max-w-md"
-                                        defaultItem="direction"
+                                        defaultItem="problemSolving"
                                         items={questionnaireItems}
                                         shortcuts="letters"
                                         onSubmit={handleSubmit}
@@ -405,11 +405,6 @@ export default function InterviewPage() {
                             </div>
                         </ResizablePanel>
                         <ResizableHandle withHandle />
-                        <ResizablePanel defaultSize="25%">
-                            <div className="flex h-full items-center justify-center p-6">
-                                <span className="font-semibold">{t("interview.console")}</span>
-                            </div>
-                        </ResizablePanel>
                     </ResizablePanelGroup>
                 </ResizablePanel>
             </ResizablePanelGroup>

@@ -5,7 +5,7 @@ NODE_IMAGE = docker.io/library/node:24-bookworm
 GOINFRE_DIR = /goinfre/$(USER)/transcendence
 BACKEND_EDITOR_DIR = $(GOINFRE_DIR)/backend-editor
 
-.PHONY: up down build logs ps editor-deps editor-deps-frontend editor-deps-backend editor-deps-local
+.PHONY: up down build logs ps editor-deps editor-deps-frontend editor-deps-backend editor-deps-local start updateslot
 
 up:
 	$(COMPOSE) up --build -d
@@ -30,6 +30,19 @@ ps:
 
 opendb:
 	$(COMPOSE) exec db sh -c 'exec psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
+
+
+updateslot:
+	@printf '%s\n' \
+		'UPDATE "Slot"' \
+		"SET \"scheduledAt\" = NOW() + INTERVAL '5 seconds'" \
+		'WHERE id = 1' \
+		'RETURNING id, "scheduledAt";' \
+		| $(COMPOSE) exec -T db sh -c 'exec psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
+
+start:
+	$(MAKE) up
+	$(MAKE) migrate
 
 # Prepare host-side dependencies for VS Code / TypeScript in both projects.
 editor-deps: editor-deps-frontend editor-deps-backend

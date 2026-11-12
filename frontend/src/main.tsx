@@ -20,6 +20,7 @@ import GuestRoute from './components/auth/GuestRoute.tsx'
 import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
 import ReviewPage from './pages/ReviewPage/ReviewPage.tsx'
 import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage.tsx'
+import MessageText from './pages/MessageTest/MessageTest.tsx'
 
 const queryClient = new QueryClient()
 
@@ -38,6 +39,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/service" element={<ServicePage />} />
             <Route path="/policy" element={<PolicyPage />} />
             <Route element={<RerouteAll />}>
+              <Route path="/message" element={<MessageText />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/interview/:id" element={<InterviewPage />} />

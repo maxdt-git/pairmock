@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";  
 import { toast } from "@/components/ui/toast";
 import { useTranslation } from "react-i18next";
-import type { SubmitEvent } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,7 +63,7 @@ export default function MessageText() {
     function handleSubmit() {
         const slot: CreateMessagePayload = {
             senderId: String(session?.user.id),
-            receiverId: "wunuszwn43TAm1iGTq8sIuuPvioFoS3R",
+            receiverId: "nMbQ78u6HpDjk3qqD2UCJ5djyafLQQ5A",
             text: text
         };
         
@@ -95,7 +94,7 @@ export default function MessageText() {
             <Button onClick={handleSubmit}>SEND</Button>
             {
                 queryMessage.data?.map((message: any) => (
-                    <p>{message.text}</p>
+                    <p key={message.id}>{message.text}</p>
                 ))
             }
         </div>

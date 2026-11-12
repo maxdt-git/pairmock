@@ -33,6 +33,22 @@ messageRouter.post("/", async (req, res) => {
       return;
     }
 
+    if (session.user.id === receiverId) {
+        res.status(401).json()
+        return;
+    }
+
+    const receiver = await prisma.user.findUnique({
+      where: {
+        id: receiverId,
+      }
+    })
+
+    if (!receiver) {
+        res.status(401).json({ error: "User not found"})
+        return;
+    }
+
     const card = await prisma.message.create({
       data: {
         senderId: senderId,

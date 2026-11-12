@@ -105,12 +105,30 @@ const en = {
             all: "All",
         },
         toast: {
-            booked: { title: "Slot booked!", description: "This slot has been booked successfully." },
-            bookFailed: { title: "Booking failed", description: "Unable to book this slot. Retry later." },
-            canceled: { title: "Slot canceled!", description: "This slot has been canceled successfully." },
-            cancelFailed: { title: "Cancelation failed", description: "Unable to cancel this slot. Retry later." },
-            deleted: { title: "Slot deleted!", description: "Slot deleted successfully." },
-            deleteFailed: { title: "Deletion failed", description: "Unable to delete this slot." },
+            booked: {
+                title: "Slot booked!",
+                description: "This slot has been booked successfully.",
+            },
+            bookFailed: {
+                title: "Booking failed",
+                description: "Unable to book this slot. Retry later.",
+            },
+            canceled: {
+                title: "Slot canceled!",
+                description: "This slot has been canceled successfully.",
+            },
+            cancelFailed: {
+                title: "Cancelation failed",
+                description: "Unable to cancel this slot. Retry later.",
+            },
+            deleted: {
+                title: "Slot deleted!",
+                description: "Slot deleted successfully.",
+            },
+            deleteFailed: {
+                title: "Deletion failed",
+                description: "Unable to delete this slot.",
+            },
         },
     },
 
@@ -159,8 +177,14 @@ const en = {
             failedFallback: "Failed to create slot",
         },
         toast: {
-            created: { title: "Slot created!", description: "Your interview slot is now available." },
-            failed: { title: "Slot creation failed!", description: "Unable to create your slot." },
+            created: {
+                title: "Slot created!",
+                description: "Your interview slot is now available.",
+            },
+            failed: {
+                title: "Slot creation failed!",
+                description: "Unable to create your slot.",
+            },
         },
     },
 
@@ -178,7 +202,101 @@ const en = {
         },
         passedHeading: "Passed interviews:",
         analytics: "View Analytics",
-        emptyDescription: "No completed interviews"
+        emptyDescription: "No completed interviews",
+    },
+
+    twoFactor: {
+        title: "Two-factor authentication",
+        password: "Password",
+        settings: {
+            enabledDescription: "Enabled on your account.",
+            disabledDescription: "Add a code from an authenticator app when you sign in.",
+            enable: "Enable 2FA",
+            disable: "Disable 2FA",
+            scanStep: "1. Scan this QR code with your authenticator app:",
+            backupStep: "2. Save these backup codes somewhere safe:",
+            codeStep: "3. Enter the 6-digit code from the app",
+            verify: "Verify and turn on",
+            enableFailed: "Could not enable 2FA",
+            disableFailed: "Could not disable 2FA",
+            enabled: "Two-factor authentication is on",
+            disabled: "Two-factor authentication is off",
+        },
+        page: {
+            totpDescription: "Enter the 6-digit code from your authenticator app.",
+            backupDescription: "Enter one of your backup codes.",
+            code: "Code",
+            backupCode: "Backup code",
+            verify: "Verify",
+            useTotp: "Use authenticator app instead",
+            useBackup: "Lost your phone? Use a backup code",
+        },
+        invalidCode: "Invalid code, try again",
+    },
+
+    analytics: {
+        title: "Data Dashboard Analytics",
+        description: "Your progress across all completed interviews",
+        filter: {
+            all: "All difficulties",
+            easy: "Easy",
+            medium: "Medium",
+            hard: "Hard",
+        },
+        loadFailed: "Failed to load data",
+        allDifficulties: "All difficulties",
+        exportCsv: "Export CSV",
+        lastUpdated: "Last updated: {{time}}",
+        kpis: {
+            interviews: "Interviews",
+            averageScore: "Average score",
+            strength: "Strength",
+            workOn: "Work on",
+        },
+        skills: {
+            problemSolving: "Problem solving",
+            codeQuality: "Code quality",
+            complexityAnalysis: "Complexity analysis",
+            communication: "Communication",
+            average: "Average",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Score Evolution",
+                description: "Score received in each interview",
+            },
+            skillsRadar: {
+                title: "Skills profile",
+                description: "Average per skill",
+            },
+            difficultyBar: {
+                title: "Notes per difficulty",
+                description: "Order by ascending difficulty",
+                tooltip_one: "{{count}} interview",
+                tooltip_other: "{{count}} interviews",
+            },
+        },
+        average: "Average",
+        kpi: {
+            interviews: "Interviews",
+            averageScore: "Average score",
+            strength: "Strength",
+            weakness: "Work on",
+        },
+        evolution: {
+            title: "Score evolution",
+            description: "Score received in each interview",
+        },
+        skillsProfile: {
+            title: "Skills profile",
+            description: "Average per skill",
+        },
+        byDifficulty: {
+            title: "Scores per difficulty",
+            description: "Ordered by ascending difficulty",
+            interviews_one: "{{difficulty}} · {{count}} interview",
+            interviews_other: "{{difficulty}} · {{count}} interviews",
+        },
     },
 
     interview: {
@@ -197,8 +315,14 @@ const en = {
         toast: {
             feedbackSaved: "Feedback has been saved",
             feedbackFailed: "Failed to save feedback",
-            codeSaved: { title: "Code added to review!", description: "This slot has been updated." },
-            updateFailed: { title: "Update failed", description: "Unable to update this slot. Retry later." },
+            codeSaved: {
+                title: "Code added to review!",
+                description: "This slot has been updated.",
+            },
+            updateFailed: {
+                title: "Update failed",
+                description: "Unable to update this slot. Retry later.",
+            },
         },
         exitDialog: {
             title: "Are you absolutely sure?",
@@ -222,48 +346,48 @@ const en = {
             title: "Problem Solving & Algorithm Design",
             description: "Rate from 0 (did not solve) to 5 (optimal approach without hints).",
             choices: {
-                "5": "Optimal approach without hints",
-                "4": "Solved with minor guidance",
-                "3": "Solved with significant guidance",
-                "2": "Suboptimal or brute-force approach",
-                "1": "Struggled to make progress",
                 "0": "Did not solve",
+                "1": "Struggled to make progress",
+                "2": "Suboptimal or brute-force approach",
+                "3": "Solved with significant guidance",
+                "4": "Solved with minor guidance",
+                "5": "Optimal approach without hints",
             },
         },
         codeQuality: {
             title: "Code Quality & Implementation",
             description: "Rate from 0 (broken/unreadable) to 5 (clean, idiomatic, bug-free).",
             choices: {
-                "5": "Clean, idiomatic, bug-free",
-                "4": "Readable with minor style flaws",
-                "3": "Working but messy or unorganized",
-                "2": "Significant bugs or syntax issues",
-                "1": "Hard to follow, multiple bugs",
                 "0": "Broken and unreadable",
+                "1": "Hard to follow, multiple bugs",
+                "2": "Significant bugs or syntax issues",
+                "3": "Working but messy or unorganized",
+                "4": "Readable with minor style flaws",
+                "5": "Clean, idiomatic, bug-free",
             },
         },
         complexityAnalysis: {
             title: "Time & Space Complexity (Big-O)",
             description: "Rate from 0 (incorrect/missing) to 5 (accurate Time & Space Big-O analysis).",
             choices: {
-                "5": "Accurate Time & Space Big-O analysis",
-                "4": "Correct with minor prompting",
-                "3": "Partially correct analysis",
-                "2": "Confused time and space complexity",
-                "1": "Guessed without reasoning",
                 "0": "Incorrect or missing analysis",
+                "1": "Guessed without reasoning",
+                "2": "Confused time and space complexity",
+                "3": "Partially correct analysis",
+                "4": "Correct with minor prompting",
+                "5": "Accurate Time & Space Big-O analysis",
             },
         },
         communication: {
             title: "Communication & Thought Process",
             description: "Rate from 0 (silent/unclear) to 5 (structured thinking out loud).",
             choices: {
-                "5": "Structured thinking out loud",
-                "4": "Good communication with slight hesitation",
-                "3": "Needed occasional prompting to speak",
-                "2": "Quiet, unclear explanations",
-                "1": "Minimal communication",
                 "0": "Silent or incoherent",
+                "1": "Minimal communication",
+                "2": "Quiet, unclear explanations",
+                "3": "Needed occasional prompting to speak",
+                "4": "Good communication with slight hesitation",
+                "5": "Structured thinking out loud",
             },
         },
         signals: {
@@ -284,8 +408,8 @@ const en = {
             choices: {
                 "optimal-no-hints": "Solved optimally without hints",
                 "optimal-with-hints": "Solved optimally with minor hints",
-                "suboptimal": "Working brute-force / suboptimal solution",
-                "incomplete": "Did not finish a working solution",
+                suboptimal: "Working brute-force / suboptimal solution",
+                incomplete: "Did not finish a working solution",
             },
         },
     },
@@ -444,7 +568,9 @@ const en = {
                 },
                 {
                     heading: "3. Acceptable use",
-                    paragraphs: ["When using PairMock, you agree not to:"],
+                    paragraphs: [
+                        "When using PairMock, you agree not to:",
+                    ],
                     items: [
                         "harass, insult or discriminate against other users, during interviews or in slot descriptions;",
                         "share content that is illegal, offensive, or that you do not have the right to share;",
@@ -496,48 +622,6 @@ const en = {
                     items: [],
                 },
             ],
-        },
-    },
-
-    analytics: {
-        title: "Data Dashboard Analytics",
-        description: "Your progress across all completed interviews",
-        filter: {
-            all: "All difficulties",
-            easy: "Easy",
-            medium: "Medium",
-            hard: "Hard",
-        },
-        exportCsv: "Export CSV",
-        lastUpdated: "Last updated: {{time}}",
-        kpis: {
-            interviews: "Interviews",
-            averageScore: "Average score",
-            strength: "Strength",
-            workOn: "Work on",
-        },
-        skills: {
-            problemSolving: "Problem solving",
-            codeQuality: "Code Quality",
-            complexityAnalysis: "Complexity Analysis",
-            communication: "Communication",
-            average: "Average",
-        },
-        charts: {
-            scoreEvolution: {
-                title: "Score Evolution",
-                description: "Score received in each interview",
-            },
-            skillsRadar: {
-                title: "Skills profile",
-                description: "Average per skill",
-            },
-            difficultyBar: {
-                title: "Notes per difficulty",
-                description: "Order by ascending difficulty",
-                tooltip_one: "{{count}} interview",
-                tooltip_other: "{{count}} interviews",
-            },
         },
     },
 };

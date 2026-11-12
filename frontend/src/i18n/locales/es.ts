@@ -107,12 +107,30 @@ const es: Translation = {
             all: "Todas",
         },
         toast: {
-            booked: { title: "¡Sesión reservada!", description: "Esta sesión se ha reservado correctamente." },
-            bookFailed: { title: "Error en la reserva", description: "No se ha podido reservar esta sesión. Inténtalo más tarde." },
-            canceled: { title: "¡Sesión cancelada!", description: "Esta sesión se ha cancelado correctamente." },
-            cancelFailed: { title: "Error al cancelar", description: "No se ha podido cancelar esta sesión. Inténtalo más tarde." },
-            deleted: { title: "¡Sesión eliminada!", description: "La sesión se ha eliminado correctamente." },
-            deleteFailed: { title: "Error al eliminar", description: "No se ha podido eliminar esta sesión." },
+            booked: {
+                title: "¡Sesión reservada!",
+                description: "Esta sesión se ha reservado correctamente.",
+            },
+            bookFailed: {
+                title: "Error en la reserva",
+                description: "No se ha podido reservar esta sesión. Inténtalo más tarde.",
+            },
+            canceled: {
+                title: "¡Sesión cancelada!",
+                description: "Esta sesión se ha cancelado correctamente.",
+            },
+            cancelFailed: {
+                title: "Error al cancelar",
+                description: "No se ha podido cancelar esta sesión. Inténtalo más tarde.",
+            },
+            deleted: {
+                title: "¡Sesión eliminada!",
+                description: "La sesión se ha eliminado correctamente.",
+            },
+            deleteFailed: {
+                title: "Error al eliminar",
+                description: "No se ha podido eliminar esta sesión.",
+            },
         },
     },
 
@@ -161,8 +179,14 @@ const es: Translation = {
             failedFallback: "No se ha podido crear la sesión",
         },
         toast: {
-            created: { title: "¡Sesión creada!", description: "Tu sesión de entrevista ya está disponible." },
-            failed: { title: "¡Error al crear la sesión!", description: "No se ha podido crear tu sesión." },
+            created: {
+                title: "¡Sesión creada!",
+                description: "Tu sesión de entrevista ya está disponible.",
+            },
+            failed: {
+                title: "¡Error al crear la sesión!",
+                description: "No se ha podido crear tu sesión.",
+            },
         },
     },
 
@@ -180,7 +204,101 @@ const es: Translation = {
         },
         passedHeading: "Entrevistas realizadas:",
         analytics: "Ver estadísticas",
-        emptyDescription: "No hay entrevistas completadas"
+        emptyDescription: "No hay entrevistas completadas",
+    },
+
+    twoFactor: {
+        title: "Autenticación de dos factores",
+        password: "Contraseña",
+        settings: {
+            enabledDescription: "Activada en tu cuenta.",
+            disabledDescription: "Introduce un código de una app de autenticación al iniciar sesión.",
+            enable: "Activar 2FA",
+            disable: "Desactivar 2FA",
+            scanStep: "1. Escanea este código QR con tu app de autenticación:",
+            backupStep: "2. Guarda estos códigos de respaldo en un lugar seguro:",
+            codeStep: "3. Introduce el código de 6 dígitos de la app",
+            verify: "Verificar y activar",
+            enableFailed: "No se pudo activar la 2FA",
+            disableFailed: "No se pudo desactivar la 2FA",
+            enabled: "La autenticación de dos factores está activada",
+            disabled: "La autenticación de dos factores está desactivada",
+        },
+        page: {
+            totpDescription: "Introduce el código de 6 dígitos de tu app de autenticación.",
+            backupDescription: "Introduce uno de tus códigos de respaldo.",
+            code: "Código",
+            backupCode: "Código de respaldo",
+            verify: "Verificar",
+            useTotp: "Usar la app de autenticación",
+            useBackup: "¿Perdiste tu teléfono? Usa un código de respaldo",
+        },
+        invalidCode: "Código no válido, inténtalo de nuevo",
+    },
+
+    analytics: {
+        title: "Panel de análisis",
+        description: "Tu progreso en todas las entrevistas completadas",
+        filter: {
+            all: "Todas las dificultades",
+            easy: "Fácil",
+            medium: "Medio",
+            hard: "Difícil",
+        },
+        loadFailed: "No se pudieron cargar los datos",
+        allDifficulties: "Todas las dificultades",
+        exportCsv: "Exportar CSV",
+        lastUpdated: "Última actualización: {{time}}",
+        kpis: {
+            interviews: "Entrevistas",
+            averageScore: "Puntuación media",
+            strength: "Punto fuerte",
+            workOn: "A mejorar",
+        },
+        skills: {
+            problemSolving: "Resolución de problemas",
+            codeQuality: "Calidad del código",
+            complexityAnalysis: "Análisis de complejidad",
+            communication: "Comunicación",
+            average: "Promedio",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Evolución de puntuaciones",
+                description: "Puntuación obtenida en cada entrevista",
+            },
+            skillsRadar: {
+                title: "Perfil de habilidades",
+                description: "Promedio por habilidad",
+            },
+            difficultyBar: {
+                title: "Notas por dificultad",
+                description: "Ordenado por dificultad ascendente",
+                tooltip_one: "{{count}} entrevista",
+                tooltip_other: "{{count}} entrevistas",
+            },
+        },
+        average: "Media",
+        kpi: {
+            interviews: "Entrevistas",
+            averageScore: "Puntuación media",
+            strength: "Punto fuerte",
+            weakness: "A mejorar",
+        },
+        evolution: {
+            title: "Evolución de la puntuación",
+            description: "Puntuación recibida en cada entrevista",
+        },
+        skillsProfile: {
+            title: "Perfil de habilidades",
+            description: "Media por habilidad",
+        },
+        byDifficulty: {
+            title: "Puntuaciones por dificultad",
+            description: "Ordenado por dificultad ascendente",
+            interviews_one: "{{difficulty}} · {{count}} entrevista",
+            interviews_other: "{{difficulty}} · {{count}} entrevistas",
+        },
     },
 
     interview: {
@@ -199,8 +317,14 @@ const es: Translation = {
         toast: {
             feedbackSaved: "Se ha guardado la evaluación",
             feedbackFailed: "No se ha podido guardar la evaluación",
-            codeSaved: { title: "¡Código añadido a la revisión!", description: "Esta sesión se ha actualizado." },
-            updateFailed: { title: "Error al actualizar", description: "No se ha podido actualizar esta sesión. Inténtalo más tarde." },
+            codeSaved: {
+                title: "¡Código añadido a la revisión!",
+                description: "Esta sesión se ha actualizado.",
+            },
+            updateFailed: {
+                title: "Error al actualizar",
+                description: "No se ha podido actualizar esta sesión. Inténtalo más tarde.",
+            },
         },
         exitDialog: {
             title: "¿Estás completamente seguro?",
@@ -224,48 +348,48 @@ const es: Translation = {
             title: "Resolución de problemas y diseño de algoritmos",
             description: "Puntúa de 0 (no lo resolvió) a 5 (enfoque óptimo sin pistas).",
             choices: {
-                "5": "Enfoque óptimo sin pistas",
-                "4": "Resuelto con poca ayuda",
-                "3": "Resuelto con bastante ayuda",
-                "2": "Enfoque subóptimo o de fuerza bruta",
-                "1": "Le costó avanzar",
                 "0": "No lo resolvió",
+                "1": "Le costó avanzar",
+                "2": "Enfoque subóptimo o de fuerza bruta",
+                "3": "Resuelto con bastante ayuda",
+                "4": "Resuelto con poca ayuda",
+                "5": "Enfoque óptimo sin pistas",
             },
         },
         codeQuality: {
             title: "Calidad del código e implementación",
             description: "Puntúa de 0 (roto/ilegible) a 5 (limpio, idiomático, sin errores).",
             choices: {
-                "5": "Limpio, idiomático, sin errores",
-                "4": "Legible con pequeños fallos de estilo",
-                "3": "Funciona, pero desordenado o poco organizado",
-                "2": "Errores o fallos de sintaxis importantes",
-                "1": "Difícil de seguir, varios errores",
                 "0": "Roto e ilegible",
+                "1": "Difícil de seguir, varios errores",
+                "2": "Errores o fallos de sintaxis importantes",
+                "3": "Funciona, pero desordenado o poco organizado",
+                "4": "Legible con pequeños fallos de estilo",
+                "5": "Limpio, idiomático, sin errores",
             },
         },
         complexityAnalysis: {
             title: "Complejidad temporal y espacial (Big-O)",
             description: "Puntúa de 0 (incorrecta/ausente) a 5 (análisis Big-O exacto de tiempo y espacio).",
             choices: {
-                "5": "Análisis Big-O exacto de tiempo y espacio",
-                "4": "Correcto con un poco de ayuda",
-                "3": "Análisis parcialmente correcto",
-                "2": "Confundió complejidad temporal y espacial",
-                "1": "Lo adivinó sin razonar",
                 "0": "Análisis incorrecto o ausente",
+                "1": "Lo adivinó sin razonar",
+                "2": "Confundió complejidad temporal y espacial",
+                "3": "Análisis parcialmente correcto",
+                "4": "Correcto con un poco de ayuda",
+                "5": "Análisis Big-O exacto de tiempo y espacio",
             },
         },
         communication: {
             title: "Comunicación y razonamiento",
             description: "Puntúa de 0 (en silencio/confuso) a 5 (razonamiento estructurado en voz alta).",
             choices: {
-                "5": "Razonamiento estructurado en voz alta",
-                "4": "Buena comunicación con alguna duda",
-                "3": "A veces hubo que animarle a hablar",
-                "2": "Callado, explicaciones poco claras",
-                "1": "Comunicación mínima",
                 "0": "En silencio o incoherente",
+                "1": "Comunicación mínima",
+                "2": "Callado, explicaciones poco claras",
+                "3": "A veces hubo que animarle a hablar",
+                "4": "Buena comunicación con alguna duda",
+                "5": "Razonamiento estructurado en voz alta",
             },
         },
         signals: {
@@ -286,8 +410,8 @@ const es: Translation = {
             choices: {
                 "optimal-no-hints": "Resuelto de forma óptima sin pistas",
                 "optimal-with-hints": "Resuelto de forma óptima con algunas pistas",
-                "suboptimal": "Solución funcional de fuerza bruta / subóptima",
-                "incomplete": "No terminó una solución funcional",
+                suboptimal: "Solución funcional de fuerza bruta / subóptima",
+                incomplete: "No terminó una solución funcional",
             },
         },
     },
@@ -446,7 +570,9 @@ const es: Translation = {
                 },
                 {
                     heading: "3. Uso aceptable",
-                    paragraphs: ["Al usar PairMock, te comprometes a no:"],
+                    paragraphs: [
+                        "Al usar PairMock, te comprometes a no:",
+                    ],
                     items: [
                         "acosar, insultar o discriminar a otros usuarios, durante las entrevistas o en las descripciones de las sesiones;",
                         "compartir contenido ilegal, ofensivo o que no tengas derecho a compartir;",
@@ -498,48 +624,6 @@ const es: Translation = {
                     items: [],
                 },
             ],
-        },
-    },
-
-    analytics: {
-        title: "Panel de análisis de datos",
-        description: "Tu progreso en todas las entrevistas completadas",
-        filter: {
-            all: "Todas las dificultades",
-            easy: "Fácil",
-            medium: "Medio",
-            hard: "Difícil",
-        },
-        exportCsv: "Exportar CSV",
-        lastUpdated: "Última actualización: {{time}}",
-        kpis: {
-            interviews: "Entrevistas",
-            averageScore: "Puntuación media",
-            strength: "Punto fuerte",
-            workOn: "A mejorar",
-        },
-        skills: {
-            problemSolving: "Resolución de problemas",
-            codeQuality: "Calidad del código",
-            complexityAnalysis: "Análisis de complejidad",
-            communication: "Comunicación",
-            average: "Promedio",
-        },
-        charts: {
-            scoreEvolution: {
-                title: "Evolución de puntuaciones",
-                description: "Puntuación obtenida en cada entrevista",
-            },
-            skillsRadar: {
-                title: "Perfil de habilidades",
-                description: "Promedio por habilidad",
-            },
-            difficultyBar: {
-                title: "Notas por dificultad",
-                description: "Ordenado por dificultad ascendente",
-                tooltip_one: "{{count}} entrevista",
-                tooltip_other: "{{count}} entrevistas",
-            },
         },
     },
 };

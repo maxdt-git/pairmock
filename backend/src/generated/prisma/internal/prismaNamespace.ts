@@ -404,11 +404,8 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Notification: 'Notification',
-<<<<<<< HEAD
-  Message: 'Message'
-=======
+  Message: 'Message',
   TwoFactor: 'TwoFactor'
->>>>>>> ralph2fa
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,11 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-<<<<<<< HEAD
-    modelProps: "testEntry" | "slot" | "user" | "session" | "account" | "verification" | "notification" | "message"
-=======
-    modelProps: "testEntry" | "slot" | "user" | "session" | "account" | "verification" | "notification" | "twoFactor"
->>>>>>> ralph2fa
+    modelProps: "testEntry" | "slot" | "user" | "session" | "account" | "verification" | "notification" | "message" | "twoFactor"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -950,7 +943,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-<<<<<<< HEAD
     Message: {
       payload: Prisma.$MessagePayload<ExtArgs>
       fields: Prisma.MessageFieldRefs
@@ -1022,7 +1014,9 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MessageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MessageCountAggregateOutputType> | number
-=======
+        }
+      }
+    }
     TwoFactor: {
       payload: Prisma.$TwoFactorPayload<ExtArgs>
       fields: Prisma.TwoFactorFieldRefs
@@ -1094,7 +1088,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TwoFactorCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TwoFactorCountAggregateOutputType> | number
->>>>>>> ralph2fa
         }
       }
     }
@@ -1239,7 +1232,6 @@ export const NotificationScalarFieldEnum = {
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
-<<<<<<< HEAD
 export const MessageScalarFieldEnum = {
   id: 'id',
   senderId: 'senderId',
@@ -1249,7 +1241,8 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
-=======
+
+
 export const TwoFactorScalarFieldEnum = {
   id: 'id',
   secret: 'secret',
@@ -1261,7 +1254,6 @@ export const TwoFactorScalarFieldEnum = {
 } as const
 
 export type TwoFactorScalarFieldEnum = (typeof TwoFactorScalarFieldEnum)[keyof typeof TwoFactorScalarFieldEnum]
->>>>>>> ralph2fa
 
 
 export const SortOrder = {
@@ -1573,11 +1565,8 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
   notification?: Prisma.NotificationOmit
-<<<<<<< HEAD
   message?: Prisma.MessageOmit
-=======
   twoFactor?: Prisma.TwoFactorOmit
->>>>>>> ralph2fa
 }
 
 /* Types for Logging */

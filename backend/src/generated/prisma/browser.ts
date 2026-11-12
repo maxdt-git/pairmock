@@ -53,14 +53,12 @@ export type Verification = Prisma.VerificationModel
  */
 export type Notification = Prisma.NotificationModel
 /**
-<<<<<<< HEAD
  * Model Message
  * 
  */
 export type Message = Prisma.MessageModel
-=======
+/**
  * Model TwoFactor
  * 
  */
 export type TwoFactor = Prisma.TwoFactorModel
->>>>>>> ralph2fa

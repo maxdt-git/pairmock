@@ -107,12 +107,30 @@ const fr: Translation = {
             all: "Tous",
         },
         toast: {
-            booked: { title: "Créneau réservé !", description: "Ce créneau a bien été réservé." },
-            bookFailed: { title: "Échec de la réservation", description: "Impossible de réserver ce créneau. Réessayez plus tard." },
-            canceled: { title: "Créneau annulé !", description: "Ce créneau a bien été annulé." },
-            cancelFailed: { title: "Échec de l'annulation", description: "Impossible d'annuler ce créneau. Réessayez plus tard." },
-            deleted: { title: "Créneau supprimé !", description: "Le créneau a bien été supprimé." },
-            deleteFailed: { title: "Échec de la suppression", description: "Impossible de supprimer ce créneau." },
+            booked: {
+                title: "Créneau réservé !",
+                description: "Ce créneau a bien été réservé.",
+            },
+            bookFailed: {
+                title: "Échec de la réservation",
+                description: "Impossible de réserver ce créneau. Réessayez plus tard.",
+            },
+            canceled: {
+                title: "Créneau annulé !",
+                description: "Ce créneau a bien été annulé.",
+            },
+            cancelFailed: {
+                title: "Échec de l'annulation",
+                description: "Impossible d'annuler ce créneau. Réessayez plus tard.",
+            },
+            deleted: {
+                title: "Créneau supprimé !",
+                description: "Le créneau a bien été supprimé.",
+            },
+            deleteFailed: {
+                title: "Échec de la suppression",
+                description: "Impossible de supprimer ce créneau.",
+            },
         },
     },
 
@@ -161,8 +179,14 @@ const fr: Translation = {
             failedFallback: "Impossible de créer le créneau",
         },
         toast: {
-            created: { title: "Créneau créé !", description: "Votre créneau d'entretien est maintenant disponible." },
-            failed: { title: "Échec de la création !", description: "Impossible de créer votre créneau." },
+            created: {
+                title: "Créneau créé !",
+                description: "Votre créneau d'entretien est maintenant disponible.",
+            },
+            failed: {
+                title: "Échec de la création !",
+                description: "Impossible de créer votre créneau.",
+            },
         },
     },
 
@@ -180,7 +204,101 @@ const fr: Translation = {
         },
         passedHeading: "Entretiens passés :",
         analytics: "Afficher les statistiques",
-        emptyDescription: "Aucun entretien terminé"
+        emptyDescription: "Aucun entretien terminé",
+    },
+
+    twoFactor: {
+        title: "Authentification à deux facteurs",
+        password: "Mot de passe",
+        settings: {
+            enabledDescription: "Activée sur votre compte.",
+            disabledDescription: "Saisissez un code d'une application d'authentification lors de la connexion.",
+            enable: "Activer la 2FA",
+            disable: "Désactiver la 2FA",
+            scanStep: "1. Scannez ce QR code avec votre application d'authentification :",
+            backupStep: "2. Conservez ces codes de secours en lieu sûr :",
+            codeStep: "3. Saisissez le code à 6 chiffres de l'application",
+            verify: "Vérifier et activer",
+            enableFailed: "Impossible d'activer la 2FA",
+            disableFailed: "Impossible de désactiver la 2FA",
+            enabled: "L'authentification à deux facteurs est activée",
+            disabled: "L'authentification à deux facteurs est désactivée",
+        },
+        page: {
+            totpDescription: "Saisissez le code à 6 chiffres de votre application d'authentification.",
+            backupDescription: "Saisissez l'un de vos codes de secours.",
+            code: "Code",
+            backupCode: "Code de secours",
+            verify: "Vérifier",
+            useTotp: "Utiliser l'application d'authentification",
+            useBackup: "Téléphone perdu ? Utilisez un code de secours",
+        },
+        invalidCode: "Code invalide, réessayez",
+    },
+
+    analytics: {
+        title: "Tableau de bord analytique",
+        description: "Votre progression sur l'ensemble des entretiens terminés",
+        filter: {
+            all: "Toutes les difficultés",
+            easy: "Facile",
+            medium: "Moyen",
+            hard: "Difficile",
+        },
+        loadFailed: "Échec du chargement des données",
+        allDifficulties: "Toutes les difficultés",
+        exportCsv: "Exporter en CSV",
+        lastUpdated: "Dernière mise à jour : {{time}}",
+        kpis: {
+            interviews: "Entretiens",
+            averageScore: "Note moyenne",
+            strength: "Point fort",
+            workOn: "À travailler",
+        },
+        skills: {
+            problemSolving: "Résolution de problèmes",
+            codeQuality: "Qualité du code",
+            complexityAnalysis: "Analyse de complexité",
+            communication: "Communication",
+            average: "Moyenne",
+        },
+        charts: {
+            scoreEvolution: {
+                title: "Évolution des notes",
+                description: "Notes obtenues à chaque entretien",
+            },
+            skillsRadar: {
+                title: "Profil de compétences",
+                description: "Moyenne par compétence",
+            },
+            difficultyBar: {
+                title: "Notes par difficulté",
+                description: "Classé par ordre croissant de difficulté",
+                tooltip_one: "{{count}} entretien",
+                tooltip_other: "{{count}} entretiens",
+            },
+        },
+        average: "Moyenne",
+        kpi: {
+            interviews: "Entretiens",
+            averageScore: "Score moyen",
+            strength: "Point fort",
+            weakness: "À travailler",
+        },
+        evolution: {
+            title: "Évolution des scores",
+            description: "Score reçu à chaque entretien",
+        },
+        skillsProfile: {
+            title: "Profil de compétences",
+            description: "Moyenne par compétence",
+        },
+        byDifficulty: {
+            title: "Scores par difficulté",
+            description: "Par difficulté croissante",
+            interviews_one: "{{difficulty}} · {{count}} entretien",
+            interviews_other: "{{difficulty}} · {{count}} entretiens",
+        },
     },
 
     interview: {
@@ -199,8 +317,14 @@ const fr: Translation = {
         toast: {
             feedbackSaved: "Votre évaluation a été enregistrée",
             feedbackFailed: "Impossible d'enregistrer l'évaluation",
-            codeSaved: { title: "Code ajouté à la revue !", description: "Ce créneau a été mis à jour." },
-            updateFailed: { title: "Échec de la mise à jour", description: "Impossible de mettre à jour ce créneau. Réessayez plus tard." },
+            codeSaved: {
+                title: "Code ajouté à la revue !",
+                description: "Ce créneau a été mis à jour.",
+            },
+            updateFailed: {
+                title: "Échec de la mise à jour",
+                description: "Impossible de mettre à jour ce créneau. Réessayez plus tard.",
+            },
         },
         exitDialog: {
             title: "Êtes-vous vraiment sûr ?",
@@ -224,48 +348,48 @@ const fr: Translation = {
             title: "Résolution de problème et conception d'algorithme",
             description: "Notez de 0 (non résolu) à 5 (approche optimale sans indice).",
             choices: {
-                "5": "Approche optimale sans indice",
-                "4": "Résolu avec un léger accompagnement",
-                "3": "Résolu avec un accompagnement important",
-                "2": "Approche sous-optimale ou force brute",
-                "1": "A eu du mal à avancer",
                 "0": "Non résolu",
+                "1": "A eu du mal à avancer",
+                "2": "Approche sous-optimale ou force brute",
+                "3": "Résolu avec un accompagnement important",
+                "4": "Résolu avec un léger accompagnement",
+                "5": "Approche optimale sans indice",
             },
         },
         codeQuality: {
             title: "Qualité du code et implémentation",
             description: "Notez de 0 (cassé/illisible) à 5 (propre, idiomatique, sans bug).",
             choices: {
-                "5": "Propre, idiomatique, sans bug",
-                "4": "Lisible avec de petits défauts de style",
-                "3": "Fonctionnel mais brouillon ou désorganisé",
-                "2": "Bugs ou erreurs de syntaxe importants",
-                "1": "Difficile à suivre, plusieurs bugs",
                 "0": "Cassé et illisible",
+                "1": "Difficile à suivre, plusieurs bugs",
+                "2": "Bugs ou erreurs de syntaxe importants",
+                "3": "Fonctionnel mais brouillon ou désorganisé",
+                "4": "Lisible avec de petits défauts de style",
+                "5": "Propre, idiomatique, sans bug",
             },
         },
         complexityAnalysis: {
             title: "Complexité en temps et en espace (Big-O)",
             description: "Notez de 0 (incorrecte/absente) à 5 (analyse Big-O exacte en temps et en espace).",
             choices: {
-                "5": "Analyse Big-O exacte en temps et en espace",
-                "4": "Correcte avec une légère aide",
-                "3": "Analyse partiellement correcte",
-                "2": "Confusion entre complexité en temps et en espace",
-                "1": "Deviné sans raisonnement",
                 "0": "Analyse incorrecte ou absente",
+                "1": "Deviné sans raisonnement",
+                "2": "Confusion entre complexité en temps et en espace",
+                "3": "Analyse partiellement correcte",
+                "4": "Correcte avec une légère aide",
+                "5": "Analyse Big-O exacte en temps et en espace",
             },
         },
         communication: {
             title: "Communication et raisonnement",
             description: "Notez de 0 (silencieux/confus) à 5 (réflexion structurée à voix haute).",
             choices: {
-                "5": "Réflexion structurée à voix haute",
-                "4": "Bonne communication, légères hésitations",
-                "3": "A parfois eu besoin d'être relancé",
-                "2": "Discret, explications peu claires",
-                "1": "Communication minimale",
                 "0": "Silencieux ou incohérent",
+                "1": "Communication minimale",
+                "2": "Discret, explications peu claires",
+                "3": "A parfois eu besoin d'être relancé",
+                "4": "Bonne communication, légères hésitations",
+                "5": "Réflexion structurée à voix haute",
             },
         },
         signals: {
@@ -286,8 +410,8 @@ const fr: Translation = {
             choices: {
                 "optimal-no-hints": "Résolu de façon optimale sans indice",
                 "optimal-with-hints": "Résolu de façon optimale avec quelques indices",
-                "suboptimal": "Solution fonctionnelle en force brute / sous-optimale",
-                "incomplete": "N'a pas terminé de solution fonctionnelle",
+                suboptimal: "Solution fonctionnelle en force brute / sous-optimale",
+                incomplete: "N'a pas terminé de solution fonctionnelle",
             },
         },
     },
@@ -446,7 +570,9 @@ const fr: Translation = {
                 },
                 {
                     heading: "3. Utilisation acceptable",
-                    paragraphs: ["En utilisant PairMock, vous vous engagez à ne pas :"],
+                    paragraphs: [
+                        "En utilisant PairMock, vous vous engagez à ne pas :",
+                    ],
                     items: [
                         "harceler, insulter ou discriminer d'autres utilisateurs, pendant les entretiens ou dans les descriptions de créneaux ;",
                         "partager de contenu illégal, offensant, ou que vous n'avez pas le droit de partager ;",
@@ -498,48 +624,6 @@ const fr: Translation = {
                     items: [],
                 },
             ],
-        },
-    },
-
-    analytics: {
-        title: "Tableau de bord analytique",
-        description: "Votre progression sur l'ensemble des entretiens terminés",
-        filter: {
-            all: "Toutes les difficultés",
-            easy: "Facile",
-            medium: "Moyen",
-            hard: "Difficile",
-        },
-        exportCsv: "Exporter en CSV",
-        lastUpdated: "Dernière mise à jour : {{time}}",
-        kpis: {
-            interviews: "Entretiens",
-            averageScore: "Note moyenne",
-            strength: "Point fort",
-            workOn: "À travailler",
-        },
-        skills: {
-            problemSolving: "Résolution de problèmes",
-            codeQuality: "Qualité du code",
-            complexityAnalysis: "Analyse de complexité",
-            communication: "Communication",
-            average: "Moyenne",
-        },
-        charts: {
-            scoreEvolution: {
-                title: "Évolution des notes",
-                description: "Notes obtenues à chaque entretien",
-            },
-            skillsRadar: {
-                title: "Profil de compétences",
-                description: "Moyenne par compétence",
-            },
-            difficultyBar: {
-                title: "Notes par difficulté",
-                description: "Classé par ordre croissant de difficulté",
-                tooltip_one: "{{count}} entretien",
-                tooltip_other: "{{count}} entretiens",
-            },
         },
     },
 };

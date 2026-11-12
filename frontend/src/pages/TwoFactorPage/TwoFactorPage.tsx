@@ -13,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
+import { useTranslation } from "react-i18next";
 
 export default function TwoFactorPage() {
+  const { t } = useTranslation();
   const [code, setCode] = useState("");
   const [useBackupCode, setUseBackupCode] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ export default function TwoFactorPage() {
     if (error) {
       toast.add({
         type: "error",
-        description: "Invalid code, try again",
+        description: t("twoFactor.invalidCode"),
         priority: "high",
       });
       return;
@@ -38,17 +40,17 @@ export default function TwoFactorPage() {
     <main className="flex min-h-dvh items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Two-factor authentication</CardTitle>
+          <CardTitle>{t("twoFactor.title")}</CardTitle>
           <CardDescription>
             {useBackupCode
-              ? "Enter one of your backup codes."
-              : "Enter the 6-digit code from your authenticator app."}
+              ? t("twoFactor.page.backupDescription")
+              : t("twoFactor.page.totpDescription")}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="grid gap-2">
             <Label htmlFor="code">
-              {useBackupCode ? "Backup code" : "Code"}
+              {useBackupCode ? t("twoFactor.page.backupCode") : t("twoFactor.page.code")}
             </Label>
             <Input
               id="code"
@@ -63,7 +65,7 @@ export default function TwoFactorPage() {
           </CardContent>
           <CardFooter className="flex-col gap-2 mt-6">
             <Button type="submit" className="w-full">
-              Verify
+              {t("twoFactor.page.verify")}
             </Button>
             <Button
               type="button"
@@ -74,8 +76,8 @@ export default function TwoFactorPage() {
               }}
             >
               {useBackupCode
-                ? "Use authenticator app instead"
-                : "Lost your phone? Use a backup code"}
+                ? t("twoFactor.page.useTotp")
+                : t("twoFactor.page.useBackup")}
             </Button>
           </CardFooter>
         </form>

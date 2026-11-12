@@ -12,8 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
+import { useTranslation } from "react-i18next";
 
 export default function TwoFactorSettings() {
+  const { t } = useTranslation();
   const { data: session, refetch } = authClient.useSession();
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
@@ -26,7 +28,7 @@ export default function TwoFactorSettings() {
     if (error) {
       toast.add({
         type: "error",
-        title: error.message ?? "Could not enable 2FA",
+        title: error.message ?? t("twoFactor.settings.enableFailed"),
       });
       return;
     }
@@ -38,10 +40,10 @@ export default function TwoFactorSettings() {
     event.preventDefault();
     const { error } = await authClient.twoFactor.verifyTotp({ code });
     if (error) {
-      toast.add({ type: "error", title: "Invalid code, try again" });
+      toast.add({ type: "error", title: t("twoFactor.invalidCode") });
       return;
     }
-    toast.add({ type: "success", title: "Two-factor authentication is on" });
+    toast.add({ type: "success", title: t("twoFactor.settings.enabled") });
     setTotpURI("");
     setBackupCodes([]);
     setCode("");
@@ -53,28 +55,28 @@ export default function TwoFactorSettings() {
     if (error) {
       toast.add({
         type: "error",
-        title: error.message ?? "Could not disable 2FA",
+        title: error.message ?? t("twoFactor.settings.disableFailed"),
       });
       return;
     }
-    toast.add({ type: "success", title: "Two-factor authentication is off" });
+    toast.add({ type: "success", title: t("twoFactor.settings.disabled") });
     setPassword("");
     refetch();
   }
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Two-factor authentication</CardTitle>
+        <CardTitle>{t("twoFactor.title")}</CardTitle>
         <CardDescription>
           {isEnabled
-            ? "Enabled on your account."
-            : "Add a code from an authenticator app when you sign in."}
+            ? t("twoFactor.settings.enabledDescription")
+            : t("twoFactor.settings.disabledDescription")}
         </CardDescription>
       </CardHeader>
       <CardContent>
         {isEnabled ? (
           <form onSubmit={handleDisable} className="grid gap-3">
-            <Label htmlFor="disable-password">Password</Label>
+            <Label htmlFor="disable-password">{t("twoFactor.password")}</Label>
             <Input
               id="disable-password"
               type="password"
@@ -83,12 +85,12 @@ export default function TwoFactorSettings() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button type="submit" variant="outline">
-              Disable 2FA
+              {t("twoFactor.settings.disable")}
             </Button>
           </form>
         ) : !totpURI ? (
           <form onSubmit={handleEnable} className="grid gap-3">
-            <Label htmlFor="enable-password">Password</Label>
+            <Label htmlFor="enable-password">{t("twoFactor.password")}</Label>
             <Input
               id="enable-password"
               type="password"
@@ -96,18 +98,18 @@ export default function TwoFactorSettings() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit">Enable 2FA</Button>
+            <Button type="submit">{t("twoFactor.settings.enable")}</Button>
           </form>
         ) : (
           <form onSubmit={handleVerify} className="grid gap-3">
             <p className="text-sm">
-              1. Scan this QR code with your authenticator app:
+              {t("twoFactor.settings.scanStep")}
             </p>
             <div className="mx-auto bg-white p-3 rounded">
               <QRCode value={totpURI} size={160} />
             </div>
             <p className="text-sm">
-              2. Save these backup codes somewhere safe:
+              {t("twoFactor.settings.backupStep")}
             </p>
             <ul className="grid grid-cols-2 gap-1 font-mono text-sm">
               {backupCodes.map((c) => (
@@ -115,7 +117,7 @@ export default function TwoFactorSettings() {
               ))}
             </ul>
             <Label htmlFor="totp-code">
-              3. Enter the 6-digit code from the app
+              {t("twoFactor.settings.codeStep")}
             </Label>
             <Input
               id="totp-code"
@@ -125,7 +127,7 @@ export default function TwoFactorSettings() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
             />
-            <Button type="submit">Verify and turn on</Button>
+            <Button type="submit">{t("twoFactor.settings.verify")}</Button>
           </form>
         )}
       </CardContent>

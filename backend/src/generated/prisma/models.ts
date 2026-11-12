@@ -15,9 +15,6 @@ export type * from './models/Session.ts'
 export type * from './models/Account.ts'
 export type * from './models/Verification.ts'
 export type * from './models/Notification.ts'
-<<<<<<< HEAD
 export type * from './models/Message.ts'
-=======
 export type * from './models/TwoFactor.ts'
->>>>>>> ralph2fa
 export type * from './commonInputTypes.ts'

@@ -32,6 +32,13 @@ export default function TwoFactorSettings() {
       });
       return;
     }
+    if (!data || data.method !== "totp") {
+        toast.add({
+            type: "error",
+            title: "TOTP is not available",
+        });
+        return;
+    }
     setTotpURI(data.totpURI);
     setBackupCodes(data.backupCodes);
     setPassword("");

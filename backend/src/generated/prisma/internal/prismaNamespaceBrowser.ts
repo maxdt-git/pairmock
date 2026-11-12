@@ -58,7 +58,11 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Notification: 'Notification',
+<<<<<<< HEAD
   Message: 'Message'
+=======
+  TwoFactor: 'TwoFactor'
+>>>>>>> ralph2fa
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -116,7 +120,8 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  twoFactorEnabled: 'twoFactorEnabled'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -178,6 +183,7 @@ export const NotificationScalarFieldEnum = {
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+<<<<<<< HEAD
 export const MessageScalarFieldEnum = {
   id: 'id',
   senderId: 'senderId',
@@ -187,6 +193,19 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+=======
+export const TwoFactorScalarFieldEnum = {
+  id: 'id',
+  secret: 'secret',
+  backupCodes: 'backupCodes',
+  userId: 'userId',
+  verified: 'verified',
+  failedVerificationCount: 'failedVerificationCount',
+  lockedUntil: 'lockedUntil'
+} as const
+
+export type TwoFactorScalarFieldEnum = (typeof TwoFactorScalarFieldEnum)[keyof typeof TwoFactorScalarFieldEnum]
+>>>>>>> ralph2fa
 
 
 export const SortOrder = {

@@ -21,6 +21,7 @@ import InterviewPage from './pages/InterviewPage/InterviewPage.tsx'
 import ReviewPage from './pages/ReviewPage/ReviewPage.tsx'
 import AnalyticsPage from './pages/AnalyticsPage/AnalyticsPage.tsx'
 import MessageText from './pages/MessageTest/MessageTest.tsx'
+import TwoFactorPage from './pages/TwoFactorPage/TwoFactorPage.tsx'
 
 const queryClient = new QueryClient()
 
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')!).render(
             <Route element={<GuestRoute />}>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/2fa" element={<TwoFactorPage />} />
             </Route>
             <Route path="/" element={<Navigate to={"/dashboard"} replace />} />
             {/* Legal pages are public: they must be readable before signing up */}

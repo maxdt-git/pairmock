@@ -1,9 +1,10 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { openAPI } from "better-auth/plugins";
+import { openAPI, twoFactor } from "better-auth/plugins";
 import { prisma } from "./prisma.ts";
 
 export const auth = betterAuth({
+  appName: "PairMock",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -26,6 +27,7 @@ export const auth = betterAuth({
 
   plugins: [
     openAPI(),
+    twoFactor({issuer: "PairMock"}),
   ],
 
   user: {

@@ -63,7 +63,7 @@ export default function LoginForm() {
           {t("auth.login.description")}
         </CardDescription>
         <CardAction>
-          <Button variant="link" render={<Link to={"/register"} />}>
+          <Button variant="link" nativeButton={false} render={<Link to={"/register"} />}>
             {t("auth.login.signUp")}
           </Button>
         </CardAction>

@@ -318,80 +318,106 @@ const fr: Translation = {
         back: "Retour",
         privacy: {
             title: "Politique de confidentialité",
-            intro: "PairMock est une plateforme d'entretiens techniques blancs entre pairs, réalisée dans le cadre d'un projet étudiant à visée pédagogique. Cette politique explique quelles données personnelles nous collectons lorsque vous utilisez PairMock, pourquoi nous les collectons, avec qui nous les partageons et quels sont vos droits.",
+            intro: "PairMock (https://pairmock.duckdns.org) est une plateforme d'entretiens techniques blancs entre pairs, développée dans le cadre d'un projet étudiant à vocation pédagogique. Cette Politique de confidentialité détaille quelles données personnelles et données utilisateur Google nous collectons lorsque vous utilisez PairMock, comment nous les utilisons, stockons, protégeons et partageons, comment nous respectons la Politique relative aux données utilisateur des services API Google, et comment exercer vos droits ou supprimer vos données.",
             sections: [
                 {
-                    heading: "1. Données collectées",
-                    paragraphs: ["Nous ne collectons que les données nécessaires au fonctionnement du service :"],
+                    heading: "1. Données collectées (y compris les données utilisateur Google)",
+                    paragraphs: [
+                        "Nous collectons uniquement le strict minimum d'informations personnelles nécessaires au fonctionnement de PairMock et à ses fonctionnalités de planification d'entretiens, d'édition collaborative de code et d'évaluation :",
+                    ],
                     items: [
-                        "Données de compte : votre nom d'utilisateur, votre adresse e-mail, votre mot de passe (conservé uniquement sous forme de hachage sécurisé) et, si vous en ajoutez une, l'URL de votre photo de profil.",
-                        "Données de compte Google : si vous vous connectez avec Google ou reliez Google Agenda, nous conservons l'identifiant de votre compte Google et les jetons d'accès fournis par Google, limités à la gestion des événements de vos entretiens blancs (création et suppression des créneaux planifiés).",
-                        "Données d'entretien : les créneaux que vous créez ou réservez (description, difficulté, date, durée, statut), le code écrit pendant l'entretien, les évaluations données et reçues, ainsi que vos notifications.",
-                        "Données techniques : pour chaque session de connexion, sa date d'expiration, votre adresse IP et l'agent utilisateur de votre navigateur, afin de vous garder connecté et de protéger votre compte.",
-                        "Préférences : votre langue et votre thème sont enregistrés dans le stockage local de votre navigateur, et non sur nos serveurs.",
+                        "Données d'inscription au compte : Lorsque vous créez un compte avec une adresse e-mail et un mot de passe, nous collectons votre nom d'utilisateur, votre adresse e-mail, votre mot de passe (stocké exclusivement sous forme de hachage cryptographique sécurisé, jamais en clair) et l'URL facultative de votre photo de profil.",
+                        "Données de connexion Google (scopes OAuth : openid, email, profile) : Si vous vous connectez via Google OAuth, nous collectons l'identifiant unique de votre compte Google, votre nom d'affichage, votre adresse e-mail et l'URL de votre photo de profil transmis par Google afin de vous authentifier.",
+                        "Données Google Agenda (scope OAuth : https://www.googleapis.com/auth/calendar.events) : Si vous choisissez d'héberger des créneaux d'entretien et de connecter Google Agenda, nous stockons les jetons d'accès et d'actualisation OAuth 2.0 fournis par Google. Nous utilisons cette autorisation uniquement pour créer, mettre à jour et supprimer les événements Google Agenda (ainsi que leurs liens de visioconférence Google Meet associés) que PairMock planifie lorsqu'un autre utilisateur réserve ou annule votre créneau. PairMock ne lit, n'analyse, ne modifie et ne supprime AUCUN autre événement personnel de votre agenda Google.",
+                        "Données d'entretiens et d'entraînement : Nous conservons les créneaux que vous publiez ou réservez (description, difficulté, date et heure, durée et statut), le code source écrit dans l'éditeur collaboratif pendant l'entretien, les évaluations structurées soumises par les participants et vos notifications.",
+                        "Données techniques et de session : Pour la sécurité et le maintien de votre connexion, nous enregistrons l'identifiant de session, sa date d'expiration, votre adresse IP et l'agent utilisateur (user-agent) de votre navigateur.",
+                        "Préférences locales : Votre langue d'interface (anglais, espagnol ou français) et votre thème visuel sont enregistrés uniquement dans le stockage local (localStorage) de votre navigateur et ne sont pas transmis à nos serveurs.",
                     ],
                 },
                 {
-                    heading: "2. Finalités",
-                    paragraphs: [],
+                    heading: "2. Comment nous utilisons vos données",
+                    paragraphs: [
+                        "Nous utilisons les informations collectées exclusivement pour fournir et faire fonctionner le service PairMock :",
+                    ],
                     items: [
-                        "Créer et sécuriser votre compte et maintenir votre connexion.",
-                        "Vous permettre de publier, réserver et mener des entretiens blancs avec d'autres utilisateurs.",
-                        "Créer l'invitation Google Agenda et le lien Google Meet d'un entretien réservé.",
-                        "Afficher votre historique, vos statistiques et les évaluations laissées par vos partenaires.",
-                        "Générer un retour de l'IA sur le code d'un entretien lorsque vous le demandez.",
+                        "Authentification et gestion du compte : Créer et sécuriser votre compte, vous authentifier par e-mail/mot de passe ou Google Sign-In, et afficher votre nom d'utilisateur et votre avatar à vos partenaires d'entretien.",
+                        "Planification d'entretiens blancs : Permettre aux utilisateurs de publier des créneaux disponibles, de parcourir les sessions ouvertes et de réserver ou d'annuler des entretiens d'entraînement.",
+                        "Automatisation Google Agenda et Google Meet : Lorsqu'un utilisateur réserve un créneau que vous hébergez, PairMock utilise votre jeton Google Agenda pour créer automatiquement l'événement dans l'agenda, générer un lien vidéo Google Meet pour les deux participants, et supprimer ou mettre à jour cet événement si la réservation est annulée.",
+                        "Édition collaborative et historique : Synchroniser le code en temps réel entre les deux participants pendant l'entretien et afficher votre historique de code, vos évaluations et vos statistiques sur votre tableau de bord et votre profil.",
+                        "Analyse de code par IA à la demande : Uniquement lorsque vous cliquez explicitement sur un bouton de retour de l'IA, PairMock transmet le code de l'éditeur à notre fournisseur d'IA (Groq) afin de générer des conseils pédagogiques.",
                     ],
                 },
                 {
-                    heading: "3. Base légale",
+                    heading: "3. Conformité à la Politique relative aux données utilisateur des services API Google (Usage Limité)",
                     paragraphs: [
-                        "Nous traitons vos données parce que c'est nécessaire pour fournir le service auquel vous vous êtes inscrit (exécution d'un contrat). La connexion à Google Agenda et l'utilisation du retour de l'IA sont facultatives et reposent sur votre consentement. Vous pouvez retirer votre consentement à tout moment en révoquant les autorisations accordées à PairMock dans les paramètres de sécurité de votre compte Google (myaccount.google.com/permissions), en nous écrivant à {{email}}, ou simplement en n'utilisant pas la fonctionnalité d'IA.",
+                        "L'utilisation et le transfert par PairMock à toute autre application des informations reçues des API Google respectent la Politique relative aux données utilisateur des services API Google (Google API Services User Data Policy), y compris les exigences d'Usage Limité (Limited Use).",
                     ],
-                    items: [],
-                },
-                {
-                    heading: "4. Qui peut voir vos données",
-                    paragraphs: [],
                     items: [
-                        "Les autres utilisateurs voient votre nom d'utilisateur, votre photo de profil et les créneaux que vous publiez.",
-                        "Votre partenaire d'entretien voit votre nom, le code partagé, l'évaluation que vous lui laissez et, via l'invitation d'agenda, votre adresse e-mail.",
-                        "Google reçoit les détails de l'événement d'agenda (titre, description, date et participants) lorsqu'un entretien est réservé.",
-                        "Groq, notre fournisseur d'IA, reçoit le code de l'entretien (et rien d'autre) lorsque vous cliquez sur un bouton de retour de l'IA. Nous ne conservons pas la réponse de l'IA.",
-                        "Transferts internationaux : Google et Groq traitent les données sur des serveurs situés aux États-Unis, sous la protection du cadre UE-États-Unis de protection des données (Data Privacy Framework) et de clauses contractuelles types.",
+                        "Usage Limité : Nous utilisons les données utilisateur Google (vos informations de profil et les autorisations d'événements Google Agenda) uniquement pour fournir des fonctionnalités visibles par l'utilisateur dans PairMock : vous connecter et planifier automatiquement les invitations Google Agenda et les liens Google Meet de vos entretiens réservés.",
+                        "Aucune publicité ni revente de données : Nous ne vendons, ne louons et ne cédons jamais vos données utilisateur Google ou vos données personnelles à des tiers, courtiers en données ou régies publicitaires, et nous ne les utilisons jamais à des fins de ciblage publicitaire.",
+                        "Aucun entraînement d'IA sur les données Google : Nous ne transférons jamais les données de votre compte Google, votre adresse e-mail ou vos données Google Agenda à un fournisseur d'intelligence artificielle, et ces données ne sont jamais utilisées pour entraîner des modèles d'IA.",
+                        "Aucune lecture humaine des données Google : Aucun humain ne consulte vos données utilisateur Google, sauf avec votre accord explicite dans le cadre d'une demande d'assistance, pour des raisons de sécurité ou si la loi l'exige.",
                     ],
                 },
                 {
-                    heading: "5. Ce que nous ne faisons jamais",
+                    heading: "4. Base légale du traitement (RGPD)",
                     paragraphs: [
-                        "Nous ne vendons pas vos données, n'affichons aucune publicité et n'utilisons aucun cookie de suivi ou de mesure d'audience. Le seul cookie que nous déposons est le cookie de session strictement nécessaire pour vous garder connecté.",
-                    ],
-                    items: [],
-                },
-                {
-                    heading: "6. Durée de conservation",
-                    paragraphs: [
-                        "Vos données sont conservées tant que votre compte existe. Les sessions de connexion expirent automatiquement. Lorsque vous demandez la suppression de votre compte, vos identifiants, vos sessions et vos jetons Google associés sont supprimés. Les enregistrements d'entretiens terminés sont conservés sous forme anonymisée afin que vos partenaires puissent conserver leur historique d'entraînement.",
+                        "Pour les utilisateurs situés dans l'Espace économique européen (EEE) et au Royaume-Uni, nous traitons vos données personnelles conformément au Règlement général sur la protection des données (RGPD) sur les bases suivantes : (a) l'exécution d'un contrat (article 6(1)(b) du RGPD) pour fournir l'accès au compte, la réservation de créneaux, l'éditeur collaboratif et les évaluations ; (b) votre consentement (article 6(1)(a) du RGPD) lorsque vous connectez facultativement Google Agenda ou demandez une analyse par l'IA ; et (c) notre intérêt légitime (article 6(1)(f) du RGPD) pour assurer la sécurité des sessions.",
                     ],
                     items: [],
                 },
                 {
-                    heading: "7. Sécurité",
+                    heading: "5. Partage des données, sous-traitants et transferts internationaux",
                     paragraphs: [
-                        "Tout le trafic est chiffré en HTTPS, les mots de passe sont hachés et jamais stockés en clair, et l'accès aux données d'un entretien est réservé à ses deux participants. Aucun système n'est parfaitement sûr, mais nous prenons des mesures raisonnables pour protéger vos données.",
+                        "Nous ne partageons vos informations que dans les cas strictement nécessaires décrits ci-dessous :",
+                    ],
+                    items: [
+                        "Autres utilisateurs de PairMock : Les utilisateurs connectés voient votre nom d'utilisateur, votre photo de profil et les créneaux disponibles que vous publiez. Lorsqu'un entretien est réservé, les deux participants voient leur nom d'utilisateur, le code partagé, l'évaluation et, via l'invitation Google Agenda, les adresses e-mail figurant sur l'invitation.",
+                        "Google LLC (OAuth et API Google Agenda) : Lorsque vous vous connectez avec Google ou qu'un créneau est réservé, PairMock communique avec les API Google pour vérifier votre identité ou créer l'événement d'agenda et le lien Google Meet.",
+                        "Groq, Inc. (Analyse de code par IA) : Lorsque vous cliquez sur un bouton d'aide IA, seul le code écrit dans l'éditeur d'entretien et le langage choisi sont envoyés à l'API de Groq. Votre nom, votre adresse e-mail et vos données Google ne sont jamais transmis à Groq.",
+                        "Transferts internationaux : Google LLC et Groq, Inc. traitent des données sur des serveurs situés aux États-Unis, encadrés par le Cadre de protection des données UE-États-Unis (Data Privacy Framework) et les Clauses Contractuelles Types (CCT) de la Commission européenne.",
+                    ],
+                },
+                {
+                    heading: "6. Cookies et technologies de suivi",
+                    paragraphs: [
+                        "PairMock n'utilise aucun cookie publicitaire, pixel de suivi tiers ni cookie de mesure d'audience comportementale. Le seul cookie déposé est le cookie de session strictement nécessaire au maintien sécurisé de votre connexion.",
                     ],
                     items: [],
                 },
                 {
-                    heading: "8. Vos droits",
+                    heading: "7. Stockage et mesures de sécurité",
                     paragraphs: [
-                        "Conformément au RGPD, vous pouvez accéder à vos données, les rectifier, les exporter ou les supprimer, et vous opposer à leur traitement ou en demander la limitation. Vous pouvez modifier votre nom et votre photo depuis votre page de profil ; pour toute autre demande (y compris la suppression de compte), contactez l'équipe étudiante à {{email}}. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.",
+                        "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données personnelles et vos jetons OAuth Google contre tout accès non autorisé, altération ou divulgation :",
+                    ],
+                    items: [
+                        "Chiffrement en transit : Toutes les communications entre votre navigateur, les serveurs de PairMock et les API Google sont chiffrées via HTTPS/TLS.",
+                        "Protection des identifiants et jetons : Les mots de passe sont hachés à l'aide d'un algorithme cryptographique robuste. Les jetons OAuth Google sont conservés dans une base de données restreinte accessible uniquement par le serveur backend.",
+                        "Contrôle d'accès : L'accès aux sessions d'entretien, au code partagé et aux pages de révision est strictement vérifié côté serveur afin que seuls les deux participants puissent y accéder.",
+                    ],
+                },
+                {
+                    heading: "8. Durée de conservation, suppression du compte et révocation de l'accès Google",
+                    paragraphs: [
+                        "Nous conservons vos données personnelles uniquement tant que votre compte PairMock reste actif :",
+                    ],
+                    items: [
+                        "Expiration des sessions : Les sessions de connexion expirent automatiquement ou dès votre déconnexion.",
+                        "Révocation de l'accès Google : Vous pouvez révoquer l'accès de PairMock à votre compte Google et à Google Agenda à tout moment depuis la page des autorisations de votre compte Google (https://myaccount.google.com/permissions) ou en nous écrivant à {{email}}.",
+                        "Suppression du compte et des données : Vous pouvez demander la suppression complète de votre compte PairMock et de vos données personnelles (y compris votre profil, votre adresse e-mail, vos sessions et vos jetons Google enregistrés) à tout moment en nous contactant à {{email}}. Nous supprimons définitivement vos identifiants et jetons Google dans un délai maximal de 30 jours. Les entretiens terminés peuvent être conservés sous forme anonymisée afin que vos anciens partenaires conservent leur historique d'entraînement.",
+                    ],
+                },
+                {
+                    heading: "9. Vos droits en matière de protection des données",
+                    paragraphs: [
+                        "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données personnelles. Vous pouvez modifier votre nom d'utilisateur et votre photo directement depuis votre page Profil. Pour exercer tout autre droit ou poser une question sur la protection de vos données, contactez l'équipe PairMock à {{email}}. Vous avez également le droit d'introduire une réclamation auprès de la CNIL (France) ou de votre autorité nationale de protection des données.",
                     ],
                     items: [],
                 },
                 {
-                    heading: "9. Modifications",
+                    heading: "10. Modifications de cette Politique de confidentialité",
                     paragraphs: [
-                        "Nous pouvons mettre à jour cette politique au fil de l'évolution du projet. La date en haut de cette page indique sa dernière modification.",
+                        "Nous pouvons mettre à jour cette Politique de confidentialité afin de refléter les évolutions de PairMock ou des exigences légales. La date de « Dernière mise à jour » figurant en haut de cette page indique la date de la dernière révision.",
                     ],
                     items: [],
                 },

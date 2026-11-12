@@ -212,7 +212,7 @@ export default function DashboardPage() {
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
                 <header className="flex justify-between pt-2 pb-2 items-center border-b border-border mb-2.5 max-[540px]:justify-center ">
                     <h1 className="text-4xl font-bold flex items-center gap-2 max-[540px]:hidden ">
-                        <img src="/favicon.svg" alt="" shrink-0 className="size-20" /> PairMock</h1>
+                        <img src="/favicon.svg" alt="PairMock logo" className="size-20 shrink-0" /> PairMock</h1>
                     <div className="flex items-center gap-4 ">
                         <SlotCreation />
                         <UserNavigation

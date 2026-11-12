@@ -11,6 +11,22 @@ const es: Translation = {
         user: "Usuario",
     },
 
+    brand: {
+        name: "PairMock",
+        tagline: "Plataforma de entrevistas técnicas simuladas entre pares",
+        description: "PairMock es una plataforma colaborativa donde los desarrolladores practican entrevistas técnicas de programación juntos. Programa sesiones, resuelve problemas en un editor de código en tiempo real e intercambia comentarios estructurados.",
+        features: {
+            scheduleTitle: "Programa y conecta",
+            scheduleDesc: "Publica horarios de entrevista o reserva sesiones disponibles filtradas por dificultad y fecha.",
+            calendarTitle: "Google Calendar y Meet",
+            calendarDesc: "Crea automáticamente invitaciones de Google Calendar y enlaces de Google Meet para las entrevistas reservadas.",
+            editorTitle: "Editor colaborativo en vivo",
+            editorDesc: "Escribe y depura código en tiempo real con resaltado de sintaxis para múltiples lenguajes.",
+            feedbackTitle: "Evaluación de pares e IA",
+            feedbackDesc: "Evalúa la resolución de problemas, la calidad del código y la complejidad Big-O con rúbricas y ayuda de IA.",
+        },
+    },
+
     footer: {
         dashboard: "Panel",
         login: "Iniciar sesión",

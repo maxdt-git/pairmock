@@ -190,7 +190,7 @@ Database migrations: Handled Prisma schema changes, migration conflicts, and exi
 - **Challenges:**   - *AI rate limits:* Groq's free tier quickly returned 429 errors. I added a rotation over several API keys, so a rate-limited request is retried with the next key before an error is shown.
   - *Useful AI answers:* early responses were long and unfocused. I split the review into four types (tips, complexity, bugs, optimal approach), each with its own short prompt. The model answers in the user's interface language and falls back to English for anything unsupported.
   - *Translating everything:* moving all user-facing text, including the legal pages, into three languages meant hunting down hardcoded strings. Typed i18next keys made missing translations show up as compile errors.
-  - *2FA flow:* users with 2FA enabled had to be stopped between the password step and the dashboard. I added a dedicated `/2fa` route to the guest flow, with a QR code for setup and backup codes in case the authenticator is lost.
+  - *2FA flow:* users with 2FA  enabled had to be stopped between the password step and the dashboard. I added a dedicated `/2fa` route to the guest flow, with a QR code for setup and backup codes in case the authenticator is lost.
 
 ### Max de Nas de Tourris
 - Project management in Jira (backlog, ticket assignment, module tracking)

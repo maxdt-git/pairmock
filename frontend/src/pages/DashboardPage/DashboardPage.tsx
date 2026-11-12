@@ -212,7 +212,7 @@ export default function DashboardPage() {
             <main className="max-w-[1650px] p-2 min-h-dvh mx-auto flex flex-col grow ">
                 <header className="flex justify-between pt-2 pb-2 items-center border-b border-border mb-2.5 max-[540px]:justify-center ">
                     <h1 className="text-4xl font-bold flex items-center gap-2 max-[540px]:hidden ">
-                        <img src="/favicon.svg" alt="" shrink-0 className="size-20"/> PairMock</h1>
+                        <img src="/favicon.svg" alt="" shrink-0 className="size-20" /> PairMock</h1>
                     <div className="flex items-center gap-4 ">
                         <SlotCreation />
                         <UserNavigation
@@ -222,32 +222,38 @@ export default function DashboardPage() {
                     </div>
                 </header>
                 <section className="mb-5">
-                    <h2 className="text-2xl font-bold mb-2.5">{t("dashboard.bookedSlots")}</h2>
-                    <ul className="flex gap-2 flex-wrap max-h-72 p-2 md:max-h-none overflow-y-auto">
-                        {queryBooked.data?.map((card: SlotType) => (
-                            <li key={card.id}>
-                                <Slot
-                                    id={card.id}
-                                    imageSrc={card.host.image ?? ""}
-                                    username={card.host.name}
-                                    description={card.description}
-                                    date={card.scheduledAt}
-                                    difficulty={card.difficulty}
-                                    duration={card.durationMinutes}
-                                    status={card.status}
-                                    onDelete={
-                                        card.hostId === session.user.id ?
-                                            async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
-                                    }
-                                    onBooking={undefined}
-                                    onCancel={
-                                        card.hostId !== session.user.id ?
-                                            () => cancelSlotMutation.mutate(card.id) : undefined
-                                    }
-                                />
-                            </li>
-                        ))}
-                    </ul>
+                    {queryBooked.data?.length > 0 ?
+                        <>
+                            <h2 className="text-2xl font-bold mb-2.5">{t("dashboard.bookedSlots")}</h2>
+                            <ul className="flex gap-2 flex-wrap max-h-72 p-2 md:max-h-none overflow-y-auto">
+                                {queryBooked.data?.map((card: SlotType) => (
+                                    <li key={card.id}>
+                                        <Slot
+                                            id={card.id}
+                                            imageSrc={card.host.image ?? ""}
+                                            username={card.host.name}
+                                            description={card.description}
+                                            date={card.scheduledAt}
+                                            difficulty={card.difficulty}
+                                            duration={card.durationMinutes}
+                                            status={card.status}
+                                            onDelete={
+                                                card.hostId === session.user.id ?
+                                                    async () => await deleteSlotMutation.mutateAsync(card.id) : undefined
+                                            }
+                                            onBooking={undefined}
+                                            onCancel={
+                                                card.hostId !== session.user.id ?
+                                                    () => cancelSlotMutation.mutate(card.id) : undefined
+                                            }
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                        :
+                        null
+                    }
                 </section>
                 <section>
                     <h2 className="text-2xl font-bold mb-2.5">{t("dashboard.availableSlots")}</h2>
@@ -314,45 +320,45 @@ export default function DashboardPage() {
                         }
                     </ul>
                 </section>
-                    <Pagination className="mb-5">
-                        <PaginationContent>
-                            <PaginationItem
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    if (currentPage > 1) {
-                                        handlePageChange(currentPage - 1)
-                                    }
-                                }}>
-                                <PaginationPrevious href="#" text={t("pagination.previous")} />
-                            </PaginationItem>
-                            {Array.from({ length: queryAvailable.data?.totalPages }, (_, index) => {
-                                const page = index + 1
-                                return (
-                                    <PaginationItem
-                                        key={index}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handlePageChange(page)
-                                        }}
-                                    >
-                                        <PaginationLink href="#" isActive={currentPage === page} >{page}</PaginationLink>
-                                    </PaginationItem>
-                                )
-                            }
-                            )}
-                            <PaginationItem>
-                                <PaginationEllipsis />
-                            </PaginationItem>
-                            <PaginationItem
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    handlePageChange(currentPage + 1)
-                                }}
-                            >
-                                <PaginationNext href="#" text={t("pagination.next")} />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+                <Pagination className="mb-5">
+                    <PaginationContent>
+                        <PaginationItem
+                            onClick={(e) => {
+                                e.preventDefault()
+                                if (currentPage > 1) {
+                                    handlePageChange(currentPage - 1)
+                                }
+                            }}>
+                            <PaginationPrevious href="#" text={t("pagination.previous")} />
+                        </PaginationItem>
+                        {Array.from({ length: queryAvailable.data?.totalPages }, (_, index) => {
+                            const page = index + 1
+                            return (
+                                <PaginationItem
+                                    key={index}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        handlePageChange(page)
+                                    }}
+                                >
+                                    <PaginationLink href="#" isActive={currentPage === page} >{page}</PaginationLink>
+                                </PaginationItem>
+                            )
+                        }
+                        )}
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem
+                            onClick={(e) => {
+                                e.preventDefault()
+                                handlePageChange(currentPage + 1)
+                            }}
+                        >
+                            <PaginationNext href="#" text={t("pagination.next")} />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
                 <Footer />
             </main>
         </div>

@@ -356,7 +356,7 @@ export default function InterviewPage() {
                                     :
                                     <Questionnaire
                                         className="mx-auto max-w-md"
-                                        defaultItem="direction"
+                                        defaultItem="problemSolving"
                                         items={questionnaireItems}
                                         shortcuts="letters"
                                         onSubmit={handleSubmit}
